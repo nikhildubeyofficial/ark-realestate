@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Ark Vision design tokens from Figma */
+  --color-gold: #c9a84c;
+  --color-gold-light: #fcf6ba;
+  --color-gold-dark: #b38f28;
+  --color-black: #060606;
+  --color-cod-gray: #080808;
+  --color-white-90: rgba(255, 255, 255, 0.9);
+  --color-white-80: rgba(255, 255, 255, 0.8);
+  --color-white-70: rgba(255, 255, 255, 0.7);
+  --color-white-50: rgba(255, 255, 255, 0.5);
+  --color-white-46: rgba(255, 255, 255, 0.46);
+  --color-white-40: rgba(255, 255, 255, 0.4);
+  --color-white-30: rgba(255, 255, 255, 0.3);
+  --color-white-5: rgba(255, 255, 255, 0.05);
+  --font-sans: var(--font-montserrat), ui-sans-serif, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, serif;
+}
+
+body {
+  background: var(--color-cod-gray);
+  color: var(--color-white-80);
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+.font-serif {
+  font-family: var(--font-cormorant), serif;
+}
