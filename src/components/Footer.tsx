@@ -10,10 +10,10 @@ const locations = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[#c9a84c] bg-black py-20">
-      <div className="mx-auto grid max-w-[1280px] gap-16 px-8 md:grid-cols-3 md:px-20">
-        <div className="space-y-6">
-          <div className="flex items-center gap-2">
+    <footer className="border-t border-[#c9a84c] bg-black py-12 md:py-20">
+      <div className="mx-auto grid max-w-[1280px] gap-12 px-5 text-center sm:px-8 md:grid-cols-3 md:gap-16 md:px-20 md:text-left">
+        <div className="space-y-6 md:items-start">
+          <div className="flex items-center justify-center gap-2 md:justify-start">
             <span className="font-serif text-xl font-medium text-white">
               ARK
             </span>
@@ -22,16 +22,16 @@ export default function Footer() {
               aria-hidden
             />
           </div>
-          <p className="max-w-[280px] font-light leading-relaxed text-white/80 text-sm">
+          <p className="mx-auto max-w-[280px] font-light leading-relaxed text-white/80 text-sm md:mx-0">
             Ark Vision — Dubai&apos;s most trusted luxury real estate house,
             curating extraordinary residences since 1998.
           </p>
-          <div className="flex gap-2">
+          <div className="flex justify-center gap-2 md:justify-start">
             {[1, 2, 3, 4].map((i) => (
               <a
                 key={i}
                 href="#"
-                className="flex h-7 w-7 items-center justify-center rounded border border-white/30 text-white/70 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
+                className="flex h-7 w-7 items-center justify-center rounded border border-white/30 text-white/70 transition-all duration-300 hover:border-[#c9a84c] hover:text-[#c9a84c]"
                 aria-label={`Social link ${i}`}
               >
                 <span className="text-xs">→</span>

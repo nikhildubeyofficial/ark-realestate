@@ -33,7 +33,7 @@ export default function RootLayout({
       lang="en"
       className={`${montserrat.variable} ${cormorant.variable}`}
     >
-      <body className="min-h-screen bg-[#080808] text-white/80 antialiased">
+      <body className="min-h-screen overflow-x-hidden bg-[#080808] text-white/80 antialiased">
         <Header />
         <main>{children}</main>
         <Footer />

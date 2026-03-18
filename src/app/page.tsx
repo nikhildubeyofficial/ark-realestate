@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Reveal } from "@/components/Reveal";
+import DeveloperHeatmapClient from "@/components/DeveloperHeatmapClient";
 
 /**
  * Home page — layout and copy aligned to Figma
@@ -19,9 +21,9 @@ const developers = [
 ];
 
 const awards = [
-  { title: "Team Recognition" },
-  { title: "Awards & Certifications" },
-  { title: "Industry Milestones" },
+  { title: "Team Recognition", imageKey: "awardTeam" as const },
+  { title: "Awards & Certifications", imageKey: "awardTrophy" as const },
+  { title: "Industry Milestones", imageKey: "awardMilestone" as const },
 ];
 
 const exceptionalResidences = [
@@ -60,51 +62,41 @@ const IMG = {
     "https://images.unsplash.com/photo-1757439402277-1a88c7abc89d?w=348",
   blogThumb3:
     "https://images.unsplash.com/photo-1760067537524-a0c0703d9721?w=348",
+  awardTeam:
+    "https://images.unsplash.com/photo-1752650735509-58f11eaa2e10?w=1200", // Team high-five
+  awardTrophy:
+    "https://images.unsplash.com/photo-1659080907103-1cabe53c5662?w=1200", // Trophy in hand
+  awardMilestone:
+    "https://images.unsplash.com/photo-1636435462738-4166c45015b3?w=1200", // Museum of the Future
+  legacyBg:
+    "https://images.unsplash.com/photo-1764212193268-dba11709dc38?w=2000", // Palm Jumeirah aerial
 } as const;
 
 const propertyImages = [IMG.propertyVilla, IMG.propertyDubai, IMG.propertySkyline, IMG.propertyInterior];
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#080808]">
-      {/* 1. Top bar — Figma 367:424, h 30.75px, px 36 */}
-      <section className="hidden border-b border-white/5 bg-[#060606] md:block" style={{ minHeight: "30.75px" }}>
-        <div className="flex items-center justify-between px-9 py-2">
-          <p className="text-[11px] uppercase tracking-[2.625px] text-white/50">
-            Established 1999 · Dubai, United Arab Emirates
-          </p>
-          <div className="flex items-center gap-1.5">
-            <svg className="h-2.5 w-2.5 text-white/50" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
-              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-            </svg>
-            <span className="text-[11px] tracking-[0.75px] text-white/50">+971 4 123 4567</span>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Hero — Figma 367:431, 1440×900 */}
-      <section className="relative h-[560px] w-full md:h-[900px]" style={{ minHeight: "900px" }}>
+    <div className="min-h-screen overflow-x-hidden bg-[#080808]">
+      {/* Hero — responsive height; top bar lives in Header only */}
+      <section className="relative min-h-[72dvh] w-full sm:min-h-[80dvh] lg:min-h-[900px]">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${IMG.hero})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-black/60 to-black/30" />
-        {/* Fade In content area: ~1060×390, positioned from left 190, top 274 */}
-        <div className="absolute left-0 right-0 top-0 flex h-full items-center">
-          <div className="mx-auto w-full max-w-[1280px] px-[80px]">
-            <div className="max-w-[1060px] pt-[120px] md:pt-0">
+        <div className="absolute left-0 right-0 top-0 flex min-h-[inherit] items-center px-5 pb-16 pt-24 sm:px-8 sm:pb-20 sm:pt-28 lg:px-20 lg:pb-24 lg:pt-0">
+          <div className="mx-auto w-full max-w-[1280px]">
+            <div className="max-w-[1060px]">
               <p
-                className="font-serif text-[48px] font-light italic leading-[1.2] text-white/90 md:text-[56px] lg:text-[80px] lg:leading-[120px]"
+                className="animate-hero-title font-serif text-[2.25rem] font-light italic leading-[1.15] text-white/90 sm:text-5xl md:text-6xl lg:text-[80px] lg:leading-[1.15]"
                 style={{ fontFamily: "var(--font-cormorant)" }}
               >
                 Where Luxury{" "}
-                <span
-                  className="bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38f28] bg-clip-text text-transparent"
-                >
+                <span className="bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38f28] bg-clip-text text-transparent">
                   Meets Vision
                 </span>
               </p>
-              <p className="mt-6 max-w-xl font-light text-white/60 text-sm leading-[22.75px]">
+              <p className="animate-hero-sub mt-5 max-w-xl font-light text-white/60 text-sm leading-relaxed sm:mt-6 sm:text-base">
                 Dubai&apos;s most trusted authority in luxury real estate. Curating extraordinary
                 residences for the world&apos;s most discerning individuals since 1998.
               </p>
@@ -113,19 +105,135 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Component 18 — trust bar, 206px */}
-      <section className="flex h-[206px] items-center justify-center border-y border-white/5 bg-[#060606]">
-        <p className="text-center font-light text-white/50 text-sm tracking-wide">
-          Trusted by royalty, heads of state, and captains of industry
-        </p>
-      </section>
+      <Reveal>
+        <section className="brand-marquee border-y border-white/5 bg-[#060606] py-10 md:py-12">
+          <div className="relative mx-auto max-w-[1440px] overflow-hidden px-5 md:px-20">
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#060606] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#060606] to-transparent" />
 
-      {/* 4. Spacer / secondary strip — 561px */}
-      <section className="min-h-[280px] border-b border-white/5 bg-[#080808] md:min-h-[561px]" />
+            <div className="flex w-[200%] items-center gap-16 md:gap-24 brand-marquee-track">
+              {[
+                { name: "Ellington", sub: "management group", style: "serif" as const },
+                { name: "DEYAAR", sub: "", style: "block" as const },
+                { name: "OMNIYAT", sub: "", style: "wide" as const },
+                { name: "ARADA", sub: "", style: "block" as const },
+                { name: "DAMAC", sub: "", style: "wide" as const },
+              ]
+                .concat([
+                  { name: "Ellington", sub: "management group", style: "serif" as const },
+                  { name: "DEYAAR", sub: "", style: "block" as const },
+                  { name: "OMNIYAT", sub: "", style: "wide" as const },
+                  { name: "ARADA", sub: "", style: "block" as const },
+                  { name: "DAMAC", sub: "", style: "wide" as const },
+                ])
+                .map((b, idx) => (
+                  <div
+                    key={`${b.name}-${idx}`}
+                    className="flex min-w-[180px] items-center justify-center text-white/90 md:min-w-[220px]"
+                  >
+                    {b.style === "serif" ? (
+                      <div className="text-center">
+                        <div className="font-serif text-xl italic tracking-wide md:text-2xl">
+                          {b.name}
+                        </div>
+                        <div className="mt-1 text-[10px] uppercase tracking-[2px] text-white/50">
+                          {b.sub}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <div
+                          className={`text-xl font-semibold md:text-2xl ${
+                            b.style === "wide" ? "tracking-[6px]" : "tracking-[3px]"
+                          }`}
+                        >
+                          {b.name}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
+          </div>
+        </section>
+      </Reveal>
 
-      {/* 5. Choose from Top Developers — Figma 367:473, padding 80px, heading + 48px filter row + cards */}
-      <section className="border-b border-white/5 bg-[#080808] pb-16 pt-[67px] md:px-20 md:pb-24">
-        <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
+      {/* Our Legacy / Why Ark Vision (inserted below brand marquee) */}
+      <Reveal>
+        <section className="relative overflow-hidden border-b border-white/5 bg-black">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${IMG.legacyBg})` }}
+          />
+          <div className="absolute inset-0 bg-black/65" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-transparent" />
+
+          <div className="relative mx-auto max-w-[1440px] px-5 py-14 md:px-20 md:py-20">
+            <div className="max-w-[760px]">
+              <div className="flex items-center gap-4">
+                <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
+                <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
+                  Our Legacy
+                </span>
+              </div>
+              <h2
+                className="mt-4 font-serif text-4xl font-light italic leading-tight text-white/90 sm:text-5xl md:text-6xl"
+                style={{ fontFamily: "var(--font-cormorant)" }}
+              >
+                Why Ark Vision{" "}
+                <span className="text-[#c9a84c]">International Real</span>
+                <br />
+                <span className="text-[#c9a84c]">Estate</span>
+              </h2>
+
+              {/* DAMAC-style wordmark overlay */}
+              <div className="pointer-events-none relative mt-8 h-[76px] w-full">
+                <div className="absolute inset-0 flex items-center">
+                  <p className="select-none text-[72px] font-semibold tracking-[6px] text-white/20 sm:text-[86px] md:text-[100px]">
+                    DAMAC
+                  </p>
+                </div>
+                <p className="absolute bottom-0 left-1 text-xs uppercase tracking-[4px] text-white/35">
+                  masterful experiences
+                </p>
+              </div>
+
+              <p className="mt-6 max-w-[680px] font-light text-white/60 text-sm leading-relaxed md:text-base">
+                At Ark Vision, we don&apos;t just sell properties, we curate opportunities. Whether
+                you&apos;re an off-plan investor, a global buyer seeking a second home, or looking for
+                rental yields, we guide you with transparency, insight, and an uncompromising
+                dedication.
+              </p>
+
+              <div className="mt-10 grid max-w-[640px] grid-cols-1 overflow-hidden border border-white/10 bg-black/50 sm:grid-cols-3">
+                {[
+                  { value: "100+", label: "Properties Sold" },
+                  { value: "13+", label: "Years Experience" },
+                  { value: "40+", label: "Countries Served" },
+                ].map((s, idx) => (
+                  <div
+                    key={s.label}
+                    className={`px-6 py-6 ${idx !== 2 ? "sm:border-r sm:border-white/10" : ""}`}
+                  >
+                    <p className="font-serif text-2xl font-light italic text-[#c9a84c]">
+                      {s.value}
+                    </p>
+                    <p className="mt-2 text-[10px] uppercase tracking-[2.6px] text-white/50">
+                      {s.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      </Reveal>
+
+      {/* Removed extra spacer to eliminate gap before Top Developers */}
+
+      <Reveal>
+        <section className="border-b border-white/5 bg-[#080808] pb-16 pt-12 md:px-20 md:pb-24 md:pt-[67px]">
+          <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
           <div className="mb-10">
             <h2
               className="font-serif text-[42px] font-light italic leading-tight text-white/90 md:text-[56px] md:leading-[68px]"
@@ -133,31 +241,34 @@ export default function HomePage() {
             >
               Choose from Top Developers
             </h2>
-            <div
-              className="mt-6 flex h-12 flex-wrap items-center gap-0"
-              style={{ gap: "18px" }}
-            >
-              {developers.map((name, i) => (
+            <div className="mt-6 flex flex-wrap items-center gap-3 sm:gap-[18px]">
+              {developers.map((name) => (
                 <button
                   key={name}
                   type="button"
-                  className="flex h-12 items-center border border-white/20 bg-transparent px-[10px] font-light text-white/80 transition hover:border-[#c9a84c] hover:text-[#c9a84c] first:pl-[30px]"
+                  className="flex min-h-12 shrink-0 items-center border border-white/20 bg-transparent px-3 font-light text-white/80 transition-all duration-300 hover:border-[#c9a84c] hover:text-[#c9a84c] active:scale-[0.98] sm:px-[10px] first:pl-4 md:first:pl-[30px]"
                 >
                   {name}
                 </button>
               ))}
             </div>
           </div>
+
+          {/* Developer heatmap (lat/lng markers) */}
+          <div className="mb-10 overflow-hidden border border-white/10 bg-[#060606]">
+            <DeveloperHeatmapClient />
+          </div>
+
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "21px" }}>
             {exceptionalResidences.map((prop, i) => (
               <Link
                 key={prop.title}
                 href="/featured"
-                className="group relative w-full max-w-[413px] overflow-hidden rounded-t-[30px] border border-white/10 bg-white/5 transition hover:border-[#c9a84c]/30"
+                className="group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_20px_50px_-20px_rgba(201,168,76,0.2)] md:rounded-t-[30px]"
               >
-                <div className="relative h-[310px] w-full overflow-hidden rounded-t-[30px]">
+                <div className="relative h-[240px] w-full overflow-hidden rounded-t-2xl sm:h-[280px] md:h-[310px] md:rounded-t-[30px]">
                   <div
-                    className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:scale-[1.02]"
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.04]"
                     style={{ backgroundImage: `url(${propertyImages[i] ?? IMG.propertyVilla})` }}
                   />
                   <div className="absolute right-4 top-4 flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80">
@@ -179,10 +290,11 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </Reveal>
 
-      {/* 6. Our Awards — Figma 367:499, 80px padding, 120pt top inner */}
-      <section className="border-b border-white/5 bg-[#060606] py-24 md:px-20">
+      <Reveal>
+        <section className="border-b border-white/5 bg-[#060606] py-16 md:px-20 md:py-24">
         <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
           <div className="mb-16 grid gap-8 md:grid-cols-2 md:gap-[15px]">
             <div>
@@ -205,8 +317,17 @@ export default function HomePage() {
           </div>
           <div className="grid gap-8 md:grid-cols-3" style={{ gap: "40px" }}>
             {awards.map((item) => (
-              <div key={item.title} className="w-full max-w-[399px] overflow-hidden rounded-lg border border-white/10">
-                <div className="h-[351px] w-full bg-white/5 bg-cover bg-center" style={{ aspectRatio: "399/351" }} />
+              <div
+                key={item.title}
+                className="mx-auto w-full max-w-[399px] overflow-hidden rounded-lg border border-white/10 transition-all duration-500 hover:border-[#c9a84c]/30 hover:shadow-lg"
+              >
+                <div
+                  className="h-[220px] w-full bg-white/5 bg-cover bg-center sm:h-[280px] md:h-[351px]"
+                  style={{
+                    aspectRatio: "399/351",
+                    backgroundImage: `url(${IMG[item.imageKey]})`,
+                  }}
+                />
                 <p className="border-t border-white/10 py-4 font-serif text-lg font-medium text-white/90">
                   {item.title}
                 </p>
@@ -214,12 +335,13 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </Reveal>
 
-      {/* 7. Exceptional Residences — Figma 367:521, left 317px col + 4 cards */}
-      <section className="border-b border-white/5 py-24 md:px-20">
+      <Reveal>
+        <section className="border-b border-white/5 py-16 md:px-20 md:py-24">
         <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-5 lg:flex-row lg:gap-16 md:px-[80px]">
-          <div className="min-w-0 max-w-[317px]">
+          <div className="min-w-0 max-w-full lg:max-w-[317px]">
             <div className="flex items-center gap-4">
               <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
               <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
@@ -244,11 +366,11 @@ export default function HomePage() {
               <Link
                 key={prop.title}
                 href="/featured"
-                className="group relative w-full max-w-[413px] overflow-hidden rounded-t-[30px] border border-white/10 bg-white/5 transition hover:border-[#c9a84c]/30"
+                className="group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_20px_50px_-20px_rgba(201,168,76,0.2)] md:rounded-t-[30px]"
               >
-                <div className="relative h-[310px] w-full overflow-hidden rounded-t-[30px]">
+                <div className="relative h-[240px] w-full overflow-hidden rounded-t-2xl sm:h-[280px] md:h-[310px] md:rounded-t-[30px]">
                   <div
-                    className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:scale-[1.02]"
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.04]"
                     style={{ backgroundImage: `url(${propertyImages[i] ?? IMG.propertyVilla})` }}
                   />
                   <div className="absolute right-4 top-4 flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80">
@@ -270,10 +392,11 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </Reveal>
 
-      {/* 8. Latest Blogs — Figma 367:767, max-w 1200, py 120 */}
-      <section className="border-b border-white/5 py-[120px] md:px-20">
+      <Reveal>
+        <section className="border-b border-white/5 py-16 md:px-20 md:py-[120px]">
         <div className="mx-auto max-w-[1200px] px-5 md:px-[120px]">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
             <div>
@@ -290,57 +413,80 @@ export default function HomePage() {
                 Latest <span className="text-[#c9a84c]">Blogs</span>
               </h2>
             </div>
-            <div className="max-w-[240px]">
+            <div className="max-w-full lg:max-w-[240px]">
               <p className="font-light leading-relaxed text-white/60 text-sm">
                 Handpicked from Dubai&apos;s most prestigious addresses, each property a testament to
                 uncompromising luxury.
               </p>
               <Link
                 href="/blog"
-                className="mt-4 inline-flex items-center gap-2 font-light text-[#c9a84c] text-sm transition hover:text-[#fcf6ba]"
+                className="mt-4 inline-flex items-center gap-2 font-light text-[#c9a84c] text-sm transition-all duration-300 hover:gap-3 hover:text-[#fcf6ba]"
               >
                 View All blogs <span>→</span>
               </Link>
             </div>
           </div>
           <div className="mt-8 h-px w-full bg-white/10" />
-          <div className="mt-12 grid gap-8 md:grid-cols-2">
-            <div className="grid gap-6 md:grid-cols-2 md:gap-4">
+          <div className="mt-12 grid gap-6 lg:grid-cols-[607px_1fr] lg:gap-4">
+            {/* Featured (left) */}
+            <Link
+              href="/blog"
+              className="group relative overflow-hidden bg-white/5 lg:h-[438px]"
+              aria-label="Read featured blog"
+            >
               <div
-                className="h-[280px] w-full rounded-lg bg-white/5 bg-cover bg-center md:h-[438px]"
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.02]"
                 style={{ backgroundImage: `url(${IMG.blogFeatured})` }}
               />
-              <div className="flex flex-col justify-center">
-                <h3 className="font-serif text-xl font-medium text-white/90">Prices in Dubai to Rise</h3>
-                <p className="mt-2 max-w-[316px] font-light text-white/50 text-sm leading-relaxed">
-                  {blogPosts[0].excerpt}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              <div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
+                <p className="font-serif text-base font-light italic text-white/90 sm:text-lg">
+                  {blogPosts[0]?.title ?? "Prices in Dubai to Rise"}
+                </p>
+                <p className="mt-2 max-w-[420px] font-light text-white/70 text-sm leading-relaxed">
+                  {blogPosts[0]?.excerpt}
                 </p>
               </div>
-            </div>
-            <div className="flex flex-col gap-6">
+            </Link>
+
+            {/* List (right) */}
+            <div className="flex flex-col gap-4">
               {blogPosts.map((post, i) => (
-                <div key={i} className="flex gap-4">
+                <Link
+                  key={`${post.title}-${i}`}
+                  href="/blog"
+                  className="group grid grid-cols-[168px_1fr] overflow-hidden bg-white/5 transition-colors duration-300 hover:bg-white/7 sm:grid-cols-[174px_1fr]"
+                  style={{ minHeight: "138px" }}
+                  aria-label={`Read blog: ${post.title}`}
+                >
                   <div
-                    className="h-[138px] w-[168px] shrink-0 rounded-lg bg-white/5 bg-cover bg-center md:w-[174px]"
-                    style={{ backgroundImage: `url(${[IMG.blogThumb, IMG.blogThumb2, IMG.blogThumb3][i] ?? IMG.blogThumb})` }}
+                    className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.02]"
+                    style={{
+                      backgroundImage: `url(${
+                        [IMG.blogThumb, IMG.blogThumb2, IMG.blogThumb3][i] ?? IMG.blogThumb
+                      })`,
+                    }}
                   />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-serif text-lg font-medium text-white/90">{post.title}</h3>
-                    <p className="mt-1 max-w-[316px] font-light text-white/50 text-sm line-clamp-3">
+                  <div className="flex flex-col justify-center bg-black/40 px-6 py-5">
+                    <p className="font-serif text-base font-light italic text-white/90">
+                      {post.title}
+                    </p>
+                    <p className="mt-2 max-w-[420px] font-light text-white/70 text-sm leading-relaxed line-clamp-3">
                       {post.excerpt}
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </Reveal>
 
-      {/* 9. Words of Trust — Figma 367:812, h 713.25, centered max-w 672 */}
-      <section className="relative min-h-[600px] border-b border-white/5 bg-black/50 py-24 md:min-h-[713px]">
+      <Reveal>
+        <section className="relative min-h-[480px] border-b border-white/5 bg-black/50 py-16 md:min-h-[713px] md:py-24">
         <div
-          className="absolute left-1/2 top-12 -translate-x-1/2 font-serif text-[200px] leading-none text-white/5"
+          className="pointer-events-none absolute left-1/2 top-8 -translate-x-1/2 font-serif text-[120px] leading-none text-white/5 sm:top-12 sm:text-[160px] md:text-[200px]"
           style={{ fontFamily: "var(--font-cormorant)" }}
         >
           &ldquo;
@@ -372,18 +518,27 @@ export default function HomePage() {
             <p className="text-xs text-white/50">Private Investor · Abu Dhabi</p>
           </div>
           <div className="mt-10 flex items-center justify-center gap-2">
-            <button type="button" className="h-9 w-9 rounded-full border border-white/30" aria-label="Previous" />
+            <button
+              type="button"
+              className="h-9 w-9 rounded-full border border-white/30 transition-colors duration-300 hover:border-[#c9a84c] hover:bg-white/5"
+              aria-label="Previous"
+            />
             <span className="h-px w-6 bg-[#c9a84c]" />
             <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
             <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
             <span className="h-px w-6 bg-white/30" />
-            <button type="button" className="h-9 w-9 rounded-full border border-white/30" aria-label="Next" />
+            <button
+              type="button"
+              className="h-9 w-9 rounded-full border border-white/30 transition-colors duration-300 hover:border-[#c9a84c] hover:bg-white/5"
+              aria-label="Next"
+            />
           </div>
         </div>
-      </section>
+        </section>
+      </Reveal>
 
-      {/* 10. FAQ — Figma 367:849/850, container 896px */}
-      <section className="border-b border-white/5 py-24">
+      <Reveal>
+        <section className="border-b border-white/5 py-16 md:py-24">
         <div className="mx-auto max-w-[896px] px-5 md:px-16">
           <h2
             className="font-serif text-[36px] font-light italic leading-tight text-white/90 md:text-[48px] md:leading-[54px]"
@@ -402,18 +557,19 @@ export default function HomePage() {
             ].map((q) => (
               <div
                 key={q}
-                className="flex items-center justify-between border-b border-white/10 py-6 last:border-b-0"
+                className="flex cursor-pointer items-center justify-between gap-4 border-b border-white/10 py-5 transition-colors duration-300 last:border-b-0 hover:bg-white/5 sm:py-6"
               >
-                <h3 className="font-serif text-lg font-medium text-white/90">{q}</h3>
-                <span className="text-white/50">+</span>
+                <h3 className="font-serif text-base font-medium text-white/90 sm:text-lg">{q}</h3>
+                <span className="shrink-0 text-[#c9a84c] transition-transform duration-300">+</span>
               </div>
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </Reveal>
 
-      {/* 11. Contact — Figma 367:883, 80px padding */}
-      <section id="contact" className="border-b border-white/5 py-24 md:px-20">
+      <Reveal>
+        <section id="contact" className="border-b border-white/5 py-16 md:px-20 md:py-24">
         <div className="mx-auto grid max-w-[1280px] gap-16 px-5 md:grid-cols-2 md:px-[80px]">
           <div>
             <div className="flex items-center gap-4">
@@ -465,7 +621,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="rounded-lg border border-white/10 p-10 md:p-12">
+          <div className="rounded-lg border border-white/10 p-6 transition-shadow duration-500 hover:border-white/15 hover:shadow-[0_0_40px_-15px_rgba(201,168,76,0.15)] sm:p-8 md:p-12">
             <h3 className="font-serif text-xl font-medium text-white/90">Private Inquiry Form</h3>
             <div className="mt-6 h-px bg-white/10" />
             <form className="mt-8 space-y-6">
@@ -475,7 +631,7 @@ export default function HomePage() {
                   <input
                     type="text"
                     placeholder="Your full name"
-                    className="mt-2 w-full border-b border-white/20 bg-transparent py-2 text-white/80 placeholder:text-white/40 focus:border-[#c9a84c] focus:outline-none"
+                    className="mt-2 w-full border-b border-white/20 bg-transparent py-2 text-white/80 transition-colors duration-300 placeholder:text-white/40 focus:border-[#c9a84c] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -483,7 +639,7 @@ export default function HomePage() {
                   <input
                     type="email"
                     placeholder="your@email.com"
-                    className="mt-2 w-full border-b border-white/20 bg-transparent py-2 text-white/80 placeholder:text-white/40 focus:border-[#c9a84c] focus:outline-none"
+                    className="mt-2 w-full border-b border-white/20 bg-transparent py-2 text-white/80 transition-colors duration-300 placeholder:text-white/40 focus:border-[#c9a84c] focus:outline-none"
                   />
                 </div>
               </div>
@@ -500,19 +656,20 @@ export default function HomePage() {
                 <textarea
                   placeholder="Describe your ideal property..."
                   rows={4}
-                  className="mt-2 w-full border-b border-white/20 bg-transparent py-2 text-white/80 placeholder:text-white/40 focus:border-[#c9a84c] focus:outline-none"
+                  className="mt-2 w-full border-b border-white/20 bg-transparent py-2 text-white/80 transition-colors duration-300 placeholder:text-white/40 focus:border-[#c9a84c] focus:outline-none"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-[#c9a84c] py-3 font-medium text-[#060606] transition hover:bg-[#fcf6ba]"
+                className="w-full bg-[#c9a84c] py-3 font-medium text-[#060606] transition-all duration-300 hover:bg-[#fcf6ba] hover:shadow-lg active:scale-[0.99]"
               >
                 Submit Private Inquiry
               </button>
             </form>
           </div>
         </div>
-      </section>
+        </section>
+      </Reveal>
     </div>
   );
 }
