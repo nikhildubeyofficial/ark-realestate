@@ -14,20 +14,7 @@ type DevPoint = {
   weight: number;
 };
 
-// Approximate Dubai-area coordinates for top developers (used for visual layout like the reference)
-const points: DevPoint[] = [
-  { name: "Damac", lat: 25.2048, lng: 55.2708, weight: 0.9 },
-  { name: "Emaar", lat: 25.1972, lng: 55.2744, weight: 0.85 },
-  { name: "Shobha", lat: 25.1760, lng: 55.2560, weight: 0.7 },
-  { name: "Nakheel", lat: 25.1124, lng: 55.1386, weight: 0.8 },
-  { name: "Dubai Props", lat: 25.0775, lng: 55.1403, weight: 0.65 },
-  { name: "Ellington", lat: 25.1947, lng: 55.2784, weight: 0.6 },
-  { name: "Danube", lat: 25.1000, lng: 55.1700, weight: 0.55 },
-  { name: "Omniyat", lat: 25.1895, lng: 55.2695, weight: 0.75 },
-  { name: "Deyaar", lat: 25.0950, lng: 55.1560, weight: 0.58 },
-];
-
-function useHeatLayer(map: L.Map | null) {
+function useHeatLayer(map: L.Map | null, points: DevPoint[]) {
   useEffect(() => {
     if (!map) return;
     const heat = (L as any).heatLayer(
@@ -49,12 +36,12 @@ function useHeatLayer(map: L.Map | null) {
     return () => {
       heat.remove();
     };
-  }, [map]);
+  }, [map, points]);
 }
 
-function HeatLayer() {
+function HeatLayer({ points }: { points: DevPoint[] }) {
   const map = useMap();
-  useHeatLayer(map);
+  useHeatLayer(map, points);
   return null;
 }
 
@@ -74,8 +61,15 @@ function logoIcon(label: string) {
   });
 }
 
-export default function DeveloperHeatmap() {
-  const center: LatLngExpression = [25.185, 55.26];
+export default function DeveloperHeatmap({ points }: { points: DevPoint[] }) {
+  const defaultCenter: LatLngExpression = [25.185, 55.26];
+  const center: LatLngExpression =
+    points.length > 0
+      ? [
+          points.reduce((sum, p) => sum + p.lat, 0) / points.length,
+          points.reduce((sum, p) => sum + p.lng, 0) / points.length,
+        ]
+      : defaultCenter;
 
   return (
     <div className="relative overflow-hidden border-t border-white/10 bg-[#060606]">
@@ -93,7 +87,7 @@ export default function DeveloperHeatmap() {
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           />
-          <HeatLayer />
+          <HeatLayer points={points} />
           {points.map((p) => (
             <Marker
               key={p.name}

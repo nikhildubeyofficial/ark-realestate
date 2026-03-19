@@ -1,24 +1,12 @@
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
-import DeveloperHeatmapClient from "@/components/DeveloperHeatmapClient";
+import HomeTopDevelopersSection from "@/components/HomeTopDevelopersSection";
+import { getHeatPointsForDevelopers, getPropertyData } from "@/lib/propertyData";
 
 /**
  * Home page — layout and copy aligned to Figma
  * Frame 367:423 (Real Estate Website Landing Page)
  */
-
-const developers = [
-  "All",
-  "Damac",
-  "Emaar",
-  "Shobha Realty",
-  "Nakheel",
-  "Dubai Properties",
-  "Ellington",
-  "Danube",
-  "Omniyat",
-  "Deyaar",
-];
 
 const awards = [
   { title: "Team Recognition", imageKey: "awardTeam" as const },
@@ -73,8 +61,34 @@ const IMG = {
 } as const;
 
 const propertyImages = [IMG.propertyVilla, IMG.propertyDubai, IMG.propertySkyline, IMG.propertyInterior];
+const founders = [
+  {
+    name: "Khalid Al Mansouri",
+    role: "Founder & CEO",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800",
+  },
+  {
+    name: "Sarah Chen",
+    role: "Head of Luxury Sales",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800",
+  },
+  {
+    name: "James Whitmore",
+    role: "Senior Investment Advisor",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800",
+  },
+  {
+    name: "Nadia Rashid",
+    role: "Client Relations Director",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800",
+  },
+];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [heatPoints, listingsForDevelopers] = await Promise.all([
+    getHeatPointsForDevelopers(),
+    getPropertyData(80),
+  ]);
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#080808]">
       {/* Hero — responsive height; top bar lives in Header only */}
@@ -111,7 +125,7 @@ export default function HomePage() {
             <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#060606] to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#060606] to-transparent" />
 
-            <div className="flex w-[200%] items-center gap-16 md:gap-24 brand-marquee-track">
+            <div className="brand-marquee-track">
               {[
                 { name: "Ellington", sub: "management group", style: "serif" as const },
                 { name: "DEYAAR", sub: "", style: "block" as const },
@@ -232,65 +246,10 @@ export default function HomePage() {
       {/* Removed extra spacer to eliminate gap before Top Developers */}
 
       <Reveal>
-        <section className="border-b border-white/5 bg-[#080808] pb-16 pt-12 md:px-20 md:pb-24 md:pt-[67px]">
-          <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
-          <div className="mb-10">
-            <h2
-              className="font-serif text-[42px] font-light italic leading-tight text-white/90 md:text-[56px] md:leading-[68px]"
-              style={{ fontFamily: "var(--font-cormorant)" }}
-            >
-              Choose from Top Developers
-            </h2>
-            <div className="mt-6 flex flex-wrap items-center gap-3 sm:gap-[18px]">
-              {developers.map((name) => (
-                <button
-                  key={name}
-                  type="button"
-                  className="flex min-h-12 shrink-0 items-center border border-white/20 bg-transparent px-3 font-light text-white/80 transition-all duration-300 hover:border-[#c9a84c] hover:text-[#c9a84c] active:scale-[0.98] sm:px-[10px] first:pl-4 md:first:pl-[30px]"
-                >
-                  {name}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Developer heatmap (lat/lng markers) */}
-          <div className="mb-10 overflow-hidden border border-white/10 bg-[#060606]">
-            <DeveloperHeatmapClient />
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "21px" }}>
-            {exceptionalResidences.map((prop, i) => (
-              <Link
-                key={prop.title}
-                href="/featured"
-                className="group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_20px_50px_-20px_rgba(201,168,76,0.2)] md:rounded-t-[30px]"
-              >
-                <div className="relative h-[240px] w-full overflow-hidden rounded-t-2xl sm:h-[280px] md:h-[310px] md:rounded-t-[30px]">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.04]"
-                    style={{ backgroundImage: `url(${propertyImages[i] ?? IMG.propertyVilla})` }}
-                  />
-                  <div className="absolute right-4 top-4 flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80">
-                    ♡
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 flex h-12 items-center gap-4 bg-black/40 px-[18px] text-xs text-white/90">
-                    <span>{prop.beds} Beds</span>
-                    <span>{prop.baths} Baths</span>
-                    <span>{prop.sqft} ft²</span>
-                  </div>
-                </div>
-                <div className="border-t border-white/10 p-5">
-                  <h3 className="font-serif text-lg font-medium text-white/90">{prop.title}</h3>
-                  <p className="mt-3 flex items-center gap-2 text-xs text-white/50">
-                    <span>📍</span> {prop.location}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-        </section>
+        <HomeTopDevelopersSection
+          heatPoints={heatPoints}
+          listings={listingsForDevelopers}
+        />
       </Reveal>
 
       <Reveal>
@@ -335,6 +294,38 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
+          <div className="mx-auto max-w-[1280px] px-5 md:px-20">
+            <div className="flex items-center gap-4">
+              <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
+              <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
+                The People
+              </span>
+            </div>
+            <h2 className="mt-4 font-serif text-4xl font-light italic text-white/90 md:text-5xl">
+              Our Leadership
+            </h2>
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {founders.map((person) => (
+                <div key={person.name} className="group">
+                  <div
+                    className="aspect-[296/395] overflow-hidden bg-cover bg-center grayscale transition duration-300 group-hover:grayscale-0"
+                    style={{ backgroundImage: `url(${person.image})` }}
+                  />
+                  <p className="mt-4 font-serif text-lg font-medium italic text-white/80">
+                    {person.name}
+                  </p>
+                  <p className="mt-1 text-xs uppercase tracking-[2.4px] text-[#c9a84c]">
+                    {person.role}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
       </Reveal>
 

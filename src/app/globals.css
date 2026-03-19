@@ -80,16 +80,28 @@ html {
 
 @keyframes brand-marquee {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
-.brand-marquee-track {
+/* width: max-content so the track is exactly 2× one logo set; -50% = seamless loop */
+.brand-marquee .brand-marquee-track {
+  display: flex;
+  width: max-content;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4rem;
   animation: brand-marquee 28s linear infinite;
   will-change: transform;
+}
+
+@media (min-width: 768px) {
+  .brand-marquee .brand-marquee-track {
+    gap: 6rem;
+  }
 }
 
 .brand-marquee:hover .brand-marquee-track {
@@ -97,7 +109,7 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .brand-marquee-track {
+  .brand-marquee .brand-marquee-track {
     animation: none;
     transform: none;
   }

@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { HeatPoint } from "@/lib/propertyData";
 
 const DeveloperHeatmap = dynamic(() => import("./DeveloperHeatmap"), {
   ssr: false,
@@ -9,7 +10,7 @@ const DeveloperHeatmap = dynamic(() => import("./DeveloperHeatmap"), {
   ),
 });
 
-export default function DeveloperHeatmapClient() {
-  return <DeveloperHeatmap />;
+export default function DeveloperHeatmapClient({ points }: { points: HeatPoint[] }) {
+  return <DeveloperHeatmap points={points} />;
 }
 

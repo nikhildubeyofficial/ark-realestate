@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { promises as fs } from "node:fs";
+import path from "node:path";
 
 const stats = [
   { value: "500+", label: "Properties Sold" },
@@ -7,7 +9,7 @@ const stats = [
   { value: "AED 5B+", label: "Total Sales Value" },
 ];
 
-const leadership = [
+const fallbackLeadership = [
   {
     name: "Khalid Al Mansouri",
     role: "Founder & CEO",
@@ -30,7 +32,51 @@ const leadership = [
   },
 ];
 
-export default function AboutPage() {
+type Leader = { name: string; role: string; image: string };
+
+function titleFromFilename(filename: string): string {
+  return filename
+    .replace(/\.[^.]+$/, "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function roleFromName(index: number): string {
+  const roles = [
+    "Founder & CEO",
+    "Head of Luxury Sales",
+    "Senior Investment Advisor",
+    "Client Relations Director",
+    "Executive Partner",
+    "Luxury Property Specialist",
+    "Investment Consultant",
+    "Relationship Manager",
+  ];
+  return roles[index % roles.length];
+}
+
+async function getLeadershipFromImagesC(): Promise<Leader[]> {
+  const dir = path.join(process.cwd(), "public", "ImagesC");
+  try {
+    const files = await fs.readdir(dir);
+    const imageFiles = files.filter((f) =>
+      /\.(png|jpe?g|webp|gif)$/i.test(f)
+    );
+    if (!imageFiles.length) return fallbackLeadership;
+    return imageFiles.map((file, index) => ({
+      name: titleFromFilename(file),
+      role: roleFromName(index),
+      image: `/ImagesC/${file}`,
+    }));
+  } catch {
+    return fallbackLeadership;
+  }
+}
+
+export default async function AboutPage() {
+  const leadership = await getLeadershipFromImagesC();
   return (
     <div className="min-h-screen">
       {/* Hero with background image */}
@@ -126,23 +172,17 @@ export default function AboutPage() {
           </h2>
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {leadership.map((person) => (
-              <div key={person.name} className="group">
+              <div key={person.image} className="group">
                 <div className="relative aspect-[296/395] overflow-hidden rounded-sm">
                   <Image
                     src={person.image}
-                    alt={person.name}
+                    alt=""
                     fill
                     className="object-cover grayscale transition duration-300 group-hover:grayscale-0"
                     sizes="(max-width: 768px) 100vw, 25vw"
                   />
                   <div className="absolute inset-0 bg-white mix-blend-saturation opacity-0 group-hover:opacity-20" />
                 </div>
-                <p className="mt-4 font-serif text-lg font-medium italic text-white/80">
-                  {person.name}
-                </p>
-                <p className="mt-1 text-xs uppercase tracking-[2.4px] text-[#c9a84c]">
-                  {person.role}
-                </p>
               </div>
             ))}
           </div>

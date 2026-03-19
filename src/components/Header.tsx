@@ -14,7 +14,15 @@ const navLinks = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -47,7 +55,13 @@ export default function Header() {
           </span>
         </div>
       </div>
-      <header className="sticky top-0 z-50 border-b border-white/5 bg-[#080808]/95 backdrop-blur-md transition-shadow duration-300 supports-[backdrop-filter]:bg-[#080808]/85">
+      <header
+        className={`sticky top-0 z-50 border-b bg-[#080808]/95 backdrop-blur-md transition-[box-shadow,border-color,background-color] duration-500 supports-[backdrop-filter]:bg-[#080808]/85 ${
+          scrolled
+            ? "border-white/10 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.85)] shadow-black/60"
+            : "border-white/5 shadow-none"
+        }`}
+      >
         <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 sm:h-[72px] sm:px-8 lg:px-[120px]">
           <Link
             href="/"
@@ -64,8 +78,8 @@ export default function Header() {
               <Link
                 key={href}
                 href={href}
-                className={`text-sm transition-colors duration-300 hover:text-white ${
-                  pathname === href ? "text-[#c9a84c]" : "text-white/80"
+                className={`relative text-sm transition-colors duration-300 after:absolute after:bottom-[-6px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-[#c9a84c] after:transition-transform after:duration-300 hover:text-white hover:after:scale-x-100 ${
+                  pathname === href ? "text-[#c9a84c] after:scale-x-100" : "text-white/80"
                 }`}
               >
                 {label}
