@@ -57,7 +57,7 @@ export default async function GuidePage() {
                   {area.excerpt}
                 </p>
                 <Link
-                  href={`/featured?search=${encodeURIComponent(area.searchKeyword)}`}
+                  href={`/featured?search=${encodeURIComponent(area.searchKeyword)}&locality=${encodeURIComponent(area.localityMatch)}`}
                   className="mt-6 inline-flex w-fit border border-[#c9a84c] bg-transparent px-5 py-2.5 text-sm font-light text-[#c9a84c] transition hover:bg-[#c9a84c] hover:text-[#060606]"
                 >
                   View properties

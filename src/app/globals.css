@@ -95,6 +95,7 @@ html {
   align-items: center;
   gap: 4rem;
   animation: brand-marquee 28s linear infinite;
+  animation-play-state: running;
   will-change: transform;
 }
 

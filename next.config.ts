@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  /** Prevent huge public/ImagesC JPGs from being traced into serverless functions */
+  outputFileTracingExcludes: {
+    "*": ["public/ImagesC/**/*"],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },

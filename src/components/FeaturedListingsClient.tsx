@@ -10,8 +10,8 @@ import ArkCredenceFilterModal, {
 import InquireModal from "@/components/InquireModal";
 import PropertyCompareModal from "@/components/PropertyCompareModal";
 import PropertyListingsMap from "@/components/PropertyListingsMap";
-import { listingMatchesPriorityDeveloper } from "@/lib/developerPriority";
 import { getCityIdFromParam } from "@/lib/credenceCity";
+import { developerFilterMatches } from "@/lib/credenceDeveloperFilter";
 import type { CredenceSortKey } from "@/lib/credenceSort";
 import { sortListingsCredence } from "@/lib/credenceSort";
 import type { PropertyListing } from "@/lib/propertyData";
@@ -114,17 +114,17 @@ function applyCategoryRows(
   if (active === "All") return rows;
   switch (active) {
     case "Off-Plan":
-      return rows.filter((l) => l.credenceCategory === "Off-Plan");
+      return rows.filter((l) => l.tabOffPlan);
     case "Affordable":
-      return rows.filter((l) => l.affordableEligible);
+      return rows.filter((l) => l.tabAffordable);
     case "Luxury":
-      return rows.filter((l) => l.matchesLuxuryTab);
+      return rows.filter((l) => l.tabLuxury);
     case "Waterfront":
-      return rows.filter((l) => l.credenceCategory === "Waterfront");
+      return rows.filter((l) => l.tabWaterfront);
     case "Commercial":
-      return rows.filter((l) => l.credenceCategory === "Commercial");
+      return rows.filter((l) => l.tabCommercial);
     case "Office":
-      return rows.filter((l) => l.credenceCategory === "Office");
+      return rows.filter((l) => l.tabOffice);
     default:
       return rows;
   }
@@ -221,8 +221,9 @@ export default function FeaturedListingsClient({
     const isLuxuryView = activeCategory === "Luxury";
 
     if (mf.developer) {
+      const devParam = mf.developer.trim().toLowerCase();
       rows = rows.filter((l) =>
-        listingMatchesPriorityDeveloper(l.builder, mf.developer!)
+        developerFilterMatches(devParam, l.builder, l.builder)
       );
     }
 
@@ -233,7 +234,11 @@ export default function FeaturedListingsClient({
 
     if (mf.locality?.trim()) {
       const loc = mf.locality.trim().toLowerCase();
-      rows = rows.filter((l) => l.location.toLowerCase().includes(loc));
+      rows = rows.filter(
+        (l) =>
+          l.location.toLowerCase().includes(loc) ||
+          l.subtitle.toLowerCase().includes(loc)
+      );
     }
 
     if (mf.bedrooms !== undefined && mf.bedrooms > 0) {
@@ -491,13 +496,19 @@ export default function FeaturedListingsClient({
                     className="group overflow-hidden rounded-lg border border-white/10 bg-white/5 transition hover:border-[#c9a84c]/30"
                   >
                     <div className="relative aspect-[4/3] bg-white/10">
-                      <div
-                        className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:scale-105"
-                        style={{
-                          backgroundImage: `url(${listing.image})`,
-                        }}
-                      />
-                      <div className="absolute left-3 top-3 flex items-center gap-2">
+                      <Link
+                        href={`/properties/${listing.slug}`}
+                        className="absolute inset-0 block"
+                        aria-label={`View ${listing.title}`}
+                      >
+                        <div
+                          className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:scale-105"
+                          style={{
+                            backgroundImage: `url(${listing.image})`,
+                          }}
+                        />
+                      </Link>
+                      <div className="absolute left-3 top-3 z-[2] flex items-center gap-2">
                         <label className="flex cursor-pointer items-center gap-1.5 rounded border border-white/20 bg-black/50 px-2 py-1 text-[10px] text-white/80">
                           <input
                             type="checkbox"
@@ -511,17 +522,36 @@ export default function FeaturedListingsClient({
                       <div className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80">
                         ♡
                       </div>
-                      <div className="absolute bottom-4 left-4 right-4 flex gap-4 text-xs text-white/90">
+                      <div className="absolute bottom-4 left-4 right-4 z-[2] flex flex-wrap gap-3 text-xs text-white/90">
                         <span>{listing.beds} Beds</span>
                         <span>{listing.baths} Baths</span>
-                        <span>{listing.sqft} ft²</span>
+                        <span>{listing.sqft}</span>
                       </div>
                     </div>
                     <div className="border-t border-white/10 p-6">
-                      <h2 className="font-serif text-xl font-medium text-white/90">
-                        {listing.title}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="border border-white/15 bg-black/30 px-2 py-0.5 text-[10px] uppercase tracking-wider text-[#c9a84c]/90">
+                          {listing.credenceCategory}
+                        </span>
+                        {listing.readyDate ? (
+                          <span className="text-[10px] text-white/40">
+                            {listing.readyDate}
+                          </span>
+                        ) : null}
+                      </div>
+                      <h2 className="mt-2 font-serif text-xl font-medium text-white/90">
+                        <Link
+                          href={`/properties/${listing.slug}`}
+                          className="hover:text-[#c9a84c]"
+                        >
+                          {listing.title}
+                        </Link>
                       </h2>
-                      <p className="mt-1 text-sm text-[#c9a84c]">
+                      <p className="mt-1 text-xs font-light text-white/55">
+                        <span className="text-white/35">Developer</span>{" "}
+                        {listing.builder}
+                      </p>
+                      <p className="mt-1 text-sm text-[#c9a84c]/90">
                         {listing.subtitle}
                       </p>
                       <p className="mt-3 flex items-center gap-2 text-xs text-white/50">
@@ -537,16 +567,22 @@ export default function FeaturedListingsClient({
                           {listing.price}
                         </span>
                         <div className="flex flex-wrap gap-2">
+                          <Link
+                            href={`/properties/${listing.slug}`}
+                            className="border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-sm font-light text-[#c9a84c] transition hover:bg-[#c9a84c] hover:text-[#060606]"
+                          >
+                            View details
+                          </Link>
                           <button
                             type="button"
                             onClick={() => setInquire(listing)}
-                            className="border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-sm font-light text-[#c9a84c] transition hover:bg-[#c9a84c] hover:text-[#060606]"
+                            className="border border-white/20 px-4 py-2 text-sm font-light text-white/70 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
                           >
                             Inquire
                           </button>
                           <Link
                             href={`/#contact?ref=${encodeURIComponent(listing.slug)}`}
-                            className="border border-white/20 px-4 py-2 text-sm font-light text-white/70 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
+                            className="border border-white/15 px-4 py-2 text-sm font-light text-white/55 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
                           >
                             Contact
                           </Link>

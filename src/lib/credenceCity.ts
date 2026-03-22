@@ -1,3 +1,6 @@
+/** Aligned with credence-realtor `staticPropertyData` — visible projects only. */
+export const ALLOWED_CITY_IDS = new Set([1, 2, 3, 5, 7, 14, 52]);
+
 /** Aligned with credence-realtor `staticPropertyData` CITY_NAME_TO_ID. */
 export const CITY_NAME_TO_ID: Record<string, number> = {
   dubai: 1,

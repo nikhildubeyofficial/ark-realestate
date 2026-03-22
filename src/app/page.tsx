@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
+import HomeBuyingKnowAccordion from "@/components/HomeBuyingKnowAccordion";
 import HomeTopDevelopersSection from "@/components/HomeTopDevelopersSection";
-import { getHeatPointsForDevelopers, getPropertyData } from "@/lib/propertyData";
+import {
+  getHeatPointsForDevelopers,
+  getPropertyData,
+  getPropertyListingsByProjectIds,
+} from "@/lib/propertyData";
+import { RECENT_LAUNCH_IDS } from "@/lib/recentLaunches";
 
 /**
  * Home page — layout and copy aligned to Figma
@@ -88,9 +94,10 @@ const founders = [
 ];
 
 export default async function HomePage() {
-  const [heatPoints, listingsForDevelopers] = await Promise.all([
+  const [heatPoints, listingsForDevelopers, recentLaunches] = await Promise.all([
     getHeatPointsForDevelopers(),
     getPropertyData(80),
+    getPropertyListingsByProjectIds(RECENT_LAUNCH_IDS),
   ]);
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#080808]">
@@ -119,77 +126,87 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-black/60 to-black/30" />
         <div className="absolute left-0 right-0 top-0 flex min-h-[inherit] items-center px-5 pb-16 pt-24 sm:px-8 sm:pb-20 sm:pt-28 lg:px-20 lg:pb-24 lg:pt-0">
           <div className="mx-auto w-full max-w-[1280px]">
-            <div className="max-w-[1060px]">
-              <p
-                className="animate-hero-title font-serif text-[2.25rem] font-light italic leading-[1.15] text-white/90 sm:text-5xl md:text-6xl lg:text-[80px] lg:leading-[1.15]"
+            <div className="max-w-[920px] text-left">
+              <h1
+                className="animate-hero-title font-serif text-[2.5rem] font-light italic leading-[1.08] tracking-tight text-white/[0.98] drop-shadow-[0_6px_40px_rgba(0,0,0,0.88)] sm:text-5xl sm:leading-[1.08] md:text-6xl md:leading-[1.06] lg:text-[4.5rem] lg:leading-[1.05]"
                 style={{ fontFamily: "var(--font-cormorant)" }}
               >
-                Where Luxury{" "}
-                <span className="bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38f28] bg-clip-text text-transparent">
-                  Meets Vision
-                </span>
-              </p>
-              <p className="animate-hero-sub mt-5 max-w-xl font-light text-white/60 text-sm leading-relaxed sm:mt-6 sm:text-base">
+                Where Luxury Meets Vision
+              </h1>
+              <p className="animate-hero-sub mt-6 max-w-[640px] font-light text-white/[0.88] text-[0.95rem] leading-[1.75] sm:mt-8 sm:text-lg sm:leading-[1.7] md:text-xl md:leading-[1.65]">
                 Dubai&apos;s most trusted authority in luxury real estate. Curating extraordinary
                 residences for the world&apos;s most discerning individuals since 1998.
               </p>
+              <div className="animate-hero-sub mt-8 flex flex-wrap gap-3">
+                <Link
+                  href="/featured"
+                  className="border border-[#c9a84c] bg-[#c9a84c]/15 px-6 py-2.5 text-sm font-light text-[#c9a84c] transition hover:bg-[#c9a84c] hover:text-[#060606]"
+                >
+                  Explore listings
+                </Link>
+                <Link
+                  href="/guide"
+                  className="border border-white/25 px-6 py-2.5 text-sm font-light text-white/85 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
+                >
+                  Area guides
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <Reveal>
-        <section className="brand-marquee border-y border-white/5 bg-[#060606] py-10 md:py-12">
-          <div className="relative mx-auto max-w-[1440px] overflow-hidden px-5 md:px-20">
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#060606] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#060606] to-transparent" />
+      {/* Marquee: not wrapped in Reveal so CSS animation runs immediately */}
+      <section className="brand-marquee border-y border-white/5 bg-[#060606] py-10 md:py-12">
+        <div className="relative mx-auto max-w-[1440px] overflow-hidden px-5 md:px-20">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-24 bg-gradient-to-r from-[#060606] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-24 bg-gradient-to-l from-[#060606] to-transparent" />
 
-            <div className="brand-marquee-track">
-              {[
+          <div className="brand-marquee-track">
+            {[
+              { name: "Ellington", sub: "management group", style: "serif" as const },
+              { name: "DEYAAR", sub: "", style: "block" as const },
+              { name: "OMNIYAT", sub: "", style: "wide" as const },
+              { name: "ARADA", sub: "", style: "block" as const },
+              { name: "DAMAC", sub: "", style: "wide" as const },
+            ]
+              .concat([
                 { name: "Ellington", sub: "management group", style: "serif" as const },
                 { name: "DEYAAR", sub: "", style: "block" as const },
                 { name: "OMNIYAT", sub: "", style: "wide" as const },
                 { name: "ARADA", sub: "", style: "block" as const },
                 { name: "DAMAC", sub: "", style: "wide" as const },
-              ]
-                .concat([
-                  { name: "Ellington", sub: "management group", style: "serif" as const },
-                  { name: "DEYAAR", sub: "", style: "block" as const },
-                  { name: "OMNIYAT", sub: "", style: "wide" as const },
-                  { name: "ARADA", sub: "", style: "block" as const },
-                  { name: "DAMAC", sub: "", style: "wide" as const },
-                ])
-                .map((b, idx) => (
-                  <div
-                    key={`${b.name}-${idx}`}
-                    className="flex min-w-[180px] items-center justify-center text-white/90 md:min-w-[220px]"
-                  >
-                    {b.style === "serif" ? (
-                      <div className="text-center">
-                        <div className="font-serif text-xl italic tracking-wide md:text-2xl">
-                          {b.name}
-                        </div>
-                        <div className="mt-1 text-[10px] uppercase tracking-[2px] text-white/50">
-                          {b.sub}
-                        </div>
+              ])
+              .map((b, idx) => (
+                <div
+                  key={`${b.name}-${idx}`}
+                  className="flex min-w-[180px] shrink-0 items-center justify-center text-white/90 md:min-w-[220px]"
+                >
+                  {b.style === "serif" ? (
+                    <div className="text-center">
+                      <div className="font-serif text-xl italic tracking-wide md:text-2xl">
+                        {b.name}
                       </div>
-                    ) : (
-                      <div className="text-center">
-                        <div
-                          className={`text-xl font-semibold md:text-2xl ${
-                            b.style === "wide" ? "tracking-[6px]" : "tracking-[3px]"
-                          }`}
-                        >
-                          {b.name}
-                        </div>
+                      <div className="mt-1 text-[10px] uppercase tracking-[2px] text-white/50">
+                        {b.sub}
                       </div>
-                    )}
-                  </div>
-                ))}
-            </div>
+                    </div>
+                  ) : (
+                    <div className="text-center">
+                      <div
+                        className={`text-xl font-semibold md:text-2xl ${
+                          b.style === "wide" ? "tracking-[6px]" : "tracking-[3px]"
+                        }`}
+                      >
+                        {b.name}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
           </div>
-        </section>
-      </Reveal>
+        </div>
+      </section>
 
       {/* Our Legacy / Why Ark Vision (inserted below brand marquee) */}
       <Reveal>
@@ -268,6 +285,7 @@ export default async function HomePage() {
         <HomeTopDevelopersSection
           heatPoints={heatPoints}
           listings={listingsForDevelopers}
+          recentLaunches={recentLaunches}
         />
       </Reveal>
 
@@ -574,21 +592,7 @@ export default async function HomePage() {
           <p className="mt-6 max-w-[672px] font-light text-white/60 text-base">
             A comprehensive guide to navigating Dubai&apos;s property market with confidence.
           </p>
-          <div className="mt-12 border-y border-white/10">
-            {[
-              "Who can buy property in Dubai?",
-              "What are the costs involved?",
-              "How do I get a mortgage?",
-            ].map((q) => (
-              <div
-                key={q}
-                className="flex cursor-pointer items-center justify-between gap-4 border-b border-white/10 py-5 transition-colors duration-300 last:border-b-0 hover:bg-white/5 sm:py-6"
-              >
-                <h3 className="font-serif text-base font-medium text-white/90 sm:text-lg">{q}</h3>
-                <span className="shrink-0 text-[#c9a84c] transition-transform duration-300">+</span>
-              </div>
-            ))}
-          </div>
+          <HomeBuyingKnowAccordion />
         </div>
         </section>
       </Reveal>

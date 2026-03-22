@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
-import { ALL_DATA_UAE_EN_JSON, DESCRIPTIONS_JSON } from "@/lib/dataPaths";
+import { cache } from "react";
+import { DESCRIPTIONS_JSON } from "@/lib/dataPaths";
 import {
   developerPriorityIndex,
   heatPointLabelForPriority,
@@ -14,10 +15,14 @@ import {
   isAffordableProjectEligible,
   matchesLuxuryTab,
 } from "@/lib/credencePropertyCategory";
-import type { CredenceCategory } from "@/lib/credencePropertyCategory";
+import type { CredenceCategory } from "@/lib/credenceTypes";
+import {
+  getCredenceAllProjectsRawSorted,
+  projectMatchesTabFilter,
+} from "@/lib/credenceProjectsStaticCore";
 import { inferPropertyKind, inferWaterfront, isAffordablePrice } from "@/lib/propertyCategories";
 
-export type { CredenceCategory } from "@/lib/credencePropertyCategory";
+export type { CredenceCategory } from "@/lib/credenceTypes";
 
 export type PropertyKind =
   | "apartment"
@@ -36,23 +41,18 @@ export type PropertyListing = {
   sqft: string;
   location: string;
   price: string;
-  /** Mid-point of from/to for sorting & filters (AED). */
   priceNumeric: number;
   propertyKind: PropertyKind;
   affordable: boolean;
   waterfront: boolean;
-  /** Lower = higher priority in focus list (999 = unlisted). */
   developerPriority: number;
-  /** Order in curated catalogue (0 = top). Used for “Featured” sort. */
   featuredRank: number;
   image: string;
   latitude: number;
   longitude: number;
   builder: string;
   excerpt: string;
-  /** Credence primary category (tabs + labels). */
   credenceCategory: CredenceCategory;
-  /** True when project qualifies for the Luxury tab (broader than label). */
   matchesLuxuryTab: boolean;
   maxBedroomsFromUnits: number;
   areaMinSqFt: number;
@@ -62,12 +62,18 @@ export type PropertyListing = {
   hasStoredDescription: boolean;
   priceFrom: number;
   priceTo: number;
-  /** ISO date when present in source; else empty (sort falls back to projectId). */
   updatedAt: string;
-  /** ISO date when present (Credence `created_at` sort); often empty in static export. */
   createdAt: string;
-  /** True when `isAffordableProjectEligible` (Luxury tab uses `matchesLuxuryTab` instead). */
   affordableEligible: boolean;
+  /** Handover / delivery label (Credence-style). */
+  readyDate: string;
+  /** Same inclusion rules as `/api/projects/static` for each category tab. */
+  tabLuxury: boolean;
+  tabAffordable: boolean;
+  tabWaterfront: boolean;
+  tabCommercial: boolean;
+  tabOffice: boolean;
+  tabOffPlan: boolean;
 };
 
 export type HeatPoint = {
@@ -75,11 +81,10 @@ export type HeatPoint = {
   lat: number;
   lng: number;
   weight: number;
-  /** Short English label for map markers (avoids non-Latin builder names from data) */
   mapLabel?: string;
 };
 
-type RawItem = {
+export type ProjectRawItem = {
   id?: number;
   slug?: string;
   title?: string;
@@ -92,6 +97,7 @@ type RawItem = {
   photos?: Array<{ src?: string }>;
   updated_at?: string;
   created_at?: string;
+  construction_inspection_date?: string;
   statistics?: {
     total?: {
       price_from?: number;
@@ -152,10 +158,21 @@ function inferBaths(beds: number): number {
 
 function inferSqft(beds: number): string {
   const sqft = 700 + beds * 450;
-  return sqft.toLocaleString("en-US");
+  return `${sqft.toLocaleString("en-US")} sq ft`;
 }
 
-function getBestImage(item: RawItem): string {
+function formatReadyDate(d?: string): string {
+  if (!d || typeof d !== "string") return "";
+  const match = d.match(/(\d{4})-(\d{2})/);
+  if (match) {
+    const month = parseInt(match[2], 10);
+    const q = Math.ceil(month / 3);
+    return `Q${q} ${match[1]}`;
+  }
+  return d.slice(0, 32);
+}
+
+function getBestImage(item: ProjectRawItem): string {
   return (
     item.cover?.src ||
     item.photos?.[0]?.src ||
@@ -163,121 +180,202 @@ function getBestImage(item: RawItem): string {
   );
 }
 
-export async function getPropertyData(limit = 18): Promise<PropertyListing[]> {
-  const [rawData, rawDescriptions] = await Promise.all([
-    fs.readFile(ALL_DATA_UAE_EN_JSON, "utf-8"),
-    fs.readFile(DESCRIPTIONS_JSON, "utf-8"),
-  ]);
+type ListingRow = PropertyListing & {
+  sortScore: number;
+  descriptionText: string;
+};
 
-  const parsedData = JSON.parse(rawData) as { data?: { items?: RawItem[] } };
+function mapRawToListing(
+  item: ProjectRawItem,
+  descriptions: Record<string, string>,
+  luxuryBuilders5M: Set<string>
+): ListingRow {
+  const slug = item.slug ?? "";
+  const title = item.title ?? "Property";
+  const beds = titleToBeds(title);
+  const district = item.district?.title || "Dubai";
+  const builder = item.builder || "Developer";
+  const rawDesc = descriptions[slug] || "";
+  const descriptionText = parseDescriptionsHtml(rawDesc);
+  const pf = safeNumber(item.statistics?.total?.price_from);
+  const pt = safeNumber(item.statistics?.total?.price_to);
+  const priceNumeric = pf && pt ? (pf + pt) / 2 : pf || pt || 0;
+  const propertyKind = inferPropertyKind(title);
+  const credenceCategory = getCredenceCategory(item);
+  const waterfront =
+    credenceCategory === "Waterfront" ||
+    inferWaterfront(title, district, descriptionText);
+  const affordable =
+    credenceCategory === "Affordable" || isAffordablePrice(priceNumeric);
+  const developerPriority = developerPriorityIndex(builder);
+  const location = district.includes("Dubai")
+    ? district
+    : `${district}, Dubai`;
+  const maxBedroomsFromUnits = getProjectBedrooms(item);
+  const area = getProjectAreaSqFt(item);
+  const matchesLux = matchesLuxuryTab(item, { luxuryBuilders5M });
+  const cityId =
+    item.city_id != null
+      ? typeof item.city_id === "string"
+        ? parseInt(item.city_id, 10)
+        : item.city_id
+      : 1;
+  const projectId = item.id != null ? Number(item.id) : 0;
+  const hasStoredDescription =
+    typeof rawDesc === "string" && rawDesc.trim().length > 0;
+  const updatedAt =
+    typeof item.updated_at === "string" ? item.updated_at : "";
+  const createdAt =
+    typeof item.created_at === "string" ? item.created_at : "";
+  const affordableEligible = isAffordableProjectEligible(item);
+  const readyDate = formatReadyDate(item.construction_inspection_date);
+
+  const tabLuxury = projectMatchesTabFilter(item, "luxury", luxuryBuilders5M);
+  const tabAffordable = projectMatchesTabFilter(item, "affordable", luxuryBuilders5M);
+  const tabWaterfront = projectMatchesTabFilter(item, "waterfront", luxuryBuilders5M);
+  const tabCommercial = projectMatchesTabFilter(item, "commercial", luxuryBuilders5M);
+  const tabOffice = projectMatchesTabFilter(item, "office", luxuryBuilders5M);
+  const tabOffPlan = projectMatchesTabFilter(item, "off-plan", luxuryBuilders5M);
+
+  let sqftDisplay = inferSqft(beds);
+  if (area.max > 0 || area.min > 0) {
+    const minR = Math.round(area.min || area.max);
+    const maxR = Math.round(area.max || area.min);
+    sqftDisplay =
+      minR === maxR || minR === 0
+        ? `${maxR.toLocaleString("en-US")} sq ft`
+        : `${minR.toLocaleString("en-US")} – ${maxR.toLocaleString("en-US")} sq ft`;
+  }
+
+  return {
+    slug,
+    title,
+    subtitle: district,
+    beds,
+    baths: inferBaths(beds),
+    sqft: sqftDisplay,
+    location,
+    price: priceToLabel(
+      item.statistics?.total?.price_from,
+      item.statistics?.total?.price_to
+    ),
+    priceNumeric,
+    propertyKind,
+    affordable,
+    waterfront,
+    developerPriority,
+    featuredRank: 0,
+    credenceCategory,
+    matchesLuxuryTab: matchesLux,
+    maxBedroomsFromUnits,
+    areaMinSqFt: area.min,
+    areaMaxSqFt: area.max,
+    cityId: Number.isFinite(cityId) ? cityId : 1,
+    projectId,
+    hasStoredDescription,
+    priceFrom: pf || pt || 0,
+    priceTo: pt || pf || 0,
+    updatedAt,
+    createdAt,
+    affordableEligible,
+    readyDate,
+    tabLuxury,
+    tabAffordable,
+    tabWaterfront,
+    tabCommercial,
+    tabOffice,
+    tabOffPlan,
+    image: getBestImage(item),
+    latitude: safeNumber(item.latitude),
+    longitude: safeNumber(item.longitude),
+    builder,
+    excerpt: descriptionText.slice(0, 180),
+    sortScore:
+      safeNumber(item.statistics?.total?.price_from) +
+      safeNumber(item.statistics?.total?.price_to) / 2,
+    descriptionText,
+  };
+}
+
+const loadPropertyDataset = cache(async () => {
+  const rawDescriptions = await fs.readFile(DESCRIPTIONS_JSON, "utf-8");
   const descriptions = JSON.parse(rawDescriptions) as Record<string, string>;
-  const items = parsedData.data?.items ?? [];
+  const validItems = getCredenceAllProjectsRawSorted(
+    new URLSearchParams()
+  ) as ProjectRawItem[];
+  const luxuryBuilders5M = computeLuxuryBuilders5M(validItems);
+  return { validItems, pool: validItems, luxuryBuilders5M, descriptions };
+});
 
-  const pool = items
-    .filter((item) => {
-      const lat = safeNumber(item.latitude);
-      const lng = safeNumber(item.longitude);
-      return Boolean(item.slug && item.title && lat && lng);
-    })
-    .slice(0, 800);
-
-  const luxuryBuilders5M = computeLuxuryBuilders5M(pool);
-
+export async function getPropertyData(limit = 18): Promise<PropertyListing[]> {
+  const { pool, luxuryBuilders5M, descriptions } = await loadPropertyDataset();
   const normalized = pool
-    .map((item) => {
-      const slug = item.slug ?? "";
-      const title = item.title ?? "Property";
-      const beds = titleToBeds(title);
-      const district = item.district?.title || "Dubai";
-      const builder = item.builder || "Developer";
-      const rawDesc = descriptions[slug] || "";
-      const descriptionText = parseDescriptionsHtml(rawDesc);
-      const pf = safeNumber(item.statistics?.total?.price_from);
-      const pt = safeNumber(item.statistics?.total?.price_to);
-      const priceNumeric = pf && pt ? (pf + pt) / 2 : pf || pt || 0;
-      const propertyKind = inferPropertyKind(title);
-      const credenceCategory = getCredenceCategory(item, {
-        descriptionPlain: descriptionText,
-      });
-      const waterfront =
-        credenceCategory === "Waterfront" ||
-        inferWaterfront(title, district, descriptionText);
-      const affordable =
-        credenceCategory === "Affordable" || isAffordablePrice(priceNumeric);
-      const developerPriority = developerPriorityIndex(builder);
-      const location = district.includes("Dubai")
-        ? district
-        : `${district}, Dubai`;
-      const maxBedroomsFromUnits = getProjectBedrooms(item);
-      const area = getProjectAreaSqFt(item);
-      const matchesLux = matchesLuxuryTab(item, { luxuryBuilders5M });
-      const cityId =
-        item.city_id != null
-          ? typeof item.city_id === "string"
-            ? parseInt(item.city_id, 10)
-            : item.city_id
-          : 1;
-      const projectId = item.id != null ? Number(item.id) : 0;
-      const hasStoredDescription =
-        typeof rawDesc === "string" && rawDesc.trim().length > 0;
-      const updatedAt =
-        typeof item.updated_at === "string" ? item.updated_at : "";
-      const createdAt =
-        typeof item.created_at === "string" ? item.created_at : "";
-      const affordableEligible = isAffordableProjectEligible(item);
-
-      return {
-        slug,
-        title,
-        subtitle: district,
-        beds,
-        baths: inferBaths(beds),
-        sqft: inferSqft(beds),
-        location,
-        price: priceToLabel(
-          item.statistics?.total?.price_from,
-          item.statistics?.total?.price_to
-        ),
-        priceNumeric,
-        propertyKind,
-        affordable,
-        waterfront,
-        developerPriority,
-        credenceCategory,
-        matchesLuxuryTab: matchesLux,
-        maxBedroomsFromUnits: maxBedroomsFromUnits,
-        areaMinSqFt: area.min,
-        areaMaxSqFt: area.max,
-        cityId: Number.isFinite(cityId) ? cityId : 1,
-        projectId,
-        hasStoredDescription,
-        priceFrom: pf || pt || 0,
-        priceTo: pt || pf || 0,
-        updatedAt,
-        createdAt,
-        affordableEligible,
-        image: getBestImage(item),
-        latitude: safeNumber(item.latitude),
-        longitude: safeNumber(item.longitude),
-        builder,
-        excerpt: descriptionText.slice(0, 180),
-        sortScore:
-          safeNumber(item.statistics?.total?.price_from) +
-          safeNumber(item.statistics?.total?.price_to) / 2,
-        descriptionText,
-      };
-    })
-    .sort((a, b) => b.sortScore - a.sortScore)
     .slice(0, limit)
-    .map(({ sortScore: _sort, descriptionText: _desc, ...rest }, idx) => ({
-      ...rest,
-      featuredRank: idx,
-    }));
-
+    .map((item, idx) => {
+      const row = mapRawToListing(item, descriptions, luxuryBuilders5M);
+      const { sortScore: _sort, descriptionText: _desc, ...rest } = row;
+      return { ...rest, featuredRank: idx };
+    });
   return normalized;
 }
 
-/** Prefer Latin characters for map UI when builder string is mixed or RTL. */
+/** Full credence-aligned catalogue (same order as static API). */
+export async function getPropertyListingsForFeatured(): Promise<PropertyListing[]> {
+  const { pool, luxuryBuilders5M, descriptions } = await loadPropertyDataset();
+  return pool.map((item, idx) => {
+    const row = mapRawToListing(item, descriptions, luxuryBuilders5M);
+    const { sortScore: _sort, descriptionText: _desc, ...rest } = row;
+    return { ...rest, featuredRank: idx };
+  });
+}
+
+export async function getPropertyListingsByProjectIds(
+  ids: number[]
+): Promise<PropertyListing[]> {
+  if (ids.length === 0) return [];
+  const { validItems, luxuryBuilders5M, descriptions } =
+    await loadPropertyDataset();
+  const out: PropertyListing[] = [];
+  for (const id of ids) {
+    const item = validItems.find((i) => Number(i.id) === id);
+    if (!item) continue;
+    const row = mapRawToListing(item, descriptions, luxuryBuilders5M);
+    const { sortScore: _s, descriptionText: _d, ...rest } = row;
+    out.push({ ...rest, featuredRank: out.length });
+  }
+  return out;
+}
+
+export type ProjectDetailPayload = {
+  listing: PropertyListing;
+  descriptionHtml: string;
+  gallery: string[];
+};
+
+export async function getProjectDetailBySlug(
+  slug: string
+): Promise<ProjectDetailPayload | null> {
+  const { validItems, luxuryBuilders5M, descriptions } =
+    await loadPropertyDataset();
+  const normalized = slug.trim().toLowerCase();
+  const item = validItems.find(
+    (i) => (i.slug || "").toLowerCase() === normalized
+  );
+  if (!item) return null;
+  const row = mapRawToListing(item, descriptions, luxuryBuilders5M);
+  const { sortScore: _s, descriptionText: _d, ...listing } = row;
+  const slugKey = item.slug ?? "";
+  const descriptionHtml = descriptions[slugKey] || "";
+  const gallery = (item.photos ?? [])
+    .map((p) => p?.src)
+    .filter((s): s is string => Boolean(s));
+  return {
+    listing: { ...listing, featuredRank: 0 },
+    descriptionHtml,
+    gallery,
+  };
+}
+
 function englishMapLabelFromBuilder(builder: string, title: string): string {
   const raw = (builder || "").trim();
   const latin = raw.match(/[A-Za-z][A-Za-z0-9\s&'.-]{1,28}/);
@@ -325,4 +423,3 @@ export async function getHeatPointsForDevelopers(): Promise<HeatPoint[]> {
   }
   return grouped;
 }
-

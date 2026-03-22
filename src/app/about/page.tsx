@@ -1,6 +1,5 @@
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import imagescManifest from "@/data/imagesc-manifest.json";
 
 const stats = [
   { value: "500+", label: "Properties Sold" },
@@ -57,26 +56,23 @@ function roleFromName(index: number): string {
   return roles[index % roles.length];
 }
 
-async function getLeadershipFromImagesC(): Promise<Leader[]> {
-  const dir = path.join(process.cwd(), "public", "ImagesC");
-  try {
-    const files = await fs.readdir(dir);
-    const imageFiles = files.filter((f) =>
-      /\.(png|jpe?g|webp|gif)$/i.test(f)
-    );
-    if (!imageFiles.length) return fallbackLeadership;
-    return imageFiles.map((file, index) => ({
-      name: titleFromFilename(file),
-      role: roleFromName(index),
-      image: `/ImagesC/${file}`,
-    }));
-  } catch {
-    return fallbackLeadership;
-  }
+/**
+ * Uses build-time manifest (see scripts/generate-imagesc-manifest.mjs).
+ * Avoids fs.readdir(public/ImagesC) in the server bundle — that traced every JPG
+ * into the Vercel lambda and exceeded the 300MB function size limit.
+ */
+function getLeadershipFromManifest(): Leader[] {
+  const imageFiles = imagescManifest.files ?? [];
+  if (!imageFiles.length) return fallbackLeadership;
+  return imageFiles.map((file, index) => ({
+    name: titleFromFilename(file),
+    role: roleFromName(index),
+    image: `/ImagesC/${file}`,
+  }));
 }
 
-export default async function AboutPage() {
-  const leadership = await getLeadershipFromImagesC();
+export default function AboutPage() {
+  const leadership = getLeadershipFromManifest();
   const leadershipImages = leadership.map((p) => p.image);
   return (
     <div className="min-h-screen">

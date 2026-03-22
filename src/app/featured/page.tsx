@@ -1,9 +1,9 @@
 import FeaturedListingsClient from "@/components/FeaturedListingsClient";
-import { getPropertyData } from "@/lib/propertyData";
+import { getPropertyListingsForFeatured } from "@/lib/propertyData";
 import { Suspense } from "react";
 
 export default async function FeaturedPage() {
-  const listings = await getPropertyData(500);
+  const listings = await getPropertyListingsForFeatured();
   return (
     <div className="min-h-screen">
       {/* Hero */}

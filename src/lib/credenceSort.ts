@@ -2,11 +2,11 @@
  * Credence default & explicit sort order (see credence-realtor static API).
  */
 import categoriesConfig from "@/data/propertyCategories.config.json";
-import type { CredenceCategory } from "@/lib/credencePropertyCategory";
 import {
   getPreferredDeveloperRank,
   isPriorityDeveloperProject,
-} from "@/lib/credencePropertyCategory";
+} from "@/lib/credenceDeveloperFilter";
+import type { CredenceCategory } from "@/lib/credenceTypes";
 import type { PropertyListing } from "@/lib/propertyData";
 
 const TOP = (

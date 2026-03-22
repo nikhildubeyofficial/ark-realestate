@@ -5,6 +5,8 @@ export type AreaGuideBase = {
   excerpt: string;
   /** Pre-fill search on /featured */
   searchKeyword: string;
+  /** District / area fragment for `locality` filter (Credence-style area scoping). */
+  localityMatch: string;
 };
 
 /** Resolved on the server with project images from `all_data_uae_en.json`. */
@@ -19,6 +21,7 @@ export const AREA_GUIDE_ENTRIES: AreaGuideBase[] = [
     excerpt:
       "Burj Khalifa, Dubai Mall, and world-class dining — the definitive urban luxury address.",
     searchKeyword: "Downtown",
+    localityMatch: "Downtown",
   },
   {
     slug: "dubai-marina",
@@ -26,6 +29,7 @@ export const AREA_GUIDE_ENTRIES: AreaGuideBase[] = [
     excerpt:
       "Waterfront towers, yacht life, and a vibrant promenade with marina views.",
     searchKeyword: "Marina",
+    localityMatch: "Dubai Marina",
   },
   {
     slug: "palm-jumeirah",
@@ -33,6 +37,7 @@ export const AREA_GUIDE_ENTRIES: AreaGuideBase[] = [
     excerpt:
       "Iconic fronds, beachfront estates, and ultra-limited off-plan releases.",
     searchKeyword: "Palm",
+    localityMatch: "Jumeirah Palm",
   },
   {
     slug: "business-bay",
@@ -40,6 +45,7 @@ export const AREA_GUIDE_ENTRIES: AreaGuideBase[] = [
     excerpt:
       "Canal-side living with strong rental demand and quick access to Downtown.",
     searchKeyword: "Business Bay",
+    localityMatch: "Business Bay",
   },
   {
     slug: "emaar-beachfront",
@@ -47,6 +53,7 @@ export const AREA_GUIDE_ENTRIES: AreaGuideBase[] = [
     excerpt:
       "Private beach access and high-rise living between Dubai Marina and Palm.",
     searchKeyword: "Beachfront",
+    localityMatch: "Marina",
   },
   {
     slug: "creek-harbour",
@@ -54,5 +61,6 @@ export const AREA_GUIDE_ENTRIES: AreaGuideBase[] = [
     excerpt:
       "Waterfront masterplan with skyline views and long-term growth story.",
     searchKeyword: "Creek",
+    localityMatch: "Dubai Creek Harbour",
   },
 ];
