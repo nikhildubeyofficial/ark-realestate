@@ -30,6 +30,9 @@ const blogPosts = [
 const awardsCopy =
   "At Ark Vision, we don't just sell properties, we curate opportunities. Whether you're an off-plan investor, a global buyer seeking a second home, or looking for rental yields, we guide you with transparency, insight, and uncompromising dedication.";
 
+/** Place `hero.mp4` in `public/video/` (served at `/video/hero.mp4`). */
+const HERO_VIDEO_SRC = "/video/hero.mp4";
+
 // Curated Unsplash URLs — Dubai/luxury real estate to match Figma
 const IMG = {
   hero:
@@ -93,10 +96,26 @@ export default async function HomePage() {
     <div className="min-h-screen overflow-x-hidden bg-[#080808]">
       {/* Hero — responsive height; top bar lives in Header only */}
       <section className="relative min-h-[72dvh] w-full sm:min-h-[80dvh] lg:min-h-[900px]">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${IMG.hero})` }}
-        />
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Static hero art behind video (loads first; visible if video is slow or unavailable) */}
+          <div
+            className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${IMG.hero})` }}
+            aria-hidden
+          />
+          <video
+            className="absolute inset-0 z-[1] h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={IMG.hero}
+            aria-hidden
+          >
+            <source src={HERO_VIDEO_SRC} type="video/mp4" />
+          </video>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-black/60 to-black/30" />
         <div className="absolute left-0 right-0 top-0 flex min-h-[inherit] items-center px-5 pb-16 pt-24 sm:px-8 sm:pb-20 sm:pt-28 lg:px-20 lg:pb-24 lg:pt-0">
           <div className="mx-auto w-full max-w-[1280px]">
@@ -354,32 +373,47 @@ export default async function HomePage() {
           </div>
           <div className="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "21px" }}>
             {exceptionalResidences.map((prop, i) => (
-              <Link
+              <div
                 key={prop.title}
-                href="/featured"
                 className="group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_20px_50px_-20px_rgba(201,168,76,0.2)] md:rounded-t-[30px]"
               >
-                <div className="relative h-[240px] w-full overflow-hidden rounded-t-2xl sm:h-[280px] md:h-[310px] md:rounded-t-[30px]">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.04]"
-                    style={{ backgroundImage: `url(${propertyImages[i] ?? IMG.propertyVilla})` }}
-                  />
-                  <div className="absolute right-4 top-4 flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80">
-                    ♡
+                <Link href="/featured" className="block">
+                  <div className="relative h-[240px] w-full overflow-hidden rounded-t-2xl sm:h-[280px] md:h-[310px] md:rounded-t-[30px]">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.04]"
+                      style={{ backgroundImage: `url(${propertyImages[i] ?? IMG.propertyVilla})` }}
+                    />
+                    <div className="absolute right-4 top-4 flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80">
+                      ♡
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 flex h-12 items-center gap-4 bg-black/40 px-[18px] text-xs text-white/90">
+                      <span>{prop.beds} Beds</span>
+                      <span>{prop.baths} Baths</span>
+                      <span>{prop.sqft} ft²</span>
+                    </div>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 flex h-12 items-center gap-4 bg-black/40 px-[18px] text-xs text-white/90">
-                    <span>{prop.beds} Beds</span>
-                    <span>{prop.baths} Baths</span>
-                    <span>{prop.sqft} ft²</span>
-                  </div>
-                </div>
+                </Link>
                 <div className="border-t border-white/10 p-5">
                   <h3 className="font-serif text-lg font-medium text-white/90">{prop.title}</h3>
                   <p className="mt-3 flex items-center gap-2 text-xs text-white/50">
                     <span>📍</span> {prop.location}
                   </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link
+                      href={`/featured?keyword=${encodeURIComponent(prop.title)}`}
+                      className="border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-xs font-light text-[#c9a84c] transition hover:bg-[#c9a84c] hover:text-[#060606]"
+                    >
+                      Inquire
+                    </Link>
+                    <Link
+                      href="/featured"
+                      className="border border-white/20 px-4 py-2 text-xs font-light text-white/70 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
+                    >
+                      View listings
+                    </Link>
+                  </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>

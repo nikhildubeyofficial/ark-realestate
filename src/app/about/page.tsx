@@ -1,4 +1,4 @@
-import Image from "next/image";
+import AboutLeadershipSection from "@/components/AboutLeadershipSection";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
@@ -77,6 +77,7 @@ async function getLeadershipFromImagesC(): Promise<Leader[]> {
 
 export default async function AboutPage() {
   const leadership = await getLeadershipFromImagesC();
+  const leadershipImages = leadership.map((p) => p.image);
   return (
     <div className="min-h-screen">
       {/* Hero with background image */}
@@ -170,22 +171,7 @@ export default async function AboutPage() {
           <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">
             Our Leadership
           </h2>
-          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {leadership.map((person) => (
-              <div key={person.image} className="group">
-                <div className="relative aspect-[296/395] overflow-hidden rounded-sm">
-                  <Image
-                    src={person.image}
-                    alt=""
-                    fill
-                    className="object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    sizes="(max-width: 768px) 100vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-white mix-blend-saturation opacity-0 group-hover:opacity-20" />
-                </div>
-              </div>
-            ))}
-          </div>
+          <AboutLeadershipSection imagePaths={leadershipImages} />
         </div>
       </section>
     </div>

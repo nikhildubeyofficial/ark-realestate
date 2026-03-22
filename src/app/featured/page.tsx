@@ -1,8 +1,9 @@
 import FeaturedListingsClient from "@/components/FeaturedListingsClient";
 import { getPropertyData } from "@/lib/propertyData";
+import { Suspense } from "react";
 
 export default async function FeaturedPage() {
-  const listings = await getPropertyData(120);
+  const listings = await getPropertyData(500);
   return (
     <div className="min-h-screen">
       {/* Hero */}
@@ -25,7 +26,15 @@ export default async function FeaturedPage() {
         </div>
       </section>
 
-      <FeaturedListingsClient listings={listings} />
+      <Suspense
+        fallback={
+          <div className="border-b border-white/5 py-24 text-center font-light text-white/45 text-sm">
+            Loading search…
+          </div>
+        }
+      >
+        <FeaturedListingsClient listings={listings} />
+      </Suspense>
     </div>
   );
 }

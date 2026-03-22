@@ -44,10 +44,18 @@ export default function Footer() {
             Prime Locations
           </h4>
           <ul className="space-y-3">
+            <li>
+              <Link
+                href="/guide"
+                className="font-light text-white/70 text-base tracking-wide transition hover:text-[#c9a84c]"
+              >
+                Area guides
+              </Link>
+            </li>
             {locations.map((loc) => (
               <li key={loc}>
                 <Link
-                  href="#"
+                  href={`/featured?keyword=${encodeURIComponent(loc)}`}
                   className="font-light text-white/70 text-base tracking-wide transition hover:text-[#c9a84c]"
                 >
                   {loc}
