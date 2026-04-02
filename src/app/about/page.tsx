@@ -1,23 +1,15 @@
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
+import AboutTeamGrid from "@/components/AboutTeamGrid";
 import { Reveal } from "@/components/Reveal";
 import Link from "next/link";
+import imagescManifest from "@/data/imagesc-manifest.json";
+import { leadershipProfiles } from "@/data/leadershipProfiles";
 
 const stats = [
   { value: "500+", label: "Properties Sold" },
   { value: "25+", label: "Years of Excellence" },
   { value: "1,200+", label: "Discerning Clients" },
   { value: "AED 5B+", label: "Total Sales Value" },
-];
-
-const leadershipFiles = [
-  "Ganesh.png",
-  "DSC00435.JPG",
-  "DSC00707.JPG",
-  "DSC00716.JPG",
-  "DSC00775.JPG",
-  "Copy of DSC00350.JPG",
-  "Copy of DSC00860.JPG",
-  "WhatsApp Image 2026-03-23 at 5.34.39 PM.jpeg",
 ];
 
 const services = [
@@ -31,17 +23,10 @@ const services = [
   "Golden Visa by Real Estate Investment",
 ];
 
-type Leader = { image: string };
-
-function getLeadershipFromManifest(): Leader[] {
-  return leadershipFiles.map((file) => ({
-    image: `/Leaders/${encodeURIComponent(file)}`,
-  }));
-}
-
 export default function AboutPage() {
-  const leadership = getLeadershipFromManifest();
-  const leadershipImages = leadership.map((p) => p.image);
+  const teamImages = (imagescManifest.files ?? []).map(
+    (file) => `/ImagesC/${encodeURIComponent(file)}`
+  );
   // About page (except leadership tiles) uses Unsplash only.
   const heroImage = "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1440&q=80&auto=format&fit=crop";
   const storyImage =
@@ -278,8 +263,29 @@ export default function AboutPage() {
             <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">The People</span>
           </div>
           <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">Our Leadership</h2>
-          <AboutLeadershipSection imagePaths={leadershipImages} />
+          <AboutLeadershipSection profiles={leadershipProfiles} />
         </div>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section className="border-b border-white/5 bg-[#060606] py-24">
+          <div className="mx-auto max-w-[1280px] px-8 md:px-20">
+            <div className="flex items-center gap-4">
+              <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
+              <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
+                Our Team
+              </span>
+            </div>
+            <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">
+              The Team Behind Ark Vision
+            </h2>
+            <p className="mt-5 max-w-[760px] font-light text-sm leading-relaxed text-white/45">
+              Our advisors, strategists, and relationship experts deliver a seamless real estate
+              experience across every interaction.
+            </p>
+            <AboutTeamGrid imagePaths={teamImages} />
+          </div>
         </section>
       </Reveal>
 

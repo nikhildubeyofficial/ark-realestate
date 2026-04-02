@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import HomeBuyingKnowAccordion from "@/components/HomeBuyingKnowAccordion";
 import HomeTopDevelopersSection from "@/components/HomeTopDevelopersSection";
+import AboutLeadershipSection from "@/components/AboutLeadershipSection";
+import { leadershipProfiles } from "@/data/leadershipProfiles";
 import {
   getHeatPointsForDevelopers,
   getPropertyData,
@@ -70,32 +72,6 @@ const IMG = {
 } as const;
 
 const propertyImages = [IMG.propertyVilla, IMG.propertyDubai, IMG.propertySkyline, IMG.propertyInterior];
-const leaderFiles = [
-  "Ganesh.png",
-  "DSC00435.JPG",
-  "DSC00707.JPG",
-  "DSC00716.JPG",
-  "DSC00775.JPG",
-  "Copy of DSC00350.JPG",
-  "Copy of DSC00860.JPG",
-  "WhatsApp Image 2026-03-23 at 5.34.39 PM.jpeg",
-];
-
-function titleFromFilename(filename: string): string {
-  return filename
-    .replace(/\.[^.]+$/, "")
-    .replace(/^copy of\s+/i, "")
-    .replace(/^whatsapp image\s*/i, "")
-    .replace(/[_-]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-const founders = leaderFiles.map((file) => ({
-  name: titleFromFilename(file),
-  image: `/Leaders/${encodeURIComponent(file)}`,
-}));
 
 export default async function HomePage() {
   const [heatPoints, listingsForDevelopers, recentLaunches] = await Promise.all([
@@ -106,22 +82,22 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#080808]">
       {/* Hero — responsive height; top bar lives in Header only */}
-      <section className="relative min-h-[72dvh] w-full sm:min-h-[80dvh] lg:min-h-[900px]">
+      <section className="relative -mt-px min-h-[72dvh] w-full sm:min-h-[80dvh] lg:min-h-[900px]">
         <div className="absolute inset-0 overflow-hidden">
           <video
-            className="absolute inset-0 z-0 h-full w-full object-cover"
+            className="absolute inset-0 z-0 h-full w-full object-cover object-[center_35%]"
             autoPlay
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             aria-hidden
           >
             <source src={HERO_VIDEO_SRC} type="video/mp4" />
           </video>
         </div>
         <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#080808] via-black/55 to-black/20" />
-        <div className="absolute left-0 right-0 top-0 z-[2] flex min-h-[inherit] items-start px-5 pb-16 pt-20 sm:px-8 sm:pb-20 sm:pt-24 lg:px-20 lg:pb-24 lg:pt-20">
+        <div className="absolute left-0 right-0 top-0 z-[2] flex min-h-[inherit] items-start px-5 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-20 lg:pb-24 lg:pt-24">
           <div className="mx-auto w-full max-w-[1280px]">
             <div className="max-w-[920px] text-left">
               <h1
@@ -343,18 +319,7 @@ export default async function HomePage() {
             <h2 className="mt-4 font-serif text-4xl font-light italic text-white/90 md:text-5xl">
               Our Leadership
             </h2>
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {founders.map((person) => (
-                <div key={person.image} className="group">
-                  <div
-                    className="relative aspect-[296/395] overflow-hidden rounded-sm border border-white/10 bg-cover bg-center grayscale transition-all duration-500 group-hover:border-[#c9a84c]/60 group-hover:grayscale-0 group-hover:shadow-[0_0_45px_-15px_rgba(201,168,76,0.35)] group-hover:brightness-110"
-                    style={{ backgroundImage: `url(${person.image})` }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-75 transition-opacity duration-500 group-hover:opacity-100" />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <AboutLeadershipSection profiles={leadershipProfiles} />
           </div>
         </section>
       </Reveal>
