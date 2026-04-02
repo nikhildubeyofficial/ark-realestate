@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -18,6 +18,36 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const pathname = usePathname();
+
+  // Refs for the sliding nav indicator
+  const navRef = useRef<HTMLElement>(null);
+  const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
+  const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
+
+  // Measure the active link and position the indicator
+  const updateIndicator = useCallback(() => {
+    const navEl = navRef.current;
+    if (!navEl) return;
+
+    const activeLink = linkRefs.current.get(pathname);
+    if (activeLink) {
+      const navRect = navEl.getBoundingClientRect();
+      const linkRect = activeLink.getBoundingClientRect();
+      setIndicator({
+        left: linkRect.left - navRect.left,
+        width: linkRect.width,
+      });
+    } else {
+      setIndicator(null);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    updateIndicator();
+    // Also recalculate on resize
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
+  }, [updateIndicator]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -42,6 +72,18 @@ export default function Header() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  // Store link ref callback
+  const setLinkRef = useCallback(
+    (href: string) => (el: HTMLAnchorElement | null) => {
+      if (el) {
+        linkRefs.current.set(href, el);
+      } else {
+        linkRefs.current.delete(href);
+      }
+    },
+    []
+  );
 
   return (
     <>
@@ -88,13 +130,29 @@ export default function Header() {
               aria-hidden
             />
           </Link>
-          <nav className="hidden items-center gap-6 lg:gap-10 md:flex">
+
+          {/* Desktop nav with sliding indicator */}
+          <nav ref={navRef} className="relative hidden items-center gap-6 lg:gap-10 md:flex">
+            {/* Sliding active indicator */}
+            {indicator && (
+              <div
+                className="nav-indicator"
+                style={{
+                  left: indicator.left,
+                  width: indicator.width,
+                  opacity: 1,
+                }}
+              />
+            )}
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
+                ref={setLinkRef(href)}
                 href={href}
-                className={`relative text-sm transition-colors duration-300 after:absolute after:bottom-[-6px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-gradient-to-r after:from-[#c9a84c] after:to-[#fcf6ba] after:transition-transform after:duration-400 after:ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-white hover:after:scale-x-100 ${
-                  pathname === href ? "text-[#c9a84c] after:scale-x-100" : "text-white/80"
+                className={`nav-link-glow relative text-sm transition-all duration-300 hover:text-white ${
+                  pathname === href
+                    ? "text-[#c9a84c]"
+                    : "text-white/80"
                 }`}
               >
                 {label}
@@ -107,6 +165,8 @@ export default function Header() {
               Contact Us
             </Link>
           </nav>
+
+          {/* Mobile hamburger */}
           <button
             type="button"
             className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded border border-white/20 text-white transition-all duration-300 hover:border-[#c9a84c]/50 hover:shadow-[0_0_15px_-5px_rgba(201,168,76,0.3)] md:hidden"
@@ -123,6 +183,7 @@ export default function Header() {
             />
           </button>
         </div>
+
         {/* Mobile menu */}
         <div
           className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col bg-[#080808]/98 backdrop-blur-lg transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:top-[72px] md:hidden ${
@@ -134,17 +195,30 @@ export default function Header() {
               <Link
                 key={href}
                 href={href}
-                className={`border-b border-white/10 py-4 text-lg transition-all duration-500 hover:pl-2 hover:text-[#c9a84c] ${
-                  pathname === href ? "text-[#c9a84c]" : "text-white/90"
+                className={`group/mobile relative border-b border-white/10 py-4 text-lg transition-all duration-500 hover:pl-3 ${
+                  pathname === href ? "text-[#c9a84c]" : "text-white/90 hover:text-[#c9a84c]"
                 }`}
-                style={{ transitionDelay: open ? `${i * 60}ms` : "0ms" }}
+                style={{
+                  transitionDelay: open ? `${i * 60}ms` : "0ms",
+                  opacity: open ? 1 : 0,
+                  transform: open ? "translateX(0)" : "translateX(-12px)",
+                }}
               >
-                {label}
+                {/* Active indicator dot for mobile */}
+                {pathname === href && (
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-[#c9a84c]" />
+                )}
+                <span className={pathname === href ? "ml-4" : ""}>{label}</span>
               </Link>
             ))}
             <Link
               href="/#contact"
               className="btn-magnetic mt-6 border border-[#c9a84c] py-4 text-center text-[#c9a84c] transition-all duration-300 hover:bg-[#c9a84c] hover:text-[#060606]"
+              style={{
+                transitionDelay: open ? `${navLinks.length * 60}ms` : "0ms",
+                opacity: open ? 1 : 0,
+                transform: open ? "translateY(0)" : "translateY(8px)",
+              }}
             >
               Contact Us
             </Link>

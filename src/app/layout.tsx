@@ -3,6 +3,9 @@ import { Montserrat, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
+import RouteLoadingBar from "@/components/RouteLoadingBar";
+import BackToTop from "@/components/BackToTop";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -34,9 +37,13 @@ export default function RootLayout({
       className={`${montserrat.variable} ${cormorant.variable}`}
     >
       <body className="min-h-screen overflow-x-hidden bg-[#080808] text-white/80 antialiased">
+        <RouteLoadingBar />
         <Header />
-        <main>{children}</main>
+        <main>
+          <PageTransition>{children}</PageTransition>
+        </main>
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );
