@@ -70,28 +70,32 @@ const IMG = {
 } as const;
 
 const propertyImages = [IMG.propertyVilla, IMG.propertyDubai, IMG.propertySkyline, IMG.propertyInterior];
-const founders = [
-  {
-    name: "Khalid Al Mansouri",
-    role: "Founder & CEO",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800",
-  },
-  {
-    name: "Sarah Chen",
-    role: "Head of Luxury Sales",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800",
-  },
-  {
-    name: "James Whitmore",
-    role: "Senior Investment Advisor",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800",
-  },
-  {
-    name: "Nadia Rashid",
-    role: "Client Relations Director",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800",
-  },
+const leaderFiles = [
+  "Ganesh.png",
+  "DSC00435.JPG",
+  "DSC00707.JPG",
+  "DSC00716.JPG",
+  "DSC00775.JPG",
+  "Copy of DSC00350.JPG",
+  "Copy of DSC00860.JPG",
+  "WhatsApp Image 2026-03-23 at 5.34.39 PM.jpeg",
 ];
+
+function titleFromFilename(filename: string): string {
+  return filename
+    .replace(/\.[^.]+$/, "")
+    .replace(/^copy of\s+/i, "")
+    .replace(/^whatsapp image\s*/i, "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+const founders = leaderFiles.map((file) => ({
+  name: titleFromFilename(file),
+  image: `/Leaders/${encodeURIComponent(file)}`,
+}));
 
 export default async function HomePage() {
   const [heatPoints, listingsForDevelopers, recentLaunches] = await Promise.all([
@@ -348,17 +352,13 @@ export default async function HomePage() {
             </h2>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {founders.map((person) => (
-                <div key={person.name} className="group">
+                <div key={person.name} className="group" aria-label={person.name}>
                   <div
-                    className="aspect-[296/395] overflow-hidden bg-cover bg-center grayscale transition duration-300 group-hover:grayscale-0"
+                    className="relative aspect-[296/395] overflow-hidden rounded-sm border border-white/10 bg-cover bg-center grayscale transition-all duration-500 group-hover:border-[#c9a84c]/60 group-hover:grayscale-0 group-hover:shadow-[0_0_45px_-15px_rgba(201,168,76,0.35)] group-hover:brightness-110"
                     style={{ backgroundImage: `url(${person.image})` }}
-                  />
-                  <p className="mt-4 font-serif text-lg font-medium italic text-white/80">
-                    {person.name}
-                  </p>
-                  <p className="mt-1 text-xs uppercase tracking-[2.4px] text-[#c9a84c]">
-                    {person.role}
-                  </p>
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-75 transition-opacity duration-500 group-hover:opacity-100" />
+                  </div>
                 </div>
               ))}
             </div>

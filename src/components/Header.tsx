@@ -16,10 +16,17 @@ const navLinks = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12);
+      const doc = document.documentElement;
+      const total = doc.scrollHeight - doc.clientHeight;
+      const progress = total > 0 ? Math.min(window.scrollY / total, 1) : 0;
+      setScrollProgress(progress);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -57,12 +64,18 @@ export default function Header() {
         </div>
       </div>
       <header
-        className={`sticky top-0 z-50 border-b bg-[#080808]/95 backdrop-blur-md transition-[box-shadow,border-color,background-color] duration-500 supports-[backdrop-filter]:bg-[#080808]/85 ${
+        className={`sticky top-0 z-50 relative border-b bg-[#080808]/95 backdrop-blur-md transition-[box-shadow,border-color,background-color] duration-500 supports-[backdrop-filter]:bg-[#080808]/85 ${
           scrolled
             ? "border-white/10 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.85)] shadow-black/60"
             : "border-white/5 shadow-none"
         }`}
       >
+        <div className="pointer-events-none absolute left-0 top-0 h-[2px] w-full bg-white/5">
+          <div
+            className="h-full bg-gradient-to-r from-[#c9a84c] to-[#fcf6ba] transition-[width] duration-200"
+            style={{ width: `${Math.round(scrollProgress * 100)}%` }}
+          />
+        </div>
         <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 sm:h-[72px] sm:px-8 lg:px-[120px]">
           <Link
             href="/"

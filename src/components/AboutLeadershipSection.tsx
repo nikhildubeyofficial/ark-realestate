@@ -5,6 +5,19 @@ import { useMemo, useState } from "react";
 
 const INITIAL_VISIBLE = 4;
 
+function getDisplayName(src: string): string {
+  const rawName = decodeURIComponent(src.split("/").pop() ?? "")
+    .replace(/\.[^.]+$/, "")
+    .replace(/^copy of\s+/i, "")
+    .replace(/^whatsapp image\s*/i, "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!rawName) return "Team Member";
+  return rawName.replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 export default function AboutLeadershipSection({
   imagePaths,
 }: {
@@ -26,15 +39,15 @@ export default function AboutLeadershipSection({
       <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-8">
         {visible.map((src) => (
           <div key={src} className="group">
-            <div className="relative aspect-[296/395] overflow-hidden rounded-sm">
+            <div className="relative aspect-[296/395] overflow-hidden rounded-sm border border-white/10 transition-all duration-500 group-hover:border-[#c9a84c]/45 group-hover:shadow-[0_0_45px_-15px_rgba(201,168,76,0.35)] group-hover:brightness-110">
               <Image
                 src={src}
-                alt=""
+                alt={getDisplayName(src)}
                 fill
-                className="object-cover grayscale transition duration-300 group-hover:grayscale-0"
+                className="object-cover grayscale transition duration-500 group-hover:scale-[1.04] group-hover:grayscale-0"
                 sizes="(max-width: 768px) 50vw, 25vw"
               />
-              <div className="absolute inset-0 bg-white mix-blend-saturation opacity-0 group-hover:opacity-20" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/5 to-transparent" />
             </div>
           </div>
         ))}
