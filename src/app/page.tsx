@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Reveal } from "@/components/Reveal";
+import { Reveal, StaggerReveal } from "@/components/Reveal";
 import HomeBuyingKnowAccordion from "@/components/HomeBuyingKnowAccordion";
 import HomeTopDevelopersSection from "@/components/HomeTopDevelopersSection";
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
@@ -113,13 +113,13 @@ export default async function HomePage() {
               <div className="animate-hero-sub mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/featured"
-                  className="border border-[#c9a84c] bg-[#c9a84c]/15 px-6 py-2.5 text-sm font-light text-[#c9a84c] transition hover:bg-[#c9a84c] hover:text-[#060606]"
+                  className="btn-magnetic border border-[#c9a84c] bg-[#c9a84c]/15 px-6 py-2.5 text-sm font-light text-[#c9a84c] transition-all duration-400 hover:bg-[#c9a84c] hover:text-[#060606] hover:shadow-[0_0_25px_-5px_rgba(201,168,76,0.5)]"
                 >
                   Explore listings
                 </Link>
                 <Link
                   href="/guide"
-                  className="border border-white/25 px-6 py-2.5 text-sm font-light text-white/85 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
+                  className="btn-magnetic border border-white/25 px-6 py-2.5 text-sm font-light text-white/85 transition-all duration-400 hover:border-[#c9a84c] hover:text-[#c9a84c] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.3)]"
                 >
                   Area guides
                 </Link>
@@ -182,7 +182,7 @@ export default async function HomePage() {
       </section>
 
       {/* Our Legacy / Why Ark Vision (inserted below brand marquee) */}
-      <Reveal>
+      <Reveal direction="left">
         <section className="relative overflow-hidden border-b border-white/5 bg-black">
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -228,7 +228,7 @@ export default async function HomePage() {
                 dedication.
               </p>
 
-              <div className="mt-10 grid max-w-[640px] grid-cols-1 overflow-hidden border border-white/10 bg-black/50 sm:grid-cols-3">
+              <div className="mt-10 grid max-w-[640px] grid-cols-1 overflow-hidden border border-white/10 bg-black/50 transition-all duration-500 hover:border-[#c9a84c]/30 hover:shadow-[0_0_40px_-15px_rgba(201,168,76,0.15)] sm:grid-cols-3">
                 {[
                   { value: "100+", label: "Properties Sold" },
                   { value: "13+", label: "Years Experience" },
@@ -254,7 +254,7 @@ export default async function HomePage() {
 
       {/* Removed extra spacer to eliminate gap before Top Developers */}
 
-      <Reveal>
+      <Reveal direction="scale">
         <HomeTopDevelopersSection
           heatPoints={heatPoints}
           listings={listingsForDevelopers}
@@ -262,7 +262,7 @@ export default async function HomePage() {
         />
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="right">
         <section className="border-b border-white/5 bg-[#060606] py-16 md:px-20 md:py-24">
         <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
           <div className="mb-16 grid gap-8 md:grid-cols-2 md:gap-[15px]">
@@ -288,16 +288,16 @@ export default async function HomePage() {
             {awards.map((item) => (
               <div
                 key={item.title}
-                className="mx-auto w-full max-w-[399px] overflow-hidden rounded-lg border border-white/10 transition-all duration-500 hover:border-[#c9a84c]/30 hover:shadow-lg"
+                className="card-premium relative mx-auto w-full max-w-[399px] overflow-hidden rounded-lg border border-white/10"
               >
                 <div
-                  className="h-[220px] w-full bg-white/5 bg-cover bg-center sm:h-[280px] md:h-[351px]"
+                  className="h-[220px] w-full bg-white/5 bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03] sm:h-[280px] md:h-[351px]"
                   style={{
                     aspectRatio: "399/351",
                     backgroundImage: `url(${IMG[item.imageKey]})`,
                   }}
                 />
-                <p className="border-t border-white/10 py-4 font-serif text-lg font-medium text-white/90">
+                <p className="border-t border-white/10 py-4 font-serif text-lg font-medium text-white/90 transition-colors duration-300 hover:text-[#c9a84c]">
                   {item.title}
                 </p>
               </div>
@@ -307,7 +307,7 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="blur">
         <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
           <div className="mx-auto max-w-[1280px] px-5 md:px-20">
             <div className="flex items-center gap-4">
@@ -324,7 +324,7 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="right">
         <section className="border-b border-white/5 py-16 md:px-20 md:py-24">
         <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-5 lg:flex-row lg:gap-16 md:px-[80px]">
           <div className="min-w-0 max-w-full lg:max-w-[317px]">
@@ -351,7 +351,7 @@ export default async function HomePage() {
             {exceptionalResidences.map((prop, i) => (
               <div
                 key={prop.title}
-                className="group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_20px_50px_-20px_rgba(201,168,76,0.2)] md:rounded-t-[30px]"
+                className="card-premium group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 md:rounded-t-[30px]"
               >
                 <Link href="/featured" className="block">
                   <div className="relative h-[240px] w-full overflow-hidden rounded-t-2xl sm:h-[280px] md:h-[310px] md:rounded-t-[30px]">
@@ -377,13 +377,13 @@ export default async function HomePage() {
                   <div className="mt-4 flex flex-wrap gap-2">
                     <Link
                       href={`/featured?keyword=${encodeURIComponent(prop.title)}`}
-                      className="border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-xs font-light text-[#c9a84c] transition hover:bg-[#c9a84c] hover:text-[#060606]"
+                      className="btn-magnetic border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-xs font-light text-[#c9a84c] transition-all duration-400 hover:bg-[#c9a84c] hover:text-[#060606] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.4)]"
                     >
                       Inquire
                     </Link>
                     <Link
                       href="/featured"
-                      className="border border-white/20 px-4 py-2 text-xs font-light text-white/70 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
+                      className="btn-magnetic border border-white/20 px-4 py-2 text-xs font-light text-white/70 transition-all duration-400 hover:border-[#c9a84c] hover:text-[#c9a84c]"
                     >
                       View listings
                     </Link>
@@ -396,7 +396,7 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="left">
         <section className="border-b border-white/5 py-16 md:px-20 md:py-[120px]">
         <div className="mx-auto max-w-[1200px] px-5 md:px-[120px]">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
@@ -484,10 +484,10 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="scale">
         <section className="relative min-h-[480px] border-b border-white/5 bg-black/50 py-16 md:min-h-[713px] md:py-24">
         <div
-          className="pointer-events-none absolute left-1/2 top-8 -translate-x-1/2 font-serif text-[120px] leading-none text-white/5 sm:top-12 sm:text-[160px] md:text-[200px]"
+          className="animate-float pointer-events-none absolute left-1/2 top-8 -translate-x-1/2 font-serif text-[120px] leading-none text-white/5 sm:top-12 sm:text-[160px] md:text-[200px]"
           style={{ fontFamily: "var(--font-cormorant)" }}
         >
           &ldquo;
@@ -521,16 +521,16 @@ export default async function HomePage() {
           <div className="mt-10 flex items-center justify-center gap-2">
             <button
               type="button"
-              className="h-9 w-9 rounded-full border border-white/30 transition-colors duration-300 hover:border-[#c9a84c] hover:bg-white/5"
+              className="h-9 w-9 rounded-full border border-white/30 transition-all duration-400 hover:border-[#c9a84c] hover:bg-[#c9a84c]/10 hover:shadow-[0_0_15px_-3px_rgba(201,168,76,0.4)] hover:-translate-x-0.5 active:scale-95"
               aria-label="Previous"
             />
             <span className="h-px w-6 bg-[#c9a84c]" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
+            <span className="h-1.5 w-1.5 rounded-full bg-white/50 transition-all duration-300 hover:bg-[#c9a84c] hover:scale-150" />
+            <span className="h-1.5 w-1.5 rounded-full bg-white/50 transition-all duration-300 hover:bg-[#c9a84c] hover:scale-150" />
             <span className="h-px w-6 bg-white/30" />
             <button
               type="button"
-              className="h-9 w-9 rounded-full border border-white/30 transition-colors duration-300 hover:border-[#c9a84c] hover:bg-white/5"
+              className="h-9 w-9 rounded-full border border-white/30 transition-all duration-400 hover:border-[#c9a84c] hover:bg-[#c9a84c]/10 hover:shadow-[0_0_15px_-3px_rgba(201,168,76,0.4)] hover:translate-x-0.5 active:scale-95"
               aria-label="Next"
             />
           </div>
@@ -538,7 +538,7 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="blur">
         <section className="border-b border-white/5 py-16 md:py-24">
         <div className="mx-auto max-w-[896px] px-5 md:px-16">
           <h2
@@ -555,7 +555,7 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="up">
         <section id="contact" className="border-b border-white/5 py-16 md:px-20 md:py-24">
         <div className="mx-auto grid max-w-[1280px] gap-16 px-5 md:grid-cols-2 md:px-[80px]">
           <div>
@@ -608,7 +608,7 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
-          <div className="rounded-lg border border-white/10 p-6 transition-shadow duration-500 hover:border-white/15 hover:shadow-[0_0_40px_-15px_rgba(201,168,76,0.15)] sm:p-8 md:p-12">
+          <div className="card-premium rounded-lg border border-white/10 p-6 sm:p-8 md:p-12">
             <h3 className="font-serif text-xl font-medium text-white/90">Private Inquiry Form</h3>
             <div className="mt-6 h-px bg-white/10" />
             <form className="mt-8 space-y-6">
@@ -648,7 +648,7 @@ export default async function HomePage() {
               </div>
               <button
                 type="submit"
-                className="w-full bg-[#c9a84c] py-3 font-medium text-[#060606] transition-all duration-300 hover:bg-[#fcf6ba] hover:shadow-lg active:scale-[0.99]"
+                className="btn-magnetic w-full bg-[#c9a84c] py-3 font-medium text-[#060606] transition-all duration-400 hover:bg-[#fcf6ba] hover:shadow-[0_0_30px_-5px_rgba(201,168,76,0.5)] active:scale-[0.98]"
               >
                 Submit Private Inquiry
               </button>

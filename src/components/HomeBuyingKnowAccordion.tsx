@@ -29,25 +29,29 @@ export default function HomeBuyingKnowAccordion() {
             <button
               type="button"
               onClick={() => setOpen(isOpen ? null : i)}
-              className="flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left transition-colors duration-300 hover:bg-white/5 sm:py-6"
+              className="group flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left transition-all duration-300 hover:bg-white/[0.03] hover:pl-2 sm:py-6"
               aria-expanded={isOpen}
             >
-              <h3 className="font-serif text-base font-medium text-white/90 sm:text-lg">
+              <h3 className="font-serif text-base font-medium text-white/90 transition-colors duration-300 group-hover:text-[#c9a84c] sm:text-lg">
                 {item.q}
               </h3>
               <span
-                className={`shrink-0 text-[#c9a84c] transition-transform duration-300 ${
-                  isOpen ? "rotate-45" : ""
+                className={`shrink-0 text-lg text-[#c9a84c] transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  isOpen ? "rotate-45 scale-110" : "group-hover:scale-110"
                 }`}
               >
                 +
               </span>
             </button>
-            {isOpen ? (
-              <div className="animate-hero-sub pb-6 pr-2 font-light text-white/65 text-sm leading-relaxed sm:pr-8">
-                {item.a}
+            <div
+              className={`accordion-content ${isOpen ? "is-open" : ""}`}
+            >
+              <div>
+                <div className="pb-6 pr-2 font-light text-white/65 text-sm leading-relaxed sm:pr-8">
+                  {item.a}
+                </div>
               </div>
-            ) : null}
+            </div>
           </div>
         );
       })}

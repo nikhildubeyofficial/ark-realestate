@@ -67,10 +67,10 @@ export default function HomeTopDevelopersSection({
                 key={name}
                 type="button"
                 onClick={() => setFilter(name)}
-                className={`flex min-h-12 shrink-0 items-center border px-3 font-light transition-all duration-300 active:scale-[0.98] sm:px-[10px] ${
+                className={`flex min-h-12 shrink-0 items-center border px-3 font-light transition-all duration-400 active:scale-[0.97] sm:px-[10px] ${
                   filter === name
-                    ? "border-[#c9a84c] bg-[#c9a84c]/10 text-[#c9a84c]"
-                    : "border-white/20 bg-transparent text-white/80 hover:border-[#c9a84c] hover:text-[#c9a84c]"
+                    ? "border-[#c9a84c] bg-[#c9a84c]/10 text-[#c9a84c] shadow-[0_0_15px_-5px_rgba(201,168,76,0.3)]"
+                    : "border-white/20 bg-transparent text-white/80 hover:border-[#c9a84c] hover:text-[#c9a84c] hover:shadow-[0_0_12px_-5px_rgba(201,168,76,0.2)]"
                 }`}
               >
                 {name}
@@ -115,7 +115,7 @@ export default function HomeTopDevelopersSection({
           {displayListings.map((prop) => (
             <div
               key={prop.slug}
-              className="group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_20px_50px_-20px_rgba(201,168,76,0.2)] md:rounded-t-[30px]"
+              className="card-premium group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 md:rounded-t-[30px]"
             >
               <Link
                 href={`/properties/${prop.slug}`}
@@ -166,14 +166,14 @@ export default function HomeTopDevelopersSection({
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Link
                     href={`/properties/${prop.slug}`}
-                    className="border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-xs font-light text-[#c9a84c] transition hover:bg-[#c9a84c] hover:text-[#060606]"
+                    className="btn-magnetic border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-xs font-light text-[#c9a84c] transition-all duration-400 hover:bg-[#c9a84c] hover:text-[#060606] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.4)]"
                   >
                     View details
                   </Link>
                   <button
                     type="button"
                     onClick={() => setInquire(prop)}
-                    className="border border-white/20 px-4 py-2 text-xs font-light text-white/70 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
+                    className="btn-magnetic border border-white/20 px-4 py-2 text-xs font-light text-white/70 transition-all duration-400 hover:border-[#c9a84c] hover:text-[#c9a84c]"
                   >
                     Inquire
                   </button>

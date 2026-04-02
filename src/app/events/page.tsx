@@ -74,7 +74,7 @@ export default function EventsPage() {
         <div className="mx-auto max-w-[1280px] space-y-8 px-5 md:px-20">
           {events.map((ev, i) => (
             <Reveal key={ev.title} delayMs={i * 80}>
-              <article className="group flex flex-col gap-6 overflow-hidden rounded-lg border border-white/10 bg-white/5 transition-all duration-300 hover:border-[#c9a84c]/40 hover:shadow-[0_0_40px_-12px_rgba(201,168,76,0.25)] md:flex-row md:gap-10">
+              <article className="card-premium group relative flex flex-col gap-6 overflow-hidden rounded-lg border border-white/10 bg-white/5 md:flex-row md:gap-10">
                 <div
                   className="h-48 w-full shrink-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03] md:h-auto md:min-h-[220px] md:w-[320px] lg:w-[400px]"
                   style={{
@@ -97,7 +97,7 @@ export default function EventsPage() {
                   </p>
                   <Link
                     href="/#contact"
-                    className="mt-6 inline-flex w-fit items-center gap-2 border border-[#c9a84c]/60 px-5 py-2.5 text-sm text-[#c9a84c] transition-all duration-300 hover:bg-[#c9a84c] hover:text-[#060606]"
+                    className="btn-magnetic mt-6 inline-flex w-fit items-center gap-2 border border-[#c9a84c]/60 px-5 py-2.5 text-sm text-[#c9a84c] transition-all duration-400 hover:bg-[#c9a84c] hover:text-[#060606] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.4)] hover:gap-3"
                   >
                     Request invitation <span aria-hidden>→</span>
                   </Link>
@@ -123,7 +123,7 @@ export default function EventsPage() {
             </p>
             <Link
               href="/#contact"
-              className="mt-8 inline-block bg-[#c9a84c] px-8 py-3 font-medium text-[#060606] transition-all duration-300 hover:scale-[1.02] hover:bg-[#fcf6ba] active:scale-[0.98]"
+              className="btn-magnetic mt-8 inline-block bg-[#c9a84c] px-8 py-3 font-medium text-[#060606] transition-all duration-400 hover:bg-[#fcf6ba] hover:shadow-[0_0_30px_-5px_rgba(201,168,76,0.5)] active:scale-[0.98]"
             >
               Contact us
             </Link>

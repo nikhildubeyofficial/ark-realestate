@@ -64,12 +64,13 @@ export default function Header() {
         </div>
       </div>
       <header
-        className={`sticky top-0 z-50 relative border-b bg-[#080808]/95 backdrop-blur-md transition-[box-shadow,border-color,background-color] duration-500 supports-[backdrop-filter]:bg-[#080808]/85 ${
+        className={`sticky top-0 z-50 relative border-b backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] supports-[backdrop-filter]:bg-[#080808]/85 ${
           scrolled
-            ? "border-white/10 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.85)] shadow-black/60"
-            : "border-white/5 shadow-none"
+            ? "border-white/10 bg-[#080808]/95 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.85),0_0_30px_-10px_rgba(201,168,76,0.08)]"
+            : "border-white/5 bg-[#080808]/95 shadow-none"
         }`}
       >
+        {/* Scroll progress bar */}
         <div className="pointer-events-none absolute left-0 top-0 h-[2px] w-full bg-white/5">
           <div
             className="h-full bg-gradient-to-r from-[#c9a84c] to-[#fcf6ba] transition-[width] duration-200"
@@ -79,11 +80,11 @@ export default function Header() {
         <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 sm:h-[72px] sm:px-8 lg:px-[120px]">
           <Link
             href="/"
-            className="flex items-center gap-2 transition-opacity duration-300 hover:opacity-90"
+            className="group flex items-center gap-2 transition-opacity duration-300 hover:opacity-90"
           >
-            <span className="font-serif text-lg font-medium text-white sm:text-xl">ARK</span>
+            <span className="font-serif text-lg font-medium text-white transition-colors duration-300 group-hover:text-[#c9a84c] sm:text-xl">ARK</span>
             <span
-              className="mt-1 block h-px w-6 bg-gradient-to-r from-[#c9a84c] to-transparent sm:w-8"
+              className="mt-1 block h-px w-6 bg-gradient-to-r from-[#c9a84c] to-transparent transition-all duration-500 group-hover:w-10 group-hover:from-[#fcf6ba] sm:w-8"
               aria-hidden
             />
           </Link>
@@ -92,7 +93,7 @@ export default function Header() {
               <Link
                 key={href}
                 href={href}
-                className={`relative text-sm transition-colors duration-300 after:absolute after:bottom-[-6px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-[#c9a84c] after:transition-transform after:duration-300 hover:text-white hover:after:scale-x-100 ${
+                className={`relative text-sm transition-colors duration-300 after:absolute after:bottom-[-6px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-gradient-to-r after:from-[#c9a84c] after:to-[#fcf6ba] after:transition-transform after:duration-400 after:ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-white hover:after:scale-x-100 ${
                   pathname === href ? "text-[#c9a84c] after:scale-x-100" : "text-white/80"
                 }`}
               >
@@ -101,47 +102,49 @@ export default function Header() {
             ))}
             <Link
               href="/#contact"
-              className="border border-white/80 bg-transparent px-4 py-2.5 text-sm text-white/80 transition-all duration-300 hover:border-[#c9a84c] hover:bg-[#c9a84c] hover:text-[#060606]"
+              className="btn-magnetic border border-white/80 bg-transparent px-4 py-2.5 text-sm text-white/80 transition-all duration-400 hover:border-[#c9a84c] hover:bg-[#c9a84c] hover:text-[#060606] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.4)]"
             >
               Contact Us
             </Link>
           </nav>
           <button
             type="button"
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded border border-white/20 text-white md:hidden"
+            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded border border-white/20 text-white transition-all duration-300 hover:border-[#c9a84c]/50 hover:shadow-[0_0_15px_-5px_rgba(201,168,76,0.3)] md:hidden"
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
           >
             <span
-              className={`block h-0.5 w-5 bg-white transition-transform duration-300 ${open ? "translate-y-2 rotate-45" : ""}`}
+              className={`block h-0.5 w-5 bg-white transition-all duration-300 ${open ? "translate-y-2 rotate-45 bg-[#c9a84c]" : ""}`}
             />
-            <span className={`block h-0.5 w-5 bg-white transition-opacity duration-300 ${open ? "opacity-0" : ""}`} />
+            <span className={`block h-0.5 w-5 bg-white transition-all duration-300 ${open ? "opacity-0 scale-x-0" : ""}`} />
             <span
-              className={`block h-0.5 w-5 bg-white transition-transform duration-300 ${open ? "-translate-y-2 -rotate-45" : ""}`}
+              className={`block h-0.5 w-5 bg-white transition-all duration-300 ${open ? "-translate-y-2 -rotate-45 bg-[#c9a84c]" : ""}`}
             />
           </button>
         </div>
+        {/* Mobile menu */}
         <div
-          className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col bg-[#080808]/98 backdrop-blur-lg transition-all duration-300 sm:top-[72px] md:hidden ${
-            open ? "visible opacity-100" : "invisible pointer-events-none opacity-0"
+          className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col bg-[#080808]/98 backdrop-blur-lg transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:top-[72px] md:hidden ${
+            open ? "visible opacity-100 translate-y-0" : "invisible pointer-events-none opacity-0 -translate-y-3"
           }`}
         >
           <nav className="flex flex-col gap-1 px-6 py-8">
-            {navLinks.map(({ href, label }) => (
+            {navLinks.map(({ href, label }, i) => (
               <Link
                 key={href}
                 href={href}
-                className={`border-b border-white/10 py-4 text-lg transition-colors duration-300 ${
+                className={`border-b border-white/10 py-4 text-lg transition-all duration-500 hover:pl-2 hover:text-[#c9a84c] ${
                   pathname === href ? "text-[#c9a84c]" : "text-white/90"
                 }`}
+                style={{ transitionDelay: open ? `${i * 60}ms` : "0ms" }}
               >
                 {label}
               </Link>
             ))}
             <Link
               href="/#contact"
-              className="mt-6 border border-[#c9a84c] py-4 text-center text-[#c9a84c] transition-colors duration-300 hover:bg-[#c9a84c] hover:text-[#060606]"
+              className="btn-magnetic mt-6 border border-[#c9a84c] py-4 text-center text-[#c9a84c] transition-all duration-300 hover:bg-[#c9a84c] hover:text-[#060606]"
             >
               Contact Us
             </Link>

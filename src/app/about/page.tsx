@@ -120,7 +120,7 @@ export default function AboutPage() {
           </div>
           <div className="space-y-6">
             <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10">
-              <div className="h-full w-full bg-cover bg-center transition-transform duration-700 hover:scale-[1.04]" style={{ backgroundImage: `url(${storyImage})` }} />
+              <div className="h-full w-full bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.06]" style={{ backgroundImage: `url(${storyImage})` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
             </div>
             <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/5 bg-white/5">
@@ -135,7 +135,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Reveal>
+      <Reveal direction="right">
         <section className="border-b border-white/5 bg-[#060606] py-24">
           <div className="mx-auto max-w-[1280px] px-8 md:px-20">
             <div className="flex items-center gap-4">
@@ -157,7 +157,7 @@ export default function AboutPage() {
                 <Link
                   key={p.title}
                   href="/featured"
-                  className="group relative overflow-hidden rounded-sm border border-white/10 bg-[#080808] transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_30px_80px_-35px_rgba(201,168,76,0.35)]"
+                  className="card-premium group relative overflow-hidden rounded-sm border border-white/10 bg-[#080808]"
                 >
                   <div className="relative h-[220px]">
                     <div
@@ -185,7 +185,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="left">
         <section className="border-b border-white/5 py-24">
         <div className="mx-auto grid max-w-[1280px] gap-12 px-8 md:grid-cols-[360px_1fr] md:items-center md:px-20">
           <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-white/10">
@@ -209,7 +209,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="scale">
         <section className="border-b border-white/5 bg-[#060606] py-24">
         <div className="mx-auto max-w-[1280px] px-8 md:px-20">
           <div className="flex items-center gap-4">
@@ -219,9 +219,9 @@ export default function AboutPage() {
           <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">Expert Services for Every Journey</h2>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((item) => (
-              <div key={item} className="group border border-white/10 bg-[#080808] px-5 py-6 transition-all duration-300 hover:border-[#c9a84c]/45 hover:bg-black">
+              <div key={item} className="card-premium group relative border border-white/10 bg-[#080808] px-5 py-6">
                 <p className="text-xs uppercase tracking-[2.6px] text-[#c9a84c]">Service</p>
-                <p className="mt-3 font-light text-sm leading-relaxed text-white/75">{item}</p>
+                <p className="mt-3 font-light text-sm leading-relaxed text-white/75 transition-colors duration-300 group-hover:text-white/90">{item}</p>
               </div>
             ))}
           </div>
@@ -229,7 +229,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="blur">
         <section className="border-b border-white/5 py-24">
         <div className="mx-auto max-w-[1280px] px-8 md:px-20">
           <div className="flex items-center gap-4">
@@ -255,7 +255,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="right">
         <section className="border-b border-white/5 py-24">
         <div className="mx-auto max-w-[1280px] px-8 md:px-20">
           <div className="flex items-center gap-4">
@@ -268,7 +268,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="left">
         <section className="border-b border-white/5 bg-[#060606] py-24">
           <div className="mx-auto max-w-[1280px] px-8 md:px-20">
             <div className="flex items-center gap-4">
@@ -289,7 +289,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="scale">
         <section className="border-b border-white/5 bg-[#060606] py-24">
         <div className="mx-auto max-w-[1280px] px-8 md:px-20">
           <div className="flex items-center gap-4">
@@ -318,7 +318,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      <Reveal direction="blur">
         <section className="border-b border-white/5 py-24">
         <div className="mx-auto max-w-[980px] px-8 text-center md:px-20">
           <p className="font-serif text-3xl font-light italic leading-relaxed text-white/85 md:text-4xl">

@@ -69,11 +69,11 @@ export default function BlogPage() {
         <div className="mx-auto max-w-[1280px] px-8 md:px-20">
           <Link
             href="#"
-            className="group flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/5 transition hover:border-[#c9a84c]/30 md:flex-row"
+            className="card-premium group relative flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/5 md:flex-row"
           >
             <div className="relative h-[320px] w-full md:h-auto md:min-h-[400px] md:w-1/2">
               <div
-                className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:scale-105"
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
                 style={{ backgroundImage: `url(${featuredPost.image})` }}
               />
             </div>
@@ -88,7 +88,7 @@ export default function BlogPage() {
                 {featuredPost.excerpt}
               </p>
               <p className="mt-6 text-xs text-white/40">{featuredPost.date}</p>
-              <span className="mt-4 inline-flex items-center gap-2 font-light text-[#c9a84c] text-sm transition group-hover:gap-3">
+              <span className="mt-4 inline-flex items-center gap-2 font-light text-[#c9a84c] text-sm transition-all duration-400 group-hover:gap-3 group-hover:text-[#fcf6ba]">
                 Read more <span>→</span>
               </span>
             </div>
@@ -104,7 +104,7 @@ export default function BlogPage() {
               <Link
                 key={post.title}
                 href="#"
-                className="group flex flex-col gap-4 border-b border-white/10 py-8 transition hover:bg-white/5 md:flex-row md:items-center md:gap-8"
+                className="group flex flex-col gap-4 border-b border-white/10 py-8 transition-all duration-400 hover:bg-white/[0.03] hover:pl-2 md:flex-row md:items-center md:gap-8"
               >
                 <span className="w-8 shrink-0 font-serif text-2xl font-light italic text-white/30">
                   {String(i + 1).padStart(2, "0")}
@@ -118,7 +118,7 @@ export default function BlogPage() {
                   </p>
                   <p className="mt-2 text-xs text-white/40">{post.date}</p>
                 </div>
-                <span className="shrink-0 text-[#c9a84c] transition group-hover:translate-x-1">
+                <span className="shrink-0 text-[#c9a84c] transition-all duration-400 group-hover:translate-x-2 group-hover:text-[#fcf6ba]">
                   →
                 </span>
               </Link>
