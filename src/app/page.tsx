@@ -108,27 +108,20 @@ export default async function HomePage() {
       {/* Hero — responsive height; top bar lives in Header only */}
       <section className="relative min-h-[72dvh] w-full sm:min-h-[80dvh] lg:min-h-[900px]">
         <div className="absolute inset-0 overflow-hidden">
-          {/* Static hero art behind video (loads first; visible if video is slow or unavailable) */}
-          <div
-            className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${IMG.hero})` }}
-            aria-hidden
-          />
           <video
-            className="absolute inset-0 z-[1] h-full w-full object-cover"
+            className="absolute inset-0 z-0 h-full w-full object-cover"
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            poster={IMG.hero}
             aria-hidden
           >
             <source src={HERO_VIDEO_SRC} type="video/mp4" />
           </video>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-black/60 to-black/30" />
-        <div className="absolute left-0 right-0 top-0 flex min-h-[inherit] items-center px-5 pb-16 pt-24 sm:px-8 sm:pb-20 sm:pt-28 lg:px-20 lg:pb-24 lg:pt-0">
+        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#080808] via-black/55 to-black/20" />
+        <div className="absolute left-0 right-0 top-0 z-[2] flex min-h-[inherit] items-start px-5 pb-16 pt-20 sm:px-8 sm:pb-20 sm:pt-24 lg:px-20 lg:pb-24 lg:pt-20">
           <div className="mx-auto w-full max-w-[1280px]">
             <div className="max-w-[920px] text-left">
               <h1
@@ -352,7 +345,7 @@ export default async function HomePage() {
             </h2>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {founders.map((person) => (
-                <div key={person.name} className="group" aria-label={person.name}>
+                <div key={person.image} className="group">
                   <div
                     className="relative aspect-[296/395] overflow-hidden rounded-sm border border-white/10 bg-cover bg-center grayscale transition-all duration-500 group-hover:border-[#c9a84c]/60 group-hover:grayscale-0 group-hover:shadow-[0_0_45px_-15px_rgba(201,168,76,0.35)] group-hover:brightness-110"
                     style={{ backgroundImage: `url(${person.image})` }}

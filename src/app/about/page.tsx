@@ -1,5 +1,6 @@
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
 import { Reveal } from "@/components/Reveal";
+import Link from "next/link";
 
 const stats = [
   { value: "500+", label: "Properties Sold" },
@@ -19,28 +20,6 @@ const leadershipFiles = [
   "WhatsApp Image 2026-03-23 at 5.34.39 PM.jpeg",
 ];
 
-const aboutGalleryFiles = [
-  "Copy of DSC00300.JPG",
-  "Copy of DSC00354.JPG",
-  "Copy of DSC00377.JPG",
-  "Copy of DSC00392.JPG",
-  "Copy of DSC00509.JPG",
-  "Copy of DSC00595.JPG",
-  "Copy of DSC00616.JPG",
-  "Copy of DSC00629.JPG",
-  "Copy of DSC00651.JPG",
-  "Copy of DSC00660.JPG",
-  "DSC00273.JPG",
-  "DSC00274-5.JPG",
-  "DSC00277.JPG",
-  "DSC00287.JPG",
-  "DSC00294.JPG",
-  "DSC00309.JPG",
-  "DSC00313.JPG",
-  "DSC00315.JPG",
-  "DSC00320.JPG",
-];
-
 const services = [
   "Property Buying & Leasing Advisory",
   "Luxury Homes & Signature Villas",
@@ -52,20 +31,10 @@ const services = [
   "Golden Visa by Real Estate Investment",
 ];
 
-type Leader = { name: string; image: string };
-
-function titleFromFilename(filename: string): string {
-  return filename
-    .replace(/\.[^.]+$/, "")
-    .replace(/[_-]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-}
+type Leader = { image: string };
 
 function getLeadershipFromManifest(): Leader[] {
   return leadershipFiles.map((file) => ({
-    name: titleFromFilename(file),
     image: `/Leaders/${encodeURIComponent(file)}`,
   }));
 }
@@ -73,17 +42,67 @@ function getLeadershipFromManifest(): Leader[] {
 export default function AboutPage() {
   const leadership = getLeadershipFromManifest();
   const leadershipImages = leadership.map((p) => p.image);
-  const aboutGallery = aboutGalleryFiles.map((f) => `/final images/${encodeURIComponent(f)}`);
-  const heroImage = aboutGallery[0] ?? "/final images/Copy%20of%20DSC00300.JPG";
-  const storyImage = aboutGallery[1] ?? "/final images/Copy%20of%20DSC00354.JPG";
-  const ceoImage = "/final images/Dev.jpg";
+  // About page (except leadership tiles) uses Unsplash only.
+  const heroImage = "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1440&q=80&auto=format&fit=crop";
+  const storyImage =
+    "https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?w=1440&q=80&auto=format&fit=crop";
+  const ceoImage =
+    "https://images.unsplash.com/photo-1520975682071-ae63e4f1c3a0?w=1200&q=80&auto=format&fit=crop";
+
+  const portfolioMosaic = [
+    "https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1501183638710-841dd1904471?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1505691938895-1758d7feb5f7?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511651262363-3e6d7d8c5f0b?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1522156373667-4c7234bbd804?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5a6?w=1200&q=80&auto=format&fit=crop",
+  ] as const;
+
+  const aboutUsGallery = [
+    "https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1501183638710-841dd1904471?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1511651262363-3e6d7d8c5f0b?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1522156373667-4c7234bbd804?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1505691938895-1758d7feb5f7?w=1200&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5a6?w=1200&q=80&auto=format&fit=crop",
+  ] as const;
+
+  const propertyHighlights = [
+    {
+      title: "Luxury Residences",
+      image:
+        "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1200&q=80&auto=format&fit=crop",
+      location: "Downtown Dubai",
+    },
+    {
+      title: "Signature Villas",
+      image:
+        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80&auto=format&fit=crop",
+      location: "Emirates Hills",
+    },
+    {
+      title: "Modern Living",
+      image:
+        "https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=1200&q=80&auto=format&fit=crop",
+      location: "Dubai Marina",
+    },
+    {
+      title: "Premium Investment",
+      image:
+        "https://images.unsplash.com/photo-1501183638710-841dd1904471?w=1200&q=80&auto=format&fit=crop",
+      location: "Business Bay",
+    },
+  ] as const;
 
   return (
     <div className="min-h-screen">
-      <Reveal>
-        <section className="relative min-h-[900px]">
+      <section className="relative min-h-[900px]">
         <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${heroImage})` }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-black/65 to-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-black/45 to-black/20" />
         <div className="absolute inset-0 flex items-end">
           <div className="relative w-full max-w-[1280px] px-8 pb-20 md:px-20">
             <div className="flex items-center gap-4">
@@ -99,11 +118,9 @@ export default function AboutPage() {
             </p>
           </div>
         </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="border-b border-white/5 bg-[#060606] py-24">
+      <section className="border-b border-white/5 bg-[#060606] py-24">
         <div className="mx-auto grid max-w-[1280px] gap-16 px-8 md:grid-cols-2 md:px-20">
           <div className="space-y-8">
             <h2 className="font-serif text-4xl font-light italic leading-tight text-white/80 md:text-5xl">
@@ -131,6 +148,55 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      <Reveal>
+        <section className="border-b border-white/5 bg-[#060606] py-24">
+          <div className="mx-auto max-w-[1280px] px-8 md:px-20">
+            <div className="flex items-center gap-4">
+              <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
+              <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
+                Featured Properties
+              </span>
+            </div>
+            <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">
+              A Curated Selection
+            </h2>
+            <p className="mt-5 max-w-[760px] font-light text-sm leading-relaxed text-white/45">
+              Explore a premium set of residences and investment opportunities curated for clarity,
+              confidence, and long-term value.
+            </p>
+
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {propertyHighlights.map((p) => (
+                <Link
+                  key={p.title}
+                  href="/featured"
+                  className="group relative overflow-hidden rounded-sm border border-white/10 bg-[#080808] transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_30px_80px_-35px_rgba(201,168,76,0.35)]"
+                >
+                  <div className="relative h-[220px]">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.06]"
+                      style={{ backgroundImage: `url(${p.image})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                    <div className="absolute right-4 top-4 flex h-[34px] w-[34px] items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/70">
+                      ♡
+                    </div>
+                  </div>
+                  <div className="relative border-t border-white/10 p-5">
+                    <p className="font-serif text-lg font-medium italic text-white/90">{p.title}</p>
+                    <p className="mt-2 text-xs uppercase tracking-[2.4px] text-[#c9a84c]/80">
+                      {p.location}
+                    </p>
+                    <div className="mt-4 flex items-center gap-2 text-sm text-white/70 transition-colors group-hover:text-[#c9a84c]">
+                      View properties <span aria-hidden="true">→</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
         </section>
       </Reveal>
 
@@ -187,9 +253,15 @@ export default function AboutPage() {
           </div>
           <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">Portfolio Highlights</h2>
           <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {aboutGallery.slice(0, 8).map((src, idx) => (
-              <div key={src} className={`${idx === 0 ? "md:col-span-2 md:row-span-2" : ""} group relative overflow-hidden rounded-sm border border-white/10`}>
-                <div className="aspect-[4/3] h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.05]" style={{ backgroundImage: `url(${src})` }} />
+            {portfolioMosaic.map((src, idx) => (
+              <div
+                key={src}
+                className={`${idx === 0 ? "md:col-span-2 md:row-span-2" : ""} group relative overflow-hidden rounded-sm border border-white/10`}
+              >
+                <div
+                  className="aspect-[4/3] h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.05]"
+                  style={{ backgroundImage: `url(${src})` }}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
               </div>
             ))}
@@ -223,12 +295,15 @@ export default function AboutPage() {
             A visual journey of our team, client experiences, and signature project milestones.
           </p>
           <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {aboutGallery.slice(8).map((src, index) => (
+            {aboutUsGallery.map((src, index) => (
               <div key={src} className="group relative aspect-[4/5] overflow-hidden rounded-sm border border-white/10 bg-black">
-                <div className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.05]" style={{ backgroundImage: `url(${src})` }} />
+                <div
+                  className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.05]"
+                  style={{ backgroundImage: `url(${src})` }}
+                />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70" />
                 <span className="pointer-events-none absolute bottom-3 left-3 text-[10px] uppercase tracking-[2.8px] text-white/60">
-                  Frame {String(index + 9).padStart(2, "0")}
+                  Frame {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
             ))}

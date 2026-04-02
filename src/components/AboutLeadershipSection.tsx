@@ -5,19 +5,6 @@ import { useMemo, useState } from "react";
 
 const INITIAL_VISIBLE = 4;
 
-function getDisplayName(src: string): string {
-  const rawName = decodeURIComponent(src.split("/").pop() ?? "")
-    .replace(/\.[^.]+$/, "")
-    .replace(/^copy of\s+/i, "")
-    .replace(/^whatsapp image\s*/i, "")
-    .replace(/[_-]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  if (!rawName) return "Team Member";
-  return rawName.replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
 export default function AboutLeadershipSection({
   imagePaths,
 }: {
@@ -42,7 +29,7 @@ export default function AboutLeadershipSection({
             <div className="relative aspect-[296/395] overflow-hidden rounded-sm border border-white/10 transition-all duration-500 group-hover:border-[#c9a84c]/45 group-hover:shadow-[0_0_45px_-15px_rgba(201,168,76,0.35)] group-hover:brightness-110">
               <Image
                 src={src}
-                alt={getDisplayName(src)}
+                alt=""
                 fill
                 className="object-cover grayscale transition duration-500 group-hover:scale-[1.04] group-hover:grayscale-0"
                 sizes="(max-width: 768px) 50vw, 25vw"
