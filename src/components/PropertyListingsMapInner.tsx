@@ -4,13 +4,27 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useEffect } from "react";
 import {
-  CircleMarker,
+  Marker,
   MapContainer,
   Popup,
   TileLayer,
   useMap,
 } from "react-leaflet";
 import type { PropertyListing } from "@/lib/propertyData";
+
+function propertyIcon() {
+  return L.divIcon({
+    className: "custom-property-marker",
+    html: `
+      <div class="property-dot-wrapper">
+        <div class="property-dot-pulse"></div>
+        <div class="property-dot"></div>
+      </div>
+    `,
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
+  });
+}
 
 function FitBounds({ listings }: { listings: PropertyListing[] }) {
   const map = useMap();
@@ -59,16 +73,10 @@ export default function PropertyListingsMapInner({
         />
         {listings.length > 0 ? <FitBounds listings={listings} /> : null}
         {listings.map((l) => (
-          <CircleMarker
+          <Marker
             key={l.slug}
-            center={[l.latitude, l.longitude]}
-            radius={9}
-            pathOptions={{
-              color: "#fcf6ba",
-              weight: 1,
-              fillColor: "#c9a84c",
-              fillOpacity: 0.9,
-            }}
+            position={[l.latitude, l.longitude]}
+            icon={propertyIcon()}
           >
             <Popup>
               <div className="min-w-[200px] text-[#111]">
@@ -86,7 +94,7 @@ export default function PropertyListingsMapInner({
                 </button>
               </div>
             </Popup>
-          </CircleMarker>
+          </Marker>
         ))}
       </MapContainer>
     </div>

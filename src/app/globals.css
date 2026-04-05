@@ -525,6 +525,89 @@ select:focus-visible {
   color: #fff;
 }
 
+/* ─── Leaflet Custom Markers ───────────────────────────────────── */
+
+.leaflet-div-icon.custom-dev-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.marker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.marker-content {
+  position: relative;
+  width: auto;
+  min-width: 48px;
+  height: 26px;
+  padding: 0 12px;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+}
+
+.marker-label {
+  color: #080808;
+  font-family: var(--font-sans);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: center;
+  line-height: normal;
+  text-transform: uppercase;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.leaflet-marker-icon:hover .marker-content {
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Property Dot Marker ──────────────────────────────────────── */
+
+.leaflet-div-icon.custom-property-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.property-dot-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.property-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  background: #c9a84c;
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.leaflet-marker-icon:hover .property-dot {
+  transform: scale(1.5);
+}
+
 /* ─── Page Transition Animations ────────────────────────────────── */
 
 @keyframes page-fade-in {

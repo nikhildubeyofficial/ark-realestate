@@ -1,11 +1,9 @@
 "use client";
 
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
-import { useEffect } from "react";
 import L from "leaflet";
-import "leaflet.heat";
 
 type DevPoint = {
   name: string;
@@ -15,49 +13,12 @@ type DevPoint = {
   mapLabel?: string;
 };
 
-type LeafletWithHeat = typeof L & {
-  heatLayer: (
-    latlngs: [number, number, number][],
-    options: Record<string, unknown>
-  ) => L.Layer;
-};
-
-function useHeatLayer(map: L.Map | null, points: DevPoint[]) {
-  useEffect(() => {
-    if (!map) return;
-    const heat = (L as LeafletWithHeat).heatLayer(
-      points.map((p) => [p.lat, p.lng, p.weight]),
-      {
-        radius: 42,
-        blur: 28,
-        maxZoom: 12,
-        minOpacity: 0.18,
-        gradient: {
-          0.2: "#0b0b0b",
-          0.45: "#6b4f10",
-          0.7: "#c9a84c",
-          1.0: "#fcf6ba",
-        },
-      }
-    );
-    heat.addTo(map);
-    return () => {
-      heat.remove();
-    };
-  }, [map, points]);
-}
-
-function HeatLayer({ points }: { points: DevPoint[] }) {
-  const map = useMap();
-  useHeatLayer(map, points);
-  return null;
-}
-
 function markerLabelForMap(p: DevPoint): string {
   const raw = (p.mapLabel ?? p.name ?? "").trim();
   const safe = raw.replace(/[^A-Za-z0-9\s&'-]/g, "").trim();
-  const compact = safe.replace(/\s+/g, "").toUpperCase().slice(0, 8);
-  return compact || "MAP";
+  const compact = safe.replace(/\s+/g, " ").toUpperCase();
+  // Return single line, max 12 characters to be safe
+  return compact.slice(0, 12) || "ARK";
 }
 
 function logoIcon(label: string) {
@@ -66,18 +27,18 @@ function logoIcon(label: string) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+
   return L.divIcon({
-    className: "",
-    html: `<div style="
-      width:40px;height:40px;border-radius:999px;
-      background:#ffffff;display:flex;align-items:center;justify-content:center;
-      box-shadow: 0 12px 30px -16px rgba(0,0,0,0.85);
-      border:1px solid rgba(0,0,0,0.12);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial;
-      font-size:9px;font-weight:700;letter-spacing:0.5px;color:#080808;
-    ">${escaped}</div>`,
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
+    className: "custom-dev-marker",
+    html: `
+      <div class="marker-wrapper">
+        <div class="marker-content">
+          <span class="marker-label">${escaped}</span>
+        </div>
+      </div>
+    `,
+    iconSize: [80, 32], // Wider but shorter for pill shape
+    iconAnchor: [40, 16],
   });
 }
 
@@ -111,7 +72,6 @@ export default function DeveloperHeatmap({ points }: { points: DevPoint[] }) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           />
-          <HeatLayer points={points} />
           {points.map((p, idx) => (
             <Marker
               key={`${p.lat}-${p.lng}-${idx}`}
