@@ -15,6 +15,7 @@ import { developerFilterMatches } from "@/lib/credenceDeveloperFilter";
 import type { CredenceSortKey } from "@/lib/credenceSort";
 import { sortListingsCredence } from "@/lib/credenceSort";
 import type { PropertyListing } from "@/lib/propertyData";
+import { ChevronLeft, ChevronRight, Heart, MapPin } from "lucide-react";
 
 const PAGE_SIZE = 9;
 
@@ -491,105 +492,13 @@ export default function FeaturedListingsClient({
             <>
               <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {paginated.map((listing) => (
-                  <article
-                    key={listing.slug}
-                    className="group overflow-hidden rounded-lg border border-white/10 bg-white/5 transition hover:border-[#c9a84c]/30"
-                  >
-                    <div className="relative aspect-[4/3] bg-white/10">
-                      <Link
-                        href={`/properties/${listing.slug}`}
-                        className="absolute inset-0 block"
-                        aria-label={`View ${listing.title}`}
-                      >
-                        <div
-                          className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:scale-105"
-                          style={{
-                            backgroundImage: `url(${listing.image})`,
-                          }}
-                        />
-                      </Link>
-                      <div className="absolute left-3 top-3 z-[2] flex items-center gap-2">
-                        <label className="flex cursor-pointer items-center gap-1.5 rounded border border-white/20 bg-black/50 px-2 py-1 text-[10px] text-white/80">
-                          <input
-                            type="checkbox"
-                            checked={compare.has(listing.slug)}
-                            onChange={() => toggleCompare(listing.slug)}
-                            className="accent-[#c9a84c]"
-                          />
-                          Compare
-                        </label>
-                      </div>
-                      <div className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80">
-                        ♡
-                      </div>
-                      <div className="absolute bottom-4 left-4 right-4 z-[2] flex flex-wrap gap-3 text-xs text-white/90">
-                        <span>{listing.beds} Beds</span>
-                        <span>{listing.baths} Baths</span>
-                        <span>{listing.sqft}</span>
-                      </div>
-                    </div>
-                    <div className="border-t border-white/10 p-6">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="border border-white/15 bg-black/30 px-2 py-0.5 text-[10px] uppercase tracking-wider text-[#c9a84c]/90">
-                          {listing.credenceCategory}
-                        </span>
-                        {listing.readyDate ? (
-                          <span className="text-[10px] text-white/40">
-                            {listing.readyDate}
-                          </span>
-                        ) : null}
-                      </div>
-                      <h2 className="mt-2 font-serif text-xl font-medium text-white/90">
-                        <Link
-                          href={`/properties/${listing.slug}`}
-                          className="hover:text-[#c9a84c]"
-                        >
-                          {listing.title}
-                        </Link>
-                      </h2>
-                      <p className="mt-1 text-xs font-light text-white/55">
-                        <span className="text-white/35">Developer</span>{" "}
-                        {listing.builder}
-                      </p>
-                      <p className="mt-1 text-sm text-[#c9a84c]/90">
-                        {listing.subtitle}
-                      </p>
-                      <p className="mt-3 flex items-center gap-2 text-xs text-white/50">
-                        <span>📍</span> {listing.location}
-                      </p>
-                      {listing.excerpt ? (
-                        <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-white/45">
-                          {listing.excerpt}
-                        </p>
-                      ) : null}
-                      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
-                        <span className="font-medium text-[#c9a84c]">
-                          {listing.price}
-                        </span>
-                        <div className="flex flex-wrap gap-2">
-                          <Link
-                            href={`/properties/${listing.slug}`}
-                            className="border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-sm font-light text-[#c9a84c] transition hover:bg-[#c9a84c] hover:text-[#060606]"
-                          >
-                            View details
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={() => setInquire(listing)}
-                            className="border border-white/20 px-4 py-2 text-sm font-light text-white/70 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
-                          >
-                            Inquire
-                          </button>
-                          <Link
-                            href={`/#contact?ref=${encodeURIComponent(listing.slug)}`}
-                            className="border border-white/15 px-4 py-2 text-sm font-light text-white/55 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
-                          >
-                            Contact
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
+                  <PropertyCard 
+                    key={listing.slug} 
+                    listing={listing} 
+                    compare={compare} 
+                    toggleCompare={toggleCompare} 
+                    setInquire={setInquire}
+                  />
                 ))}
               </div>
               {totalPages > 1 ? (
@@ -679,5 +588,159 @@ export default function FeaturedListingsClient({
         />
       ) : null}
     </>
+  );
+}
+
+function PropertyCard({ 
+  listing, 
+  compare, 
+  toggleCompare, 
+  setInquire 
+}: { 
+  listing: PropertyListing; 
+  compare: Set<string>; 
+  toggleCompare: (slug: string) => void;
+  setInquire: (l: PropertyListing) => void;
+}) {
+  const [imgIdx, setImgIdx] = useState(0);
+  const images = useMemo(() => {
+    const set = new Set([listing.image, ...listing.gallery]);
+    return Array.from(set).filter(Boolean);
+  }, [listing]);
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setImgIdx((idx) => (idx === 0 ? images.length - 1 : idx - 1));
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setImgIdx((idx) => (idx === images.length - 1 ? 0 : idx + 1));
+  };
+
+  return (
+    <article
+      className="group overflow-hidden rounded-lg border border-white/10 bg-white/5 transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.8),0_0_20px_-10px_rgba(201,168,76,0.1)]"
+    >
+      <div className="relative aspect-[4/3] bg-white/10 overflow-hidden">
+        <Link
+          href={`/properties/${listing.slug}`}
+          className="absolute inset-0 block z-0"
+          aria-label={`View ${listing.title}`}
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.04]"
+            style={{ backgroundImage: `url(${images[imgIdx]})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-80" />
+        </Link>
+        
+        {/* Navigation Arrows */}
+        {images.length > 1 && (
+          <div className="absolute inset-x-0 top-1/2 z-20 flex -translate-y-1/2 justify-between px-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <button 
+              onClick={handlePrev}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/90 backdrop-blur-sm transition-all hover:bg-[#c9a84c] hover:border-[#c9a84c] hover:text-black"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button 
+              onClick={handleNext}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/90 backdrop-blur-sm transition-all hover:bg-[#c9a84c] hover:border-[#c9a84c] hover:text-black"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        )}
+
+        {/* Dots Indicator */}
+        {images.length > 1 && (
+          <div className="absolute bottom-14 left-0 right-0 z-20 flex justify-center gap-1.5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            {images.map((_, i) => (
+              <div 
+                key={i}
+                className={`h-1 rounded-full transition-all duration-300 ${i === imgIdx ? 'w-4 bg-[#c9a84c]' : 'w-1.5 bg-white/40'}`}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="absolute left-3 top-3 z-30 flex items-center gap-2">
+          <label className="flex cursor-pointer items-center gap-1.5 rounded border border-white/20 bg-black/50 px-2 py-1 text-[10px] text-white/80 transition-all hover:border-[#c9a84c]/50 hover:bg-black/70">
+            <input
+              type="checkbox"
+              checked={compare.has(listing.slug)}
+              onChange={() => toggleCompare(listing.slug)}
+              className="accent-[#c9a84c]"
+            />
+            Compare
+          </label>
+        </div>
+        <button className="absolute right-3 top-3 z-30 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/60 transition-all hover:bg-[#c9a84c] hover:border-[#c9a84c] hover:text-black">
+          <Heart size={14} />
+        </button>
+        <div className="absolute bottom-4 left-4 right-4 z-20 flex flex-wrap gap-3 text-[11px] font-light text-white/90">
+          <span>{listing.beds} Beds</span>
+          <span>{listing.baths} Baths</span>
+          <span>{listing.sqft}</span>
+        </div>
+      </div>
+      <div className="border-t border-white/10 p-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="border border-white/15 bg-black/30 px-2 py-0.5 text-[10px] uppercase tracking-wider text-[#c9a84c]/90">
+            {listing.credenceCategory}
+          </span>
+          {listing.readyDate ? (
+            <span className="text-[10px] text-white/40">
+              {listing.readyDate}
+            </span>
+          ) : null}
+        </div>
+        <h2 className="mt-2 font-serif text-xl font-medium text-white/90 transition-colors group-hover:text-[#c9a84c]">
+          <Link
+            href={`/properties/${listing.slug}`}
+          >
+            {listing.title}
+          </Link>
+        </h2>
+        <p className="mt-1 text-xs font-light text-white/55">
+          <span className="text-white/35">Developer</span>{" "}
+          {listing.builder}
+        </p>
+        <p className="mt-1 text-sm text-[#c9a84c]/90">
+          {listing.subtitle}
+        </p>
+        <p className="mt-3 flex items-center gap-2 text-xs text-white/50">
+          <MapPin size={12} className="text-[#c9a84c]" /> {listing.location}
+        </p>
+        {listing.excerpt ? (
+          <p className="mt-3 line-clamp-2 text-xs leading-relaxed text-white/45">
+            {listing.excerpt}
+          </p>
+        ) : null}
+        <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
+          <span className="font-serif text-lg font-medium text-[#c9a84c]">
+            {listing.price}
+          </span>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setInquire(listing)}
+              className="border border-white/20 bg-white/5 px-4 py-2 text-xs font-light tracking-wide text-white/70 transition-all hover:bg-white hover:text-black"
+            >
+              Inquire
+            </button>
+            <Link
+              href={`/properties/${listing.slug}`}
+              className="border border-[#c9a84c] bg-[#c9a84c]/5 px-4 py-2 text-xs font-light tracking-wide text-[#c9a84c] transition-all hover:bg-[#c9a84c] hover:text-black"
+            >
+              View
+            </Link>
+          </div>
+        </div>
+      </div>
+    </article>
   );
 }

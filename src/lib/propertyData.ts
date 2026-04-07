@@ -74,6 +74,7 @@ export type PropertyListing = {
   tabCommercial: boolean;
   tabOffice: boolean;
   tabOffPlan: boolean;
+  gallery: string[];
 };
 
 export type HeatPoint = {
@@ -289,6 +290,10 @@ function mapRawToListing(
     latitude: safeNumber(item.latitude),
     longitude: safeNumber(item.longitude),
     builder,
+    gallery: (item.photos ?? [])
+      .slice(0, 5)
+      .map((p) => p?.src)
+      .filter((s): s is string => Boolean(s)),
     excerpt: descriptionText.slice(0, 180),
     sortScore:
       safeNumber(item.statistics?.total?.price_from) +
