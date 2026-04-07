@@ -2,20 +2,56 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropertyDetailInquireButton from "@/components/PropertyDetailInquireButton";
 import type { ProjectDetailPayload } from "@/lib/propertyData";
-import { MapPin, ArrowLeft, Maximize2 } from "lucide-react";
+import { MapPin, ArrowLeft, Maximize2, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function PropertyDetailView({ data }: { data: ProjectDetailPayload }) {
   const { listing, descriptionHtml, gallery } = data;
   const hero = listing.image;
+  // Unique images list for the gallery and lightbox
   const allImages = Array.from(
     new Set([hero, ...gallery].filter(Boolean))
   ).slice(0, 15);
   
   const [activeImage, setActiveImage] = useState(hero);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  
   const mapHref = `https://www.google.com/maps?q=${listing.latitude},${listing.longitude}`;
+
+  // Keyboard navigation & body scroll lock for lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxOpen(false);
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "ArrowRight") handleNext();
+    };
+    
+    window.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "auto";
+    };
+  }, [lightboxOpen, lightboxIndex, allImages]); // allImages doesn't change, but keep it for deps consistency
+
+  const handlePrev = () => {
+    setLightboxIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setLightboxIndex((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
+  };
+
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-[#080808] pb-24 pt-[88px]">
@@ -30,18 +66,20 @@ export default function PropertyDetailView({ data }: { data: ProjectDetailPayloa
 
         {/* Hero Section */}
         <div className="grid gap-4 lg:grid-cols-4 lg:grid-rows-2 lg:h-[600px]">
-          {/* Main Large Image */}
-          <div className="relative overflow-hidden rounded-lg border border-white/10 bg-white/5 lg:col-span-3 lg:row-span-2">
+          <div 
+            className="relative overflow-hidden rounded-lg border border-white/10 bg-white/5 lg:col-span-3 lg:row-span-2 cursor-zoom-in group"
+            onClick={() => openLightbox(allImages.indexOf(activeImage))}
+          >
             <Image
               src={activeImage}
               alt={listing.title}
               fill
-              className="object-cover transition-transform duration-700 hover:scale-[1.02]"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
               sizes="(max-width: 1024px) 100vw, 75vw"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 pointer-events-none">
               <span className="inline-block border border-[#c9a84c]/30 bg-black/40 px-3 py-1 text-[10px] uppercase tracking-wider text-[#c9a84c] backdrop-blur-sm">
                 {listing.credenceCategory}
               </span>
@@ -60,38 +98,44 @@ export default function PropertyDetailView({ data }: { data: ProjectDetailPayloa
               </div>
             </div>
             
-            {/* Gallery Indicator / Zoom Icon */}
-            <button className="absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/80 transition-all hover:bg-[#c9a84c] hover:border-[#c9a84c] hover:text-black hover:scale-110">
+            <button 
+              className="absolute right-6 top-6 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/80 transition-all hover:bg-[#c9a84c] hover:border-[#c9a84c] hover:text-black hover:scale-110"
+              onClick={(e) => {
+                e.stopPropagation();
+                openLightbox(allImages.indexOf(activeImage));
+              }}
+              title="View in Lightbox"
+            >
                <Maximize2 size={18} />
             </button>
           </div>
 
-          {/* Sidebar Thumbs/Featured Grid */}
           <div className="hidden lg:grid grid-rows-2 gap-4 h-full">
              {allImages.slice(1, 3).map((img, idx) => (
                 <div 
                   key={idx} 
                   className="relative overflow-hidden rounded-lg border border-white/10 bg-white/5 cursor-pointer group"
-                  onClick={() => setActiveImage(img as string)}
+                  onClick={() => {
+                    const realIdx = allImages.indexOf(img as string);
+                    setActiveImage(img as string);
+                    if (realIdx !== -1) openLightbox(realIdx);
+                  }}
                 >
                    <Image 
                     src={img as string} 
                     alt="" 
                     fill 
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="object-cover transition-all duration-500 group-hover:scale-110"
                     sizes="25vw"
                    />
-                   <div className={`absolute inset-0 transition-opacity duration-300 ${activeImage === img ? 'bg-[#c9a84c]/20 ring-1 ring-inset ring-[#c9a84c]' : 'bg-black/20 opacity-40 group-hover:opacity-0'}`} />
+                   <div className={`absolute inset-0 transition-opacity duration-300 ${activeImage === img ? 'bg-[#c9a84c]/10 ring-1 ring-inset ring-[#c9a84c]' : 'bg-black/20 opacity-40 group-hover:opacity-0'}`} />
                 </div>
              ))}
-             {/* If less than 2 extra images, fill with something or maybe adjust grid */}
           </div>
         </div>
 
-        {/* Info Grid */}
         <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_360px]">
           <div className="space-y-12">
-            {/* Quick Stats */}
             <section className="grid grid-cols-2 gap-6 rounded-lg border border-white/10 bg-white/[0.02] p-8 md:grid-cols-4">
                 <Detail label="Bedrooms" value={listing.maxBedroomsFromUnits > 0 ? `${listing.maxBedroomsFromUnits}` : "—"} />
                 <Detail label="Total Area" value={listing.sqft} />
@@ -99,7 +143,6 @@ export default function PropertyDetailView({ data }: { data: ProjectDetailPayloa
                 <Detail label="Status" value={listing.readyDate || "On Request"} />
             </section>
 
-            {/* Description */}
             <section className="border-b border-white/5 pb-12">
                 <h2 className="text-[10px] font-light uppercase tracking-[0.3em] text-[#c9a84c]">
                   Property Overview
@@ -116,22 +159,24 @@ export default function PropertyDetailView({ data }: { data: ProjectDetailPayloa
                 )}
             </section>
 
-            {/* More Images / Gallery Grid */}
-            {allImages.length > 1 && (
-              <section>
+            {allImages.length > 0 && (
+              <section id="gallery">
                 <h3 className="text-[10px] font-light uppercase tracking-[0.3em] text-[#c9a84c] mb-8">
-                  Gallery View
+                  GALLERY VIEW
                 </h3>
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                   {allImages.map((src, idx) => (
                     <div
                       key={idx}
-                      className={`relative aspect-square overflow-hidden rounded-lg border cursor-pointer transition-all duration-300 ${
+                      className={`relative aspect-square overflow-hidden rounded-lg border cursor-pointer transition-all duration-400 hover:scale-[1.03] ${
                         activeImage === src 
-                          ? "border-[#c9a84c] ring-2 ring-[#c9a84c]/20 scale-[0.98]" 
-                          : "border-white/10 grayscale-[0.3] hover:grayscale-0 hover:scale-[1.03]"
+                          ? "border-[#c9a84c] ring-2 ring-[#c9a84c]/20" 
+                          : "border-white/10 opacity-70 hover:opacity-100"
                       }`}
-                      onClick={() => setActiveImage(src as string)}
+                      onClick={() => {
+                        setActiveImage(src as string);
+                        openLightbox(idx);
+                      }}
                     >
                       <Image
                         src={src as string}
@@ -151,16 +196,16 @@ export default function PropertyDetailView({ data }: { data: ProjectDetailPayloa
                 href={mapHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-white/20 bg-white/5 px-6 py-3 text-sm font-light text-white/90 transition-all hover:border-[#c9a84c] hover:text-[#c9a84c] hover:bg-[#c9a84c]/10"
+                className="inline-flex items-center gap-2 border border-white/20 bg-[#161616] px-6 py-3 text-sm font-light text-white/90 transition-all hover:border-[#c9a84c] hover:text-[#c9a84c] group"
               >
-                <MapPin size={16} /> View on Google Maps
+                <MapPin size={16} className="text-[#c9a84c] transition-transform group-hover:scale-125" /> 
+                View on Google Maps
               </a>
             </div>
           </div>
 
-          {/* Inquiry Widget */}
           <aside className="sticky top-28 h-fit space-y-6">
-            <div className="card-premium rounded-xl border border-white/10 bg-[#080808] p-8 shadow-xl">
+            <div className="card-premium rounded-xl border border-white/10 bg-[#060606] p-8 shadow-xl">
               <div className="mb-6 space-y-2">
                 <p className="text-[10px] uppercase tracking-widest text-white/40">Ref: #{listing.projectId}</p>
                 <h3 className="font-serif text-xl font-medium text-white/90">{listing.title}</h3>
@@ -204,14 +249,73 @@ export default function PropertyDetailView({ data }: { data: ProjectDetailPayloa
           </aside>
         </div>
       </div>
+
+      {/* Lightbox Component */}
+      {lightboxOpen && (
+        <div className="fixed inset-0 z-[100] flex flex-col bg-black/95 backdrop-blur-xl transition-all duration-300">
+          <div className="flex items-center justify-between p-6">
+            <div className="text-white/60 text-[10px] tracking-widest uppercase">
+              {listing.title} — {lightboxIndex + 1} / {allImages.length}
+            </div>
+            <button 
+              onClick={() => setLightboxOpen(false)}
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all hover:bg-white hover:text-black"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="relative flex flex-1 items-center justify-center px-4 overflow-hidden group">
+            <button 
+              onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+              className="absolute left-6 z-10 flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 sm:left-10"
+            >
+              <ChevronLeft size={32} />
+            </button>
+
+            <div className="relative h-full w-full max-w-[1400px] select-none" onClick={handleNext}>
+              <Image
+                src={allImages[lightboxIndex] as string}
+                alt=""
+                fill
+                className="object-contain transition-all duration-500"
+                priority
+              />
+            </div>
+
+            <button 
+              onClick={(e) => { e.stopPropagation(); handleNext(); }}
+              className="absolute right-6 z-10 flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 sm:right-10"
+            >
+              <ChevronRight size={32} />
+            </button>
+          </div>
+
+          <div className="h-24 w-full overflow-hidden border-t border-white/10 bg-black/50 p-4">
+            <div className="flex h-full w-full justify-center gap-3">
+              {allImages.slice(Math.max(0, lightboxIndex - 3), lightboxIndex + 4).map((img, i) => (
+                <div 
+                  key={i}
+                  onClick={() => setLightboxIndex(allImages.indexOf(img as string))}
+                  className={`relative aspect-video h-full cursor-pointer overflow-hidden rounded border transition-all ${
+                    lightboxIndex === allImages.indexOf(img as string) ? "border-[#c9a84c] ring-1 ring-[#c9a84c]" : "border-white/10 opacity-40 hover:opacity-100"
+                  }`}
+                >
+                  <Image src={img as string} alt="" fill className="object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 function Detail({ label, value }: { label: string; value: string }) {
   return (
-    <div className="space-y-1">
-      <dt className="text-[10px] uppercase tracking-widest text-white/35">
+    <div className="space-y-1 text-center md:text-left">
+      <dt className="text-[10px] uppercase tracking-widest text-[#c9a84c]/60">
         {label}
       </dt>
       <dd className="font-serif text-base text-white/90 italic">{value}</dd>
