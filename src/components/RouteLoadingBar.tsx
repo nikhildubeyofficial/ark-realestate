@@ -12,8 +12,14 @@ export default function RouteLoadingBar() {
   const pathname = usePathname();
   const [show, setShow] = useState(false);
   const [key, setKey] = useState(0);
+  const isLandingPage = pathname === "/";
 
   useEffect(() => {
+    if (!isLandingPage) {
+      setShow(false);
+      return;
+    }
+
     // On every pathname change (except initial), trigger the bar
     setKey((k) => k + 1);
     setShow(true);
@@ -23,7 +29,7 @@ export default function RouteLoadingBar() {
     }, 850); // slightly longer than the animation duration
 
     return () => clearTimeout(timer);
-  }, [pathname]);
+  }, [pathname, isLandingPage]);
 
   if (!show) return null;
 

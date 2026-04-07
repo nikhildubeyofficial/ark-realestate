@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { Heart, MapPin } from "lucide-react";
 import DeveloperHeatmapClient from "@/components/DeveloperHeatmapClient";
 import InquireModal from "@/components/InquireModal";
 import {
@@ -132,7 +133,7 @@ export default function HomeTopDevelopersSection({
                     </span>
                   </div>
                   <div className="absolute right-4 top-4 flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80">
-                    ♡
+                    <Heart size={14} />
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 flex min-h-12 flex-wrap items-center gap-x-4 gap-y-1 bg-black/40 px-[18px] py-2 text-xs text-white/90">
                     <span>{prop.beds} Beds</span>
@@ -160,7 +161,7 @@ export default function HomeTopDevelopersSection({
                   </p>
                 ) : null}
                 <p className="mt-3 flex items-center gap-2 text-xs text-white/50">
-                  <span>📍</span> {prop.location}
+                  <MapPin size={12} className="text-[#c9a84c]" /> {prop.location}
                 </p>
                 <p className="mt-2 font-light text-[#c9a84c]">{prop.price}</p>
                 <div className="mt-4 flex flex-wrap gap-2">

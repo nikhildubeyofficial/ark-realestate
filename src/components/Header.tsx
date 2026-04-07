@@ -18,6 +18,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const pathname = usePathname();
+  const isLandingPage = pathname === "/";
 
   // Refs for the sliding nav indicator
   const navRef = useRef<HTMLElement>(null);
@@ -52,11 +53,16 @@ export default function Header() {
   useEffect(() => {
     let ticking = false;
     const updateScroll = () => {
-      setScrolled(window.scrollY > 12);
-      const doc = document.documentElement;
-      const total = doc.scrollHeight - doc.clientHeight;
-      const progress = total > 0 ? Math.min(window.scrollY / total, 1) : 0;
-      setScrollProgress(progress);
+      const nextScrolled = window.scrollY > 12;
+      setScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
+
+      if (isLandingPage) {
+        const doc = document.documentElement;
+        const total = doc.scrollHeight - doc.clientHeight;
+        const progress = total > 0 ? Math.min(window.scrollY / total, 1) : 0;
+        setScrollProgress((prev) => (Math.abs(prev - progress) < 0.01 ? prev : progress));
+      }
+
       ticking = false;
     };
 
@@ -70,7 +76,7 @@ export default function Header() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [setScrolled, setScrollProgress]);
+  }, [isLandingPage]);
 
   useEffect(() => {
     setOpen(false);
@@ -95,8 +101,6 @@ export default function Header() {
     []
   );
 
-  const isLandingPage = pathname === "/";
-
   return (
     <>
       <div className="hidden border-b border-white/5 bg-[#060606] px-4 py-2 sm:px-9 sm:py-2.5 md:flex items-center justify-between">
@@ -118,10 +122,10 @@ export default function Header() {
         </div>
       </div>
       <header
-        className={`sticky top-0 z-50 border-b backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`sticky top-0 z-50 border-b transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           scrolled
-            ? "border-white/10 bg-[#080808]/95 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.85),0_0_30px_-10px_rgba(201,168,76,0.08)]"
-            : "border-white/5 bg-[#080808]/95 shadow-none"
+            ? "border-white/10 bg-[#080808] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.85),0_0_30px_-10px_rgba(201,168,76,0.08)]"
+            : "border-white/5 bg-[#080808] shadow-none"
         }`}
       >
         {/* Scroll progress bar - only on landing page */}

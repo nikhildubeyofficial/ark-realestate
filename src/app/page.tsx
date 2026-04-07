@@ -327,8 +327,8 @@ export default async function HomePage() {
 
       <Reveal direction="right">
         <section className="border-b border-white/5 py-16 md:px-20 md:py-24">
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-5 lg:flex-row lg:gap-16 md:px-[80px]">
-          <div className="min-w-0 max-w-full lg:max-w-[317px]">
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-10 px-5 lg:flex-row lg:items-start lg:gap-12 md:px-[80px]">
+          <div className="min-w-0 max-w-full lg:max-w-[320px]">
             <div className="flex items-center gap-4">
               <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
               <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
@@ -336,7 +336,7 @@ export default async function HomePage() {
               </span>
             </div>
             <h2
-              className="mt-4 font-serif text-[48px] font-light italic leading-[68px] text-white/90 md:text-[56px]"
+              className="mt-4 font-serif text-[38px] font-light italic leading-tight text-white/90 sm:text-[44px] md:text-[52px]"
               style={{ fontFamily: "var(--font-cormorant)" }}
             >
               Exceptional <span className="block">Residences</span>
@@ -348,11 +348,11 @@ export default async function HomePage() {
               {awardsCopy}
             </p>
           </div>
-          <div className="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4" style={{ gap: "21px" }}>
+          <div className="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4" style={{ gap: "21px" }}>
             {exceptionalResidences.map((prop, i) => (
               <div
                 key={prop.title}
-                className="card-premium group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 md:rounded-t-[30px]"
+                className="card-premium group relative w-full overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 md:rounded-t-[30px]"
               >
                 <Link href="/featured" className="block">
                   <div className="relative h-[240px] w-full overflow-hidden rounded-t-2xl sm:h-[280px] md:h-[310px] md:rounded-t-[30px]">

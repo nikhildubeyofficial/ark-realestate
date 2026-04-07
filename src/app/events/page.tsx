@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
+import { MapPin } from "lucide-react";
 
 const events = [
   {
@@ -90,7 +91,7 @@ export default function EventsPage() {
                     {ev.title}
                   </h2>
                   <p className="mt-2 flex items-center gap-2 text-xs text-white/45">
-                    <span>📍</span> {ev.location}
+                    <MapPin size={12} className="text-[#c9a84c]" /> {ev.location}
                   </p>
                   <p className="mt-4 font-light text-white/50 text-sm leading-relaxed">
                     {ev.excerpt}

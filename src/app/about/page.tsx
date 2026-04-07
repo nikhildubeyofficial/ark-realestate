@@ -4,6 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import Link from "next/link";
 import imagescManifest from "@/data/imagesc-manifest.json";
 import { leadershipProfiles } from "@/data/leadershipProfiles";
+import { Heart } from "lucide-react";
 
 const stats = [
   { value: "500+", label: "Properties Sold" },
@@ -166,7 +167,7 @@ export default function AboutPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                     <div className="absolute right-4 top-4 flex h-[34px] w-[34px] items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/70">
-                      ♡
+                      <Heart size={16} />
                     </div>
                   </div>
                   <div className="relative border-t border-white/10 p-5">

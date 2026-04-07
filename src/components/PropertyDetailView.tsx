@@ -99,7 +99,7 @@ export default function PropertyDetailView({ data }: { data: ProjectDetailPayloa
         <div className="grid gap-4 lg:h-[640px] lg:grid-cols-12 lg:grid-rows-1">
           {/* Main Large Image Container */}
           <div 
-            className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 lg:col-span-9 lg:row-span-1 shadow-2xl cursor-zoom-in group"
+            className="group relative h-[300px] overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-2xl cursor-zoom-in sm:h-[420px] lg:col-span-9 lg:row-span-1 lg:h-full"
             onClick={() => openLightbox(allImages.indexOf(activeImage))}
           >
             <Image
@@ -364,13 +364,13 @@ export default function PropertyDetailView({ data }: { data: ProjectDetailPayloa
           </div>
 
           {/* Lightbox Footer Preview */}
-          <div className="h-32 w-full overflow-hidden border-t border-white/5 bg-black/60 p-6 lg:px-20">
-            <div className="flex h-full w-full justify-center gap-4">
+          <div className="h-28 w-full overflow-x-auto overflow-y-hidden border-t border-white/5 bg-black/60 px-4 py-4 lg:h-32 lg:px-20">
+            <div className="flex h-full w-max min-w-full justify-start gap-3 lg:justify-center lg:gap-4">
               {allImages.map((img, i) => (
                 <div 
                   key={i}
                   onClick={() => setLightboxIndex(i)}
-                  className={`relative aspect-video h-full cursor-pointer overflow-hidden rounded-lg border transition-all duration-300 ${
+                  className={`relative h-full w-28 shrink-0 cursor-pointer overflow-hidden rounded-lg border transition-all duration-300 sm:w-36 lg:w-auto lg:aspect-video ${
                     lightboxIndex === i 
                       ? "border-[#c9a84c] ring-2 ring-[#c9a84c] scale-110 z-10" 
                       : "border-white/5 opacity-30 hover:opacity-100 hover:scale-105"
