@@ -50,21 +50,31 @@ export default function Header() {
   }, [updateIndicator]);
 
   useEffect(() => {
-    const onScroll = () => {
+    let ticking = false;
+    const updateScroll = () => {
       setScrolled(window.scrollY > 12);
       const doc = document.documentElement;
       const total = doc.scrollHeight - doc.clientHeight;
       const progress = total > 0 ? Math.min(window.scrollY / total, 1) : 0;
       setScrollProgress(progress);
+      ticking = false;
     };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScroll);
+        ticking = true;
+      }
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [setScrolled, setScrollProgress]);
 
   useEffect(() => {
     setOpen(false);
-  }, [pathname]);
+  }, [pathname, setOpen]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -84,6 +94,8 @@ export default function Header() {
     },
     []
   );
+
+  const isLandingPage = pathname === "/";
 
   return (
     <>
@@ -106,22 +118,30 @@ export default function Header() {
         </div>
       </div>
       <header
-        className={`sticky top-0 z-50 relative border-b backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] supports-[backdrop-filter]:bg-[#080808]/85 ${
+        className={`sticky top-0 z-50 border-b backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           scrolled
             ? "border-white/10 bg-[#080808]/95 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.85),0_0_30px_-10px_rgba(201,168,76,0.08)]"
             : "border-white/5 bg-[#080808]/95 shadow-none"
         }`}
       >
-        {/* Scroll progress bar */}
-        <div className="pointer-events-none absolute left-0 top-0 h-[2px] w-full bg-white/5">
-          <div
-            className="h-full bg-gradient-to-r from-[#c9a84c] to-[#fcf6ba] transition-[width] duration-200"
-            style={{ width: `${Math.round(scrollProgress * 100)}%` }}
-          />
-        </div>
+        {/* Scroll progress bar - only on landing page */}
+        {isLandingPage && (
+          <div className="pointer-events-none absolute left-0 top-0 h-[2px] w-full bg-white/5">
+            <div
+              className="h-full bg-gradient-to-r from-[#c9a84c] to-[#fcf6ba] transition-[width] duration-200"
+              style={{ width: `${Math.round(scrollProgress * 100)}%` }}
+            />
+          </div>
+        )}
         <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 sm:h-[72px] sm:px-8 lg:px-[120px]">
           <Link
             href="/"
+            onClick={(e) => {
+              if (pathname === "/") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
             className="group flex items-center gap-2 transition-opacity duration-300 hover:opacity-90"
           >
             <span className="font-serif text-lg font-medium text-white transition-colors duration-300 group-hover:text-[#c9a84c] sm:text-xl">ARK</span>
@@ -184,9 +204,9 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu - solid background */}
         <div
-          className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col bg-[#080808]/98 backdrop-blur-lg transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:top-[72px] md:hidden ${
+          className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col bg-[#080808] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:top-[72px] md:hidden ${
             open ? "visible opacity-100 translate-y-0" : "invisible pointer-events-none opacity-0 -translate-y-3"
           }`}
         >

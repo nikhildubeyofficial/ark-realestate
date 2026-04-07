@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Reveal, StaggerReveal } from "@/components/Reveal";
+import { Heart, MapPin, Phone, Mail } from "lucide-react";
 import HomeBuyingKnowAccordion from "@/components/HomeBuyingKnowAccordion";
 import HomeTopDevelopersSection from "@/components/HomeTopDevelopersSection";
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
@@ -347,7 +348,7 @@ export default async function HomePage() {
               {awardsCopy}
             </p>
           </div>
-          <div className="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "21px" }}>
+          <div className="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4" style={{ gap: "21px" }}>
             {exceptionalResidences.map((prop, i) => (
               <div
                 key={prop.title}
@@ -359,10 +360,10 @@ export default async function HomePage() {
                       className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.04]"
                       style={{ backgroundImage: `url(${propertyImages[i] ?? IMG.propertyVilla})` }}
                     />
-                    <div className="absolute right-4 top-4 flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80">
-                      ♡
+                    <div className="absolute right-4 top-4 flex h-[34px] w-[34px] items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80 transition-all duration-300 hover:bg-[#c9a84c] hover:border-[#c9a84c] hover:text-black">
+                      <Heart size={16} />
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 flex h-12 items-center gap-4 bg-black/40 px-[18px] text-xs text-white/90">
+                    <div className="absolute bottom-0 left-0 right-0 flex h-12 items-center gap-4 bg-black/40 px-[18px] text-xs text-white/90 backdrop-blur-sm">
                       <span>{prop.beds} Beds</span>
                       <span>{prop.baths} Baths</span>
                       <span>{prop.sqft} ft²</span>
@@ -372,7 +373,7 @@ export default async function HomePage() {
                 <div className="border-t border-white/10 p-5">
                   <h3 className="font-serif text-lg font-medium text-white/90">{prop.title}</h3>
                   <p className="mt-3 flex items-center gap-2 text-xs text-white/50">
-                    <span>📍</span> {prop.location}
+                    <MapPin size={12} className="text-[#c9a84c]" /> {prop.location}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     <Link
@@ -577,8 +578,8 @@ export default async function HomePage() {
             </p>
             <div className="mt-12 space-y-8">
               <div className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-white/20 text-white/60">
-                  📍
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-white/20 text-[#c9a84c]">
+                  <MapPin size={18} />
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-white/50">Our Address</p>
@@ -587,8 +588,8 @@ export default async function HomePage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-white/20 text-white/60">
-                  📞
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-white/20 text-[#c9a84c]">
+                  <Phone size={18} />
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-white/50">Direct Line</p>
@@ -597,8 +598,8 @@ export default async function HomePage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-white/20 text-white/60">
-                  ✉️
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-white/20 text-[#c9a84c]">
+                  <Mail size={18} />
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-white/50">Correspondence</p>
