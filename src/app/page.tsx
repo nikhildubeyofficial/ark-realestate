@@ -418,7 +418,7 @@ export default async function HomePage() {
 
                     {/* Price (Estimated in AED) */}
                     <p className="mt-3 text-base font-medium tracking-wide text-[#c9a84c]/90">
-                      {i === 0 ? "AED 90,000,000" : i === 1 ? "AED 67,000,000" : i === 2 ? "AED 47,000,000" : "AED 118,000,000"}
+                      {i === 0 ? "AED 90M" : i === 1 ? "AED 67M" : i === 2 ? "AED 47M" : "AED 118M"}
                     </p>
 
                     {/* CTA Buttons */}
