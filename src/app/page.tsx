@@ -308,7 +308,7 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal direction="blur">
+      <Reveal direction="up">
         <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
           <div className="mx-auto max-w-[1280px] px-5 md:px-20">
             <div className="flex items-center gap-4">
@@ -602,7 +602,7 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal direction="blur">
+      <Reveal direction="up">
         <section className="border-b border-white/5 py-16 md:py-24">
         <div className="mx-auto max-w-[896px] px-5 md:px-16">
           <h2

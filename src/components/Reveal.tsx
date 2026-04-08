@@ -26,8 +26,8 @@ const directionStyles: Record<RevealDirection, { hidden: string; visible: string
     visible: "scale-100 opacity-100",
   },
   blur: {
-    hidden: "translate-y-4 opacity-0 blur-sm",
-    visible: "translate-y-0 opacity-100 blur-0",
+    hidden: "translate-y-4 opacity-0",
+    visible: "translate-y-0 opacity-100",
   },
 };
 
@@ -72,12 +72,12 @@ export function Reveal({
   return (
     <div
       ref={ref}
-      className={`transition-[opacity,transform${direction === "blur" ? ",filter" : ""}] duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+      className={`transition-opacity transition-transform duration-500 ease-out motion-reduce:transition-none ${
         visible ? styles.visible : styles.hidden
       } ${className}`}
       style={{
         transitionDelay: visible ? `${delayMs}ms` : "0ms",
-        willChange: visible ? "auto" : "opacity, transform",
+        willChange: "opacity, transform",
       }}
     >
       {children}
