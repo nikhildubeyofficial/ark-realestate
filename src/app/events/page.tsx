@@ -59,7 +59,7 @@ export default function EventsPage() {
             </div>
             <h1
               className="mt-4 font-serif text-4xl font-light italic text-white/90 md:text-6xl"
-              style={{ fontFamily: "var(--font-cormorant)" }}
+              style={{ fontFamily: "var(--font-playfair)" }}
             >
               Upcoming <span className="text-[#c9a84c]">Events</span>
             </h1>
@@ -114,7 +114,7 @@ export default function EventsPage() {
           <div className="mx-auto max-w-[640px] px-5 text-center">
             <h2
               className="font-serif text-3xl font-light italic text-white/90 md:text-4xl"
-              style={{ fontFamily: "var(--font-cormorant)" }}
+              style={{ fontFamily: "var(--font-playfair)" }}
             >
               Host a private event with Ark Vision
             </h2>

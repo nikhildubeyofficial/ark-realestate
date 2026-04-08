@@ -230,6 +230,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
+      {/* Communities In Focus / Portfolio Highlights - Hidden as requested
       <Reveal direction="blur">
         <section className="border-b border-white/5 py-24">
         <div className="mx-auto max-w-[1280px] px-8 md:px-20">
@@ -255,6 +256,7 @@ export default function AboutPage() {
         </div>
         </section>
       </Reveal>
+      */}
 
       <Reveal direction="right">
         <section className="border-b border-white/5 py-24">

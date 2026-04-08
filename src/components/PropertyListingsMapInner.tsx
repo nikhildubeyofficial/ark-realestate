@@ -12,17 +12,59 @@ import {
 } from "react-leaflet";
 import type { PropertyListing } from "@/lib/propertyData";
 
-function propertyIcon() {
+// Get developer initials (up to 2 characters)
+function getDeveloperInitials(builder: string): string {
+  if (!builder) return "AR";
+  const words = builder.trim().split(/\s+/);
+  if (words.length === 1) {
+    return builder.substring(0, 2).toUpperCase();
+  }
+  return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+}
+
+// Get consistent color for developer
+function getDeveloperColor(builder: string): string {
+  const colors = [
+    "#c9a84c", // Gold
+    "#d4a574", // Bronze
+    "#8b7355", // Brown
+    "#a08060", // Tan
+    "#cd853f", // Peru
+  ];
+  let hash = 0;
+  for (let i = 0; i < builder.length; i++) {
+    hash = builder.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return colors[Math.abs(hash) % colors.length];
+}
+
+function propertyIcon(builder: string = "") {
+  const initials = getDeveloperInitials(builder);
+  const color = getDeveloperColor(builder);
+
   return L.divIcon({
     className: "custom-property-marker",
     html: `
-      <div class="property-dot-wrapper">
-        <div class="property-dot-pulse"></div>
-        <div class="property-dot"></div>
-      </div>
+      <div class="developer-marker" style="
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, ${color} 0%, #1a1a1a 100%);
+        border: 2px solid ${color};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        font-size: 11px;
+        font-weight: 600;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        font-family: var(--font-inter), system-ui, sans-serif;
+      ">${initials}</div>
     `,
-    iconSize: [20, 20],
-    iconAnchor: [10, 10],
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -18],
   });
 }
 
@@ -76,7 +118,7 @@ export default function PropertyListingsMapInner({
           <Marker
             key={l.slug}
             position={[l.latitude, l.longitude]}
-            icon={propertyIcon()}
+            icon={propertyIcon(l.builder)}
           >
             <Popup>
               <div className="min-w-[200px] text-[#111]">
