@@ -326,74 +326,139 @@ export default async function HomePage() {
       </Reveal>
 
       <Reveal direction="right">
-        <section className="border-b border-white/5 py-16 md:px-20 md:py-24">
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-10 px-5 lg:flex-row lg:items-start lg:gap-12 md:px-[80px]">
-          <div className="min-w-0 max-w-full lg:max-w-[320px]">
-            <div className="flex items-center gap-4">
-              <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
-              <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-                Curated Portfolio
-              </span>
-            </div>
-            <h2
-              className="mt-4 font-serif text-[38px] font-light italic leading-tight text-white/90 sm:text-[44px] md:text-[52px]"
-              style={{ fontFamily: "var(--font-cormorant)" }}
-            >
-              Exceptional <span className="block">Residences</span>
-            </h2>
-            <p className="mt-4 flex items-center gap-2 font-light text-white/40 text-sm">
-              by <span className="text-[#c9a84c]">Ark Vision</span>
-            </p>
-            <p className="mt-6 font-light leading-relaxed text-white/40 text-sm">
-              {awardsCopy}
-            </p>
-          </div>
-          <div className="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4" style={{ gap: "21px" }}>
-            {exceptionalResidences.map((prop, i) => (
-              <div
-                key={prop.title}
-                className="card-premium group relative w-full overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 md:rounded-t-[30px]"
+        <section className="border-b border-white/5 bg-gradient-to-b from-[#060606] to-[#0a0a0a] py-16 md:px-20 md:py-28">
+          <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
+            {/* Section Header - Centered for better impact */}
+            <div className="mb-12 text-center lg:mb-16">
+              <div className="flex items-center justify-center gap-4">
+                <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#c9a84c]" />
+                <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
+                  Curated Portfolio
+                </span>
+                <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#c9a84c]" />
+              </div>
+              <h2
+                className="mt-6 font-serif text-[42px] font-light italic leading-tight text-white/95 sm:text-[52px] md:text-[64px]"
+                style={{ fontFamily: "var(--font-cormorant)" }}
               >
-                <Link href="/featured" className="block">
-                  <div className="relative h-[240px] w-full overflow-hidden rounded-t-2xl sm:h-[280px] md:h-[310px] md:rounded-t-[30px]">
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.04]"
-                      style={{ backgroundImage: `url(${propertyImages[i] ?? IMG.propertyVilla})` }}
-                    />
-                    <div className="absolute right-4 top-4 flex h-[34px] w-[34px] items-center justify-center rounded-full border border-white/30 bg-black/40 text-white/80 transition-all duration-300 hover:bg-[#c9a84c] hover:border-[#c9a84c] hover:text-black">
-                      <Heart size={16} />
+                Exceptional <span className="text-[#c9a84c]">Residences</span>
+              </h2>
+              <p className="mx-auto mt-4 max-w-[500px] font-light text-white/50 text-sm leading-relaxed">
+                Handpicked luxury properties from Dubai&apos;s most prestigious addresses
+              </p>
+            </div>
+
+            {/* Property Cards Grid */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4" style={{ gap: "24px" }}>
+              {exceptionalResidences.map((prop, i) => (
+                <div
+                  key={prop.title}
+                  className="card-premium group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.08] to-white/[0.02] transition-all duration-500 hover:border-[#c9a84c]/30"
+                >
+                  {/* Image Container */}
+                  <Link href="/featured" className="block">
+                    <div className="relative aspect-[4/5] overflow-hidden">
+                      {/* Property Image */}
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out group-hover:scale-110"
+                        style={{ backgroundImage: `url(${propertyImages[i] ?? IMG.propertyVilla})` }}
+                      />
+
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                      {/* Top Badge - Property Type */}
+                      <div className="absolute left-4 top-4">
+                        <span className="rounded-full border border-white/20 bg-black/50 px-3 py-1.5 text-[10px] uppercase tracking-wider text-white/90 backdrop-blur-md">
+                          {i === 0 ? "Penthouse" : i === 1 ? "Villa" : i === 2 ? "Apartment" : "Estate"}
+                        </span>
+                      </div>
+
+                      {/* Favorite Button */}
+                      <button className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/70 backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:border-[#c9a84c] hover:bg-[#c9a84c] hover:text-black">
+                        <Heart size={16} className="transition-transform group-hover:scale-110" />
+                      </button>
+
+                      {/* Property Stats - Bottom of Image */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <div className="flex items-center justify-between border-t border-white/10 pt-3">
+                          <div className="flex items-center gap-3 text-white/90">
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-serif text-lg italic text-[#c9a84c]">{prop.beds}</span>
+                              <span className="text-[10px] uppercase tracking-wider text-white/60">Beds</span>
+                            </div>
+                            <span className="text-white/20">|</span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-serif text-lg italic text-[#c9a84c]">{prop.baths}</span>
+                              <span className="text-[10px] uppercase tracking-wider text-white/60">Baths</span>
+                            </div>
+                            <span className="text-white/20">|</span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-serif text-lg italic text-[#c9a84c]">{prop.sqft}</span>
+                              <span className="text-[10px] uppercase tracking-wider text-white/60">ft²</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 flex h-12 items-center gap-4 bg-black/40 px-[18px] text-xs text-white/90 backdrop-blur-sm">
-                      <span>{prop.beds} Beds</span>
-                      <span>{prop.baths} Baths</span>
-                      <span>{prop.sqft} ft²</span>
+                  </Link>
+
+                  {/* Card Content */}
+                  <div className="border-t border-white/[0.06] bg-gradient-to-b from-white/[0.03] to-transparent p-5">
+                    {/* Location */}
+                    <div className="flex items-center gap-2 text-white/50">
+                      <MapPin size={12} className="text-[#c9a84c]" />
+                      <span className="text-[11px] uppercase tracking-wider">{prop.location}</span>
                     </div>
-                  </div>
-                </Link>
-                <div className="border-t border-white/10 p-5">
-                  <h3 className="font-serif text-lg font-medium text-white/90">{prop.title}</h3>
-                  <p className="mt-3 flex items-center gap-2 text-xs text-white/50">
-                    <MapPin size={12} className="text-[#c9a84c]" /> {prop.location}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Link
-                      href={`/featured?keyword=${encodeURIComponent(prop.title)}`}
-                      className="btn-magnetic border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-xs font-light text-[#c9a84c] transition-all duration-400 hover:bg-[#c9a84c] hover:text-[#060606] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.4)]"
-                    >
-                      Inquire
-                    </Link>
-                    <Link
-                      href="/featured"
-                      className="btn-magnetic border border-white/20 px-4 py-2 text-xs font-light text-white/70 transition-all duration-400 hover:border-[#c9a84c] hover:text-[#c9a84c]"
-                    >
-                      View listings
-                    </Link>
+
+                    {/* Title */}
+                    <h3 className="mt-2 font-serif text-xl font-light italic leading-tight text-white/95 transition-colors duration-300 group-hover:text-[#c9a84c]">
+                      {prop.title}
+                    </h3>
+
+                    {/* Price (Estimated) */}
+                    <p className="mt-3 font-serif text-lg italic text-[#c9a84c]/90">
+                      {i === 0 ? "$24,500,000" : i === 1 ? "$18,200,000" : i === 2 ? "$12,800,000" : "$32,000,000"}
+                    </p>
+
+                    {/* CTA Buttons */}
+                    <div className="mt-4 flex flex-col gap-2">
+                      <Link
+                        href={`/featured?keyword=${encodeURIComponent(prop.title)}`}
+                        className="group/btn relative flex h-11 items-center justify-center overflow-hidden rounded-lg border border-[#c9a84c] bg-[#c9a84c]/10 text-sm font-light text-[#c9a84c] transition-all duration-400 hover:bg-[#c9a84c] hover:text-[#060606]"
+                      >
+                        <span className="relative z-10 flex items-center gap-2">
+                          Inquire Now
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-300 group-hover/btn:translate-x-1">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                          </svg>
+                        </span>
+                      </Link>
+                      <Link
+                        href="/featured"
+                        className="flex h-10 items-center justify-center rounded-lg border border-white/15 text-xs font-light text-white/60 transition-all duration-300 hover:border-white/30 hover:text-white/90"
+                      >
+                        View Details
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* View All Button */}
+            <div className="mt-12 flex justify-center">
+              <Link
+                href="/featured"
+                className="group flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.03] px-8 py-3 text-sm font-light text-white/70 transition-all duration-400 hover:border-[#c9a84c]/50 hover:bg-[#c9a84c]/5 hover:text-[#c9a84c]"
+              >
+                View All Properties
+                <span className="flex h-6 w-6 items-center justify-center rounded-full border border-current text-[10px] transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+            </div>
           </div>
-        </div>
         </section>
       </Reveal>
 
