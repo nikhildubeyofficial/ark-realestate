@@ -77,7 +77,6 @@ export function Reveal({
       } ${className}`}
       style={{
         transitionDelay: visible ? `${delayMs}ms` : "0ms",
-        willChange: "opacity, transform",
       }}
     >
       {children}

@@ -36,7 +36,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${playfair.variable}`}
     >
-      <body className="min-h-screen overflow-x-hidden bg-[#080808] text-white/80 antialiased">
+      <body className="min-h-screen overflow-x-clip bg-[#080808] text-white/80 antialiased">
         <RouteLoadingBar />
         <Header />
         <main>

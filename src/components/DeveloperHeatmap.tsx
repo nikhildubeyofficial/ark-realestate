@@ -11,6 +11,7 @@ type DevPoint = {
   lng: number;
   weight: number;
   mapLabel?: string;
+  logoUrl?: string;
 };
 
 function markerLabelForMap(p: DevPoint): string {
@@ -21,7 +22,26 @@ function markerLabelForMap(p: DevPoint): string {
   return compact.slice(0, 12) || "ARK";
 }
 
-function logoIcon(label: string) {
+function sanitizeImageUrl(raw: string | undefined): string | null {
+  if (!raw?.trim()) return null;
+  try {
+    const u = new URL(raw.trim());
+    if (u.protocol !== "http:" && u.protocol !== "https:") return null;
+    return u.href;
+  } catch {
+    return null;
+  }
+}
+
+function attrEscape(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;");
+}
+
+/** Text pill when the API did not provide a builder `logo` URL. */
+function textLabelIcon(label: string) {
   const escaped = label
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -37,9 +57,28 @@ function logoIcon(label: string) {
         </div>
       </div>
     `,
-    iconSize: [80, 32], // Wider but shorter for pill shape
+    iconSize: [80, 32],
     iconAnchor: [40, 16],
   });
+}
+
+function heatmapMarkerIcon(p: DevPoint) {
+  const safeUrl = sanitizeImageUrl(p.logoUrl);
+  if (safeUrl) {
+    const src = attrEscape(safeUrl);
+    return L.divIcon({
+      className: "custom-dev-marker custom-dev-marker--logo",
+      html: `
+      <div class="marker-wrapper marker-wrapper-logo">
+        <div class="developer-marker-logo" title="${attrEscape((p.mapLabel ?? p.name).slice(0, 80))}">
+          <img src="${src}" alt="" width="40" height="40" loading="lazy" decoding="async" />
+        </div>
+      </div>`,
+      iconSize: [48, 48],
+      iconAnchor: [24, 48],
+    });
+  }
+  return textLabelIcon(markerLabelForMap(p));
 }
 
 export default function DeveloperHeatmap({ points }: { points: DevPoint[] }) {
@@ -62,7 +101,7 @@ export default function DeveloperHeatmap({ points }: { points: DevPoint[] }) {
         <MapContainer
           center={center}
           zoom={11}
-          scrollWheelZoom
+          scrollWheelZoom={false}
           zoomControl
           attributionControl
           className="h-full w-full [&_.leaflet-control-zoom]:border [&_.leaflet-control-zoom]:border-white/15 [&_.leaflet-control-zoom]:bg-[#121212]/95 [&_.leaflet-control-zoom_a]:text-white/90 [&_.leaflet-control-zoom_a]:no-underline [&_.leaflet-control-attribution]:max-w-[min(100%,280px)] [&_.leaflet-control-attribution]:text-[10px] [&_.leaflet-control-attribution]:leading-snug [&_.leaflet-control-attribution]:text-white/45 [&_.leaflet-control-attribution]:bg-black/50"
@@ -74,9 +113,9 @@ export default function DeveloperHeatmap({ points }: { points: DevPoint[] }) {
           />
           {points.map((p, idx) => (
             <Marker
-              key={`${p.lat}-${p.lng}-${idx}`}
+              key={`${p.lat}-${p.lng}-${idx}-${p.logoUrl ?? "text"}`}
               position={[p.lat, p.lng]}
-              icon={logoIcon(markerLabelForMap(p))}
+              icon={heatmapMarkerIcon(p)}
             />
           ))}
         </MapContainer>

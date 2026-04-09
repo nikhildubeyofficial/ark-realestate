@@ -36,11 +36,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
   }, [pathname, children]);
 
   return (
-    <div
-      className={`page-transition ${
-        phase === "enter" ? "page-enter" : "page-exit"
-      }`}
-    >
+    <div className={phase === "enter" ? "page-enter" : "page-exit"}>
       {displayedChildren}
     </div>
   );

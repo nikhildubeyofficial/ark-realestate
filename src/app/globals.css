@@ -35,6 +35,8 @@ body {
 
 html {
   scroll-behavior: auto;
+  /* clip avoids horizontal bleed without forcing overflow-y:auto on body (hidden does, and breaks scroll/sticky). */
+  overflow-x: clip;
 }
 
 /* ─── Hero Animations ───────────────────────────────────────────────── */
@@ -313,7 +315,6 @@ html {
 
 .card-premium {
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
 }
 
 .card-premium:hover {
@@ -549,6 +550,33 @@ select:focus-visible {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
+/* Heat map: builder logo from property `logo` field (falls back to text pill above). */
+.marker-wrapper-logo .developer-marker-logo {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+
+.marker-wrapper-logo .developer-marker-logo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.leaflet-marker-icon:hover .marker-wrapper-logo .developer-marker-logo {
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
 /* ─── Developer Logo Marker ──────────────────────────────────────── */
 
 .leaflet-div-icon.custom-property-marker {
@@ -587,10 +615,6 @@ select:focus-visible {
     opacity: 0;
     transform: translateY(-8px);
   }
-}
-
-.page-transition {
-  will-change: opacity, transform;
 }
 
 .page-enter {

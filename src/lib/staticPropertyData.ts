@@ -131,6 +131,26 @@ export function getMainImage(project: {
   return firstSrc ?? null;
 }
 
+/**
+ * Developer/brand logo from the project `logo` field only (not cover or gallery).
+ * Source JSON often has `{ src, logo }` where `logo` is the presentation/logo asset path.
+ */
+export function getDeveloperLogoUrl(project: {
+  logo?: string | { src?: string; logo?: string } | null;
+}): string | null {
+  const logo = project.logo;
+  if (logo == null) return null;
+  if (typeof logo === "string") {
+    const t = logo.trim();
+    return t || null;
+  }
+  if (typeof logo === "object") {
+    const url = (logo.logo ?? logo.src) as string | undefined;
+    if (typeof url === "string" && url.trim()) return url.trim();
+  }
+  return null;
+}
+
 let _descriptionsCache: Record<string, string> | null = null;
 
 export function getStoredDescriptions(): Record<string, string> {

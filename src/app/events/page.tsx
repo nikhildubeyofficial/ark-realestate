@@ -39,7 +39,7 @@ const events = [
 
 export default function EventsPage() {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#080808]">
+    <div className="min-h-screen overflow-x-clip bg-[#080808]">
       <section className="relative border-b border-white/5 py-16 md:py-24">
         <div
           className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-20"

@@ -16,12 +16,13 @@ const navLinks = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const pathname = usePathname();
   const isLandingPage = pathname === "/";
 
   // Refs for the sliding nav indicator
   const navRef = useRef<HTMLElement>(null);
+  /** Landing scroll bar: updated via transform in rAF — avoids width transitions + Header re-renders on scroll. */
+  const scrollProgressRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
 
@@ -57,10 +58,13 @@ export default function Header() {
       setScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
 
       if (isLandingPage) {
-        const doc = document.documentElement;
-        const total = doc.scrollHeight - doc.clientHeight;
-        const progress = total > 0 ? Math.min(window.scrollY / total, 1) : 0;
-        setScrollProgress((prev) => (Math.abs(prev - progress) < 0.01 ? prev : progress));
+        const el = scrollProgressRef.current;
+        if (el) {
+          const doc = document.documentElement;
+          const total = doc.scrollHeight - doc.clientHeight;
+          const progress = total > 0 ? Math.min(window.scrollY / total, 1) : 0;
+          el.style.transform = `scaleX(${progress})`;
+        }
       }
 
       ticking = false;
@@ -68,8 +72,8 @@ export default function Header() {
 
     const onScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(updateScroll);
         ticking = true;
+        window.requestAnimationFrame(updateScroll);
       }
     };
 
@@ -132,8 +136,9 @@ export default function Header() {
         {isLandingPage && (
           <div className="pointer-events-none absolute left-0 top-0 h-[2px] w-full bg-white/5">
             <div
-              className="h-full bg-gradient-to-r from-[#c9a84c] to-[#fcf6ba] transition-[width] duration-200"
-              style={{ width: `${Math.round(scrollProgress * 100)}%` }}
+              ref={scrollProgressRef}
+              className="h-full w-full origin-left bg-gradient-to-r from-[#c9a84c] to-[#fcf6ba]"
+              style={{ transform: "scaleX(0)" }}
             />
           </div>
         )}
