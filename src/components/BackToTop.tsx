@@ -10,9 +10,23 @@ export default function BackToTop() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
-      setVisible(window.scrollY > 500);
+    let ticking = false;
+    let last = false;
+    const tick = () => {
+      ticking = false;
+      const next = window.scrollY > 500;
+      if (next !== last) {
+        last = next;
+        setVisible(next);
+      }
     };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(tick);
+      }
+    };
+    tick();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

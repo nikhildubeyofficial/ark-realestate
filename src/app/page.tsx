@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HeroBackgroundVideo from "@/components/HeroBackgroundVideo";
 import { Reveal, StaggerReveal } from "@/components/Reveal";
 import { Heart, MapPin, Phone, Mail } from "lucide-react";
 import HomeBuyingKnowAccordion from "@/components/HomeBuyingKnowAccordion";
@@ -107,22 +108,10 @@ export default async function HomePage() {
     getPropertyListingsByProjectIds(RECENT_LAUNCH_IDS),
   ]);
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#080808]">
+    <div className="min-h-screen overflow-x-clip bg-[#080808]">
       {/* Hero — responsive height; top bar lives in Header only */}
       <section className="relative -mt-px min-h-[72dvh] w-full sm:min-h-[80dvh] lg:min-h-[900px]">
-        <div className="absolute inset-0 overflow-hidden">
-          <video
-            className="absolute inset-0 z-0 h-full w-full object-cover object-[center_35%]"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden
-          >
-            <source src={HERO_VIDEO_SRC} type="video/mp4" />
-          </video>
-        </div>
+        <HeroBackgroundVideo src={HERO_VIDEO_SRC} />
         <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#080808] via-black/55 to-black/20" />
         <div className="absolute left-0 right-0 top-0 z-[2] flex min-h-[inherit] items-start px-5 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-20 lg:pb-24 lg:pt-24">
           <div className="mx-auto w-full max-w-[1280px]">

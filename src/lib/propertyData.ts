@@ -15,6 +15,7 @@ import {
   isAffordableProjectEligible,
   matchesLuxuryTab,
 } from "@/lib/credencePropertyCategory";
+import { getDeveloperLogoUrl } from "@/lib/staticPropertyData";
 import type { CredenceCategory } from "@/lib/credenceTypes";
 import {
   getCredenceAllProjectsRawSorted,
@@ -74,6 +75,8 @@ export type PropertyListing = {
   tabCommercial: boolean;
   tabOffice: boolean;
   tabOffPlan: boolean;
+  /** Builder logo URL from project `logo` in source JSON when present. */
+  developerLogo?: string;
   gallery: string[];
 };
 
@@ -83,6 +86,8 @@ export type HeatPoint = {
   lng: number;
   weight: number;
   mapLabel?: string;
+  /** Builder logo URL from property data when the source provides `logo`. */
+  logoUrl?: string;
 };
 
 export type ProjectRawItem = {
@@ -95,6 +100,7 @@ export type ProjectRawItem = {
   builder?: string;
   district?: { title?: string };
   cover?: { src?: string };
+  logo?: string | { src?: string; logo?: string } | null;
   photos?: Array<{ src?: string }>;
   updated_at?: string;
   created_at?: string;
@@ -230,6 +236,7 @@ function mapRawToListing(
     typeof item.created_at === "string" ? item.created_at : "";
   const affordableEligible = isAffordableProjectEligible(item);
   const readyDate = formatReadyDate(item.construction_inspection_date);
+  const developerLogo = getDeveloperLogoUrl(item) ?? undefined;
 
   const tabLuxury = projectMatchesTabFilter(item, "luxury", luxuryBuilders5M);
   const tabAffordable = projectMatchesTabFilter(item, "affordable", luxuryBuilders5M);
@@ -290,6 +297,7 @@ function mapRawToListing(
     latitude: safeNumber(item.latitude),
     longitude: safeNumber(item.longitude),
     builder,
+    developerLogo,
     gallery: (item.photos ?? [])
       .slice(0, 5)
       .map((p) => p?.src)
@@ -405,12 +413,14 @@ export async function getHeatPointsForDevelopers(): Promise<HeatPoint[]> {
     const lng =
       byBuilder.reduce((sum, p) => sum + p.longitude, 0) / byBuilder.length;
     const short = heatPointLabelForPriority(i);
+    const logoUrl = byBuilder.map((l) => l.developerLogo).find((u) => Boolean(u?.trim()));
     grouped.push({
       name: label,
       mapLabel: short.length > 12 ? short.slice(0, 12) : short,
       lat,
       lng,
       weight: Math.min(1, 0.42 + byBuilder.length / 25),
+      logoUrl: logoUrl?.trim(),
     });
   }
 
@@ -423,6 +433,7 @@ export async function getHeatPointsForDevelopers(): Promise<HeatPoint[]> {
         lat: l.latitude,
         lng: l.longitude,
         weight: 0.6,
+        logoUrl: l.developerLogo?.trim(),
       };
     });
   }
