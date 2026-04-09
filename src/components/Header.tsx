@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useCallback } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
+  { href: "/team", label: "Team" },
   { href: "/featured", label: "Property Listings" },
   { href: "/guide", label: "Guide" },
   { href: "/blog", label: "Blogs" },
@@ -146,12 +148,15 @@ export default function Header() {
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }
             }}
-            className="group flex items-center gap-2 transition-opacity duration-300 hover:opacity-90"
+            className="group flex items-center transition-opacity duration-300 hover:opacity-90"
           >
-            <span className="font-serif text-lg font-medium text-white transition-colors duration-300 group-hover:text-[#c9a84c] sm:text-xl">ARK</span>
-            <span
-              className="mt-1 block h-px w-6 bg-gradient-to-r from-[#c9a84c] to-transparent transition-all duration-500 group-hover:w-10 group-hover:from-[#fcf6ba] sm:w-8"
-              aria-hidden
+            <Image
+              src="/ARK LOGO BLACK.png"
+              alt="Ark Vision Logo"
+              width={140}
+              height={45}
+              className="h-auto w-[100px] sm:w-[120px] md:w-[140px] object-contain"
+              priority
             />
           </Link>
 

@@ -4,6 +4,7 @@ import { Heart, MapPin, Phone, Mail } from "lucide-react";
 import HomeBuyingKnowAccordion from "@/components/HomeBuyingKnowAccordion";
 import HomeTopDevelopersSection from "@/components/HomeTopDevelopersSection";
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
+import TestimonialVideos from "@/components/TestimonialVideos";
 import { leadershipProfiles } from "@/data/leadershipProfiles";
 import {
   getHeatPointsForDevelopers,
@@ -17,10 +18,35 @@ import { RECENT_LAUNCH_IDS } from "@/lib/recentLaunches";
  * Frame 367:423 (Real Estate Website Landing Page)
  */
 
-const awards = [
-  { title: "Team Recognition", imageKey: "awardTeam" as const },
-  { title: "Awards & Certifications", imageKey: "awardTrophy" as const },
-  { title: "Industry Milestones", imageKey: "awardMilestone" as const },
+const awardImages = [
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.45%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.45%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.44%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.44%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.43%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.43%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.42%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.42%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.41%20PM%20(2).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.41%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.41%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.40%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.40%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.39%20PM%20(2).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.39%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.39%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.38%20PM%20(2).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.38%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.38%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.37%20PM%20(3).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.37%20PM%20(2).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.37%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.37%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.36%20PM%20(2).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.36%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.36%20PM.jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.35%20PM%20(1).jpeg",
+  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.35%20PM.jpeg",
 ];
 
 const exceptionalResidences = [
@@ -231,9 +257,9 @@ export default async function HomePage() {
 
               <div className="mt-10 grid max-w-[640px] grid-cols-1 overflow-hidden border border-white/10 bg-black/50 transition-all duration-500 hover:border-[#c9a84c]/30 hover:shadow-[0_0_40px_-15px_rgba(201,168,76,0.15)] sm:grid-cols-3">
                 {[
-                  { value: "100+", label: "Properties Sold" },
-                  { value: "13+", label: "Years Experience" },
-                  { value: "40+", label: "Countries Served" },
+                  { value: "100K+", label: "Properties Sold" },
+                  { value: "25+", label: "Years Experience" },
+                  { value: "5B+", label: "Total Sales" },
                 ].map((s, idx) => (
                   <div
                     key={s.label}
@@ -255,18 +281,18 @@ export default async function HomePage() {
 
       {/* Removed extra spacer to eliminate gap before Top Developers */}
 
-      <Reveal direction="scale">
+      {/* <Reveal direction="scale">
         <HomeTopDevelopersSection
           heatPoints={heatPoints}
           listings={listingsForDevelopers}
           recentLaunches={recentLaunches}
         />
-      </Reveal>
+      </Reveal> */}
 
       <Reveal direction="right">
         <section className="border-b border-white/5 bg-[#060606] py-16 md:px-20 md:py-24">
         <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
-          <div className="mb-16 grid gap-8 md:grid-cols-2 md:gap-[15px]">
+          <div className="mb-12 grid gap-8 md:grid-cols-2 md:gap-[15px]">
             <div>
               <div className="flex items-center gap-4">
                 <span className="h-px w-6 bg-gradient-to-r from-[#c9a84c] to-transparent md:w-8" />
@@ -285,24 +311,32 @@ export default async function HomePage() {
               {awardsCopy}
             </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-3" style={{ gap: "40px" }}>
-            {awards.map((item) => (
-              <div
-                key={item.title}
-                className="card-premium relative mx-auto w-full max-w-[399px] overflow-hidden rounded-lg border border-white/10"
+          <div className="relative">
+            <div className="overflow-x-auto pb-4 scrollbar-hide">
+              <div 
+                className="flex gap-6"
+                style={{ width: "max-content" }}
               >
-                <div
-                  className="h-[220px] w-full bg-white/5 bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03] sm:h-[280px] md:h-[351px]"
-                  style={{
-                    aspectRatio: "399/351",
-                    backgroundImage: `url(${IMG[item.imageKey]})`,
-                  }}
-                />
-                <p className="border-t border-white/10 py-4 font-serif text-lg font-medium text-white/90 transition-colors duration-300 hover:text-[#c9a84c]">
-                  {item.title}
-                </p>
+                {awardImages.map((src, idx) => (
+                  <div
+                    key={idx}
+                    className="card-premium relative shrink-0 overflow-hidden rounded-lg border border-white/10 transition-transform duration-500 hover:scale-[1.02]"
+                    style={{ width: "320px", height: "400px" }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={src}
+                      alt={`Award ${idx + 1}`}
+                      className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.05]"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#060606] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#060606] to-transparent" />
           </div>
         </div>
         </section>
@@ -548,59 +582,7 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal direction="scale">
-        <section className="relative min-h-[480px] border-b border-white/5 bg-black/50 py-16 md:min-h-[713px] md:py-24">
-        <div
-          className="animate-float pointer-events-none absolute left-1/2 top-8 -translate-x-1/2 font-serif text-[120px] leading-none text-white/5 sm:top-12 sm:text-[160px] md:text-[200px]"
-          style={{ fontFamily: "var(--font-playfair)" }}
-        >
-          &ldquo;
-        </div>
-        <div className="relative mx-auto max-w-[672px] px-6 text-center">
-          <div className="flex items-center justify-center gap-4">
-            <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#c9a84c]" />
-            <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-              Client Voices
-            </span>
-            <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#c9a84c]" />
-          </div>
-          <h2
-            className="mt-4 font-serif text-[40px] font-light italic leading-[63px] text-white/90 md:text-[50px]"
-            style={{ fontFamily: "var(--font-playfair)" }}
-          >
-            Words of Trust
-          </h2>
-          <blockquote className="mt-8 font-serif text-xl font-light italic leading-relaxed text-white/80">
-            &ldquo;An unparalleled experience from the very first conversation. Their command of the
-            luxury market, their discretion, and their dedication to perfection secured us our dream
-            penthouse in Downtown Dubai.&rdquo;
-          </blockquote>
-          <div className="mt-10 flex flex-col items-center gap-2">
-            <div className="h-12 w-12 rounded-full bg-white/20" />
-            <p className="text-xs uppercase tracking-widest text-white/70">
-              Sheikh Mohammed Al Rashid
-            </p>
-            <p className="text-xs text-white/50">Private Investor · Abu Dhabi</p>
-          </div>
-          <div className="mt-10 flex items-center justify-center gap-2">
-            <button
-              type="button"
-              className="h-9 w-9 rounded-full border border-white/30 transition-all duration-400 hover:border-[#c9a84c] hover:bg-[#c9a84c]/10 hover:shadow-[0_0_15px_-3px_rgba(201,168,76,0.4)] hover:-translate-x-0.5 active:scale-95"
-              aria-label="Previous"
-            />
-            <span className="h-px w-6 bg-[#c9a84c]" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white/50 transition-all duration-300 hover:bg-[#c9a84c] hover:scale-150" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white/50 transition-all duration-300 hover:bg-[#c9a84c] hover:scale-150" />
-            <span className="h-px w-6 bg-white/30" />
-            <button
-              type="button"
-              className="h-9 w-9 rounded-full border border-white/30 transition-all duration-400 hover:border-[#c9a84c] hover:bg-[#c9a84c]/10 hover:shadow-[0_0_15px_-3px_rgba(201,168,76,0.4)] hover:translate-x-0.5 active:scale-95"
-              aria-label="Next"
-            />
-          </div>
-        </div>
-        </section>
-      </Reveal>
+      <TestimonialVideos />
 
       <Reveal direction="up">
         <section className="border-b border-white/5 py-16 md:py-24">
