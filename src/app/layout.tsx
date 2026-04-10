@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -13,11 +14,40 @@ const inter = Inter({
   weight: ["300", "400", "500", "600"],
 });
 
-const playfair = Playfair_Display({
+const tobias = localFont({
   variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  src: [
+    {
+      path: "../../public/fonts/tobias-font-family/TobiasTRIAL-Regular-BF6719af6e0eca4.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/tobias-font-family/TobiasTRIAL-RegularItalic-BF6719af6d05a23.otf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../../public/fonts/tobias-font-family/TobiasTRIAL-Medium-BF6719af6e0f214.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/tobias-font-family/TobiasTRIAL-MediumItalic-BF6719af6e0e1ac.otf",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "../../public/fonts/tobias-font-family/TobiasTRIAL-SemiBold-BF6719af6d74d2b.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/tobias-font-family/TobiasTRIAL-SemiBoldItalic-BF6719af6dc3f54.otf",
+      weight: "600",
+      style: "italic",
+    },
+  ],
 });
 
 export const metadata: Metadata = {
@@ -34,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable}`}
+      className={`${inter.variable} ${tobias.variable}`}
     >
       <body className="min-h-screen overflow-x-clip bg-[#080808] text-white/80 antialiased">
         <RouteLoadingBar />

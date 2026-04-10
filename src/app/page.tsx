@@ -135,7 +135,7 @@ export default async function HomePage() {
                 </Link>
                 <Link
                   href="/guide"
-                  className="btn-magnetic border border-white/25 px-6 py-2.5 text-sm font-light text-white/85 transition-all duration-400 hover:border-[#c9a84c] hover:text-[#c9a84c] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.3)]"
+                  className="btn-magnetic border border-white/25 bg-black/45 px-6 py-2.5 text-sm font-normal text-white/90 transition-all duration-400 hover:border-[#c9a84c] hover:bg-black/65 hover:text-[#c9a84c] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.3)]"
                 >
                   Area guides
                 </Link>
@@ -296,7 +296,7 @@ export default async function HomePage() {
                 Our <span className="block">Awards</span>
               </h2>
             </div>
-            <p className="max-w-[638px] font-light leading-[22.75px] text-white/40 text-sm">
+            <p className="max-w-[638px] font-normal leading-[22.75px] text-white/65 text-sm">
               {awardsCopy}
             </p>
           </div>
@@ -366,7 +366,7 @@ export default async function HomePage() {
               >
                 Exceptional <span className="text-[#c9a84c]">Residences</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-[500px] font-light text-white/50 text-sm leading-relaxed">
+              <p className="mx-auto mt-4 max-w-[500px] font-normal text-white/70 text-sm leading-relaxed">
                 Handpicked luxury properties from Dubai&apos;s most prestigious addresses
               </p>
             </div>
@@ -457,7 +457,7 @@ export default async function HomePage() {
                       </Link>
                       <Link
                         href="/featured"
-                        className="flex h-10 items-center justify-center rounded-lg border border-white/15 text-xs font-light text-white/60 transition-all duration-300 hover:border-white/30 hover:text-white/90"
+                        className="flex h-10 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] text-xs font-normal text-white/80 transition-all duration-300 hover:border-white/30 hover:bg-white/[0.1] hover:text-white/95"
                       >
                         View Details
                       </Link>
@@ -471,7 +471,7 @@ export default async function HomePage() {
             <div className="mt-12 flex justify-center">
               <Link
                 href="/featured"
-                className="group flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.03] px-8 py-3 text-sm font-light text-white/70 transition-all duration-300 hover:border-[#c9a84c]/50 hover:text-[#c9a84c]"
+                className="group flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.08] px-8 py-3 text-sm font-normal text-white/85 transition-all duration-300 hover:border-[#c9a84c]/50 hover:bg-white/[0.12] hover:text-[#c9a84c]"
               >
                 View All Properties
                 <span className="flex h-6 w-6 items-center justify-center rounded-full border border-current text-[10px] transition-transform duration-300 group-hover:translate-x-1">
@@ -606,7 +606,7 @@ export default async function HomePage() {
             >
               Begin Your <span className="block">Journey</span>
             </h2>
-            <p className="mt-6 max-w-[336px] font-light text-white/40 text-sm leading-relaxed">
+            <p className="mt-6 max-w-[336px] font-normal text-white/65 text-sm leading-relaxed">
               Our advisors are available to discuss your requirements with complete discretion. Every
               inquiry is handled with the utmost care and confidentiality.
             </p>
