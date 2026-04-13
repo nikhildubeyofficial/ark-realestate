@@ -160,7 +160,7 @@ export default function Header() {
               alt="Ark Vision Logo"
               width={140}
               height={45}
-              className="h-auto w-[100px] sm:w-[120px] md:w-[140px] object-contain"
+              className="h-[86px] w-[106px] object-contain"
               priority
             />
           </Link>

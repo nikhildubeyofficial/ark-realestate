@@ -1,117 +1,13 @@
 "use client";
 
-import AboutTeamGrid from "@/components/AboutTeamGrid";
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
+import { PremiumSection } from "@/components/PremiumSection";
 import { Reveal } from "@/components/Reveal";
-import imagescManifest from "@/data/imagesc-manifest.json";
 import { leadershipProfiles } from "@/data/leadershipProfiles";
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
 const HERO_VIDEO_SRC = "/video/hero.mp4";
-
-const teamMembers = [
-  "Samarth",
-  "Prajwal",
-  "Deepika",
-  "Rohit",
-  "Anshul",
-  "Deepak",
-  "Reshma",
-  "Drishya",
-  "Uzair",
-  "Vranda",
-  "Shweta",
-  "Shaloom",
-  "Jayanti",
-  "Dev",
-  "Surya",
-  "Nadeem Idrisi",
-  "Brenda",
-  "Sumeet",
-  "Yash",
-  "Pranav (Leadership)",
-  "Ankit",
-  "Neha",
-  "Nadeem",
-  "Suchith",
-  "Santosh",
-  "Vinith",
-  "Karishma",
-  "Ojas",
-  "Shaveta",
-  "Tejal",
-  "Tejal",
-  "Nadeem Idrisi",
-  "Tamanjyot",
-  "Shubham",
-  "Vinay Chelani (Owner)",
-  "Ashank",
-  "Sachin Madan (Leadership)",
-  "Ganesh (Leadership)",
-  "Hidash",
-  "Prasanjeet",
-  "Eva",
-  "Agnes",
-  "Anmol",
-  "Saima",
-  "Arti (Leadership)",
-  "Hamza",
-  "Uroosa",
-  "Akhila",
-  "Sridevi",
-  "Nadeem Idrisi",
-  "Agnes",
-  "Arti (Leadership)",
-  "Stamily",
-  "Joel",
-  "Shweta",
-  "Shaloom",
-  "Deepak",
-  "Nikhil (Leadership)",
-  "Vranda",
-  "Eva",
-  "Tamanjyot",
-  "Sumeet",
-  "Deepika",
-  "Lovepreet",
-  "Gayathri",
-  "Munawar",
-  "Sumedh",
-  "Deepika",
-  "Awais",
-  "Santosh",
-  "Hamza",
-  "Brenda",
-  "Noora",
-  "Akash",
-  "Surya",
-  "Pragati",
-  "Deepthi",
-  "Anmol",
-  "Alfeena",
-  "Sreelisha",
-  "Deepak",
-  "Ganesh (Leadership)",
-  "Tejal",
-  "Aman",
-  "Vaishnavi",
-  "Sachin (Leadership)",
-  "Farida",
-  "Vinit (Leadership)",
-  "Anisha (Leadership)",
-  "Abhinav",
-  "Sijjo",
-  "Prajwal",
-  "Stanis",
-  "Hidash",
-  "Prasanjeet",
-  "Ashank",
-  "Dhwani",
-  "Rohit",
-  "Arpana (Leadership)",
-  "Jitendra",
-] as const;
 
 const rnrVideos = [
   "/RNR%20videos/AQMLl2zQPSEmne39MX8ZKm2cplr67NhmCcf-lpMRw2DEblobs14nV8BrJE-wASQp_SsYlS9UnAZX8nJB00sglNptvBcIOwjcUOdXTao.mp4",
@@ -289,10 +185,6 @@ function RewardsAndRecognition() {
 }
 
 export default function TeamPage() {
-  const teamImages = (imagescManifest.files ?? []).map(
-    (file) => `/ImagesC/${encodeURIComponent(file)}`
-  );
-
   return (
     <div className="min-h-screen">
       <section className="relative min-h-[600px] overflow-hidden">
@@ -329,42 +221,18 @@ export default function TeamPage() {
 
       {/* Our Leadership Section */}
       <Reveal direction="up">
-        <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
-          <div className="mx-auto max-w-[1280px] px-5 md:px-20">
-            <div className="flex items-center gap-4">
-              <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
-              <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-                Leadership
-              </span>
-            </div>
-            <h2 className="mt-4 font-serif text-4xl font-light italic text-white/90 md:text-5xl">
-              Our Leadership
-            </h2>
-            <AboutLeadershipSection profiles={leadershipProfiles} />
-          </div>
-        </section>
-      </Reveal>
-
-      {/* Team Grid Section */}
-      <Reveal direction="left">
-        <section className="border-b border-white/5 bg-[#060606] py-24">
-          <div className="mx-auto max-w-[1280px] px-8 md:px-20">
-            <div className="flex items-center gap-4">
-              <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
-              <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-                The People
-              </span>
-            </div>
-            <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">
-              The Team Behind Ark Vision
-            </h2>
-            <p className="mt-5 max-w-[760px] font-light text-sm leading-relaxed text-white/45">
-              Our advisors, strategists, and relationship experts deliver a seamless real estate
-              experience across every interaction.
-            </p>
-            <AboutTeamGrid imagePaths={teamImages} names={teamMembers} />
-          </div>
-        </section>
+        <PremiumSection
+          eyebrow="Leadership"
+          title={
+            <>
+              Executive
+              <span className="text-[#c9a84c]"> Leadership Team</span>
+            </>
+          }
+          description="The leadership group driving strategy, market positioning, and client outcomes across Dubai's premium real estate segment."
+        >
+          <AboutLeadershipSection profiles={leadershipProfiles} />
+        </PremiumSection>
       </Reveal>
 
       {/* Rewards and Recognition Video Section */}

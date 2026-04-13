@@ -33,6 +33,28 @@ body {
   font-family: var(--font-playfair), Georgia, serif;
 }
 
+.premium-section {
+  position: relative;
+  background:
+    radial-gradient(1200px 420px at 90% -20%, rgba(201, 168, 76, 0.09), transparent 60%),
+    radial-gradient(900px 360px at -10% 120%, rgba(201, 168, 76, 0.06), transparent 62%),
+    #060606;
+}
+
+.premium-title {
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.premium-metric-rail > div {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.premium-metric-rail > div:hover {
+  transform: translateY(-4px);
+  box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.25);
+}
+
 html {
   scroll-behavior: auto;
   /* clip avoids horizontal bleed without forcing overflow-y:auto on body (hidden does, and breaks scroll/sticky). */

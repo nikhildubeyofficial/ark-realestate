@@ -1,11 +1,26 @@
 import Link from "next/link";
 import HeroBackgroundVideo from "@/components/HeroBackgroundVideo";
 import { Reveal, StaggerReveal } from "@/components/Reveal";
-import { Heart, MapPin, Phone, Mail } from "lucide-react";
+import {
+  Heart,
+  MapPin,
+  Phone,
+  Mail,
+  Award,
+  BadgeCheck,
+  BarChart3,
+  Building2,
+  Gem,
+  Handshake,
+  Landmark,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import HomeBuyingKnowAccordion from "@/components/HomeBuyingKnowAccordion";
 import HomeTopDevelopersSection from "@/components/HomeTopDevelopersSection";
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
 import TestimonialVideos from "@/components/TestimonialVideos";
+import { PremiumSection, TrustMetricRail } from "@/components/PremiumSection";
 import { leadershipProfiles } from "@/data/leadershipProfiles";
 import {
   getHeatPointsForDevelopers,
@@ -50,13 +65,6 @@ const awardImages = [
   "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.35%20PM.jpeg",
 ];
 
-const exceptionalResidences = [
-  { title: "Penthouse at Burj Khalifa", beds: 5, baths: 6, sqft: "12,500", location: "Downtown Dubai" },
-  { title: "Signature Villa", beds: 3, baths: 4, sqft: "8,000", location: "Emirates Hills" },
-  { title: "Marina View Residence", beds: 4, baths: 5, sqft: "10,000", location: "Dubai Marina" },
-  { title: "Palm Jumeirah Estate", beds: 6, baths: 7, sqft: "15,000", location: "Palm Jumeirah" },
-];
-
 const blogPosts = [
   { title: "Prices in Dubai to Rise", excerpt: "From property viewings by private helicopter to seamless key handover — every detail considered." },
   { title: "Prices in Dubai to Rise", excerpt: "From property viewings by private helicopter to seamless key handover — every detail considered." },
@@ -65,6 +73,26 @@ const blogPosts = [
 
 const awardsCopy =
   "At Ark Vision, we don't just sell properties, we curate opportunities. Whether you're an off-plan investor, a global buyer seeking a second home, or looking for rental yields, we guide you with transparency, insight, and uncompromising dedication.";
+
+const trustMetrics = [
+  { value: "Top 10", label: "Dubai Best Sellers", icon: <Award size={18} /> },
+  { value: "25+", label: "Years in Market", icon: <BadgeCheck size={18} /> },
+  { value: "AED 5B+", label: "Portfolio Value", icon: <Landmark size={18} /> },
+  { value: "100K+", label: "Units Advised", icon: <BarChart3 size={18} /> },
+];
+
+const awardHighlights = [
+  { label: "Top Broker Recognition", year: "2026", icon: <Award size={16} /> },
+  { label: "Developer Partner Excellence", year: "2025", icon: <Building2 size={16} /> },
+  { label: "Sales Performance Leadership", year: "2024", icon: <Sparkles size={16} /> },
+];
+
+const servicePillars = [
+  { title: "Off-plan advisory", icon: <Landmark size={16} /> },
+  { title: "Luxury primary sales", icon: <Gem size={16} /> },
+  { title: "Portfolio strategy", icon: <BarChart3 size={16} /> },
+  { title: "Leasing and yield support", icon: <Building2 size={16} /> },
+];
 
 /** Place `hero.mp4` in `public/video/` (served at `/video/hero.mp4`). */
 const HERO_VIDEO_SRC = "/video/hero.mp4";
@@ -98,8 +126,6 @@ const IMG = {
   legacyBg:
     "https://images.unsplash.com/photo-1764212193268-dba11709dc38?w=2000", // Palm Jumeirah aerial
 } as const;
-
-const propertyImages = [IMG.propertyVilla, IMG.propertyDubai, IMG.propertySkyline, IMG.propertyInterior];
 
 export default async function HomePage() {
   const [heatPoints, listingsForDevelopers, recentLaunches] = await Promise.all([
@@ -139,6 +165,17 @@ export default async function HomePage() {
                 >
                   Area guides
                 </Link>
+              </div>
+              <div className="animate-hero-sub mt-10 grid max-w-[760px] gap-3 border border-white/10 bg-black/45 p-4 sm:grid-cols-2 lg:grid-cols-4">
+                {servicePillars.map((pillar) => (
+                  <div key={pillar.title} className="border border-white/10 bg-black/40 px-3 py-3">
+                    <div className="flex items-center gap-2 text-[#c9a84c]">
+                      {pillar.icon}
+                      <p className="text-[10px] uppercase tracking-[2px]">Expertise</p>
+                    </div>
+                    <p className="mt-2 text-sm text-white/80">{pillar.title}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -197,9 +234,24 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <Reveal direction="up">
+        <PremiumSection
+          eyebrow="Performance Snapshot"
+          title={
+            <>
+              A Proven Name in
+              <span className="text-[#c9a84c]"> Dubai Real Estate</span>
+            </>
+          }
+          description="Every number reflects consistency, execution quality, and long-term trust built with investors, homeowners, and global buyers."
+        >
+          <TrustMetricRail items={trustMetrics} />
+        </PremiumSection>
+      </Reveal>
+
       {/* Our Legacy / Why Ark Vision (inserted below brand marquee) */}
       <Reveal direction="left">
-        <section className="relative overflow-hidden border-b border-white/5 bg-black">
+        <section className="relative overflow-hidden border-b border-white/5 bg-black py-16 md:py-24">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${IMG.legacyBg})` }}
@@ -207,7 +259,7 @@ export default async function HomePage() {
           <div className="absolute inset-0 bg-black/65" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-transparent" />
 
-          <div className="relative mx-auto max-w-[1440px] px-5 py-14 md:px-20 md:py-20">
+          <div className="relative mx-auto max-w-[1280px] px-5 md:px-20">
             <div className="max-w-[760px]">
               <div className="flex items-center gap-4">
                 <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
@@ -219,23 +271,9 @@ export default async function HomePage() {
                 className="mt-4 font-serif text-4xl font-light italic leading-tight text-white/90 sm:text-5xl md:text-6xl"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
-                Why Ark Vision{" "}
-                <span className="text-[#c9a84c]">International Real</span>
-                <br />
-                <span className="text-[#c9a84c]">Estate</span>
+                Why Investors Choose
+                <span className="block text-[#c9a84c]">Ark Vision</span>
               </h2>
-
-              {/* DAMAC-style wordmark overlay */}
-              <div className="pointer-events-none relative mt-8 h-[76px] w-full">
-                <div className="absolute inset-0 flex items-center">
-                  <p className="select-none text-[72px] font-semibold tracking-[6px] text-white/20 sm:text-[86px] md:text-[100px]">
-                    DAMAC
-                  </p>
-                </div>
-                <p className="absolute bottom-0 left-1 text-xs uppercase tracking-[4px] text-white/35">
-                  masterful experiences
-                </p>
-              </div>
 
               <p className="mt-6 max-w-[680px] font-light text-white/60 text-sm leading-relaxed md:text-base">
                 At Ark Vision, we don&apos;t just sell properties, we curate opportunities. Whether
@@ -243,23 +281,30 @@ export default async function HomePage() {
                 rental yields, we guide you with transparency, insight, and an uncompromising
                 dedication.
               </p>
-
-              <div className="mt-10 grid max-w-[640px] grid-cols-1 overflow-hidden border border-white/10 bg-black/50 transition-all duration-500 hover:border-[#c9a84c]/30 hover:shadow-[0_0_40px_-15px_rgba(201,168,76,0.15)] sm:grid-cols-3">
+              <div className="mt-10 grid max-w-[760px] gap-4 sm:grid-cols-3">
                 {[
-                  { value: "100K+", label: "Properties Sold" },
-                  { value: "25+", label: "Years Experience" },
-                  { value: "5B+", label: "Total Sales" },
-                ].map((s, idx) => (
-                  <div
-                    key={s.label}
-                    className={`px-6 py-6 ${idx !== 2 ? "sm:border-r sm:border-white/10" : ""}`}
-                  >
-                    <p className="font-serif text-2xl font-light italic text-[#c9a84c]">
-                      {s.value}
-                    </p>
-                    <p className="mt-2 text-[10px] uppercase tracking-[2.6px] text-white/50">
-                      {s.label}
-                    </p>
+                  {
+                    title: "Advisory",
+                    detail: "Evidence-led recommendations, not sales pressure.",
+                    icon: <Handshake size={16} />,
+                  },
+                  {
+                    title: "Execution",
+                    detail: "Fast, transparent process from shortlist to handover.",
+                    icon: <BadgeCheck size={16} />,
+                  },
+                  {
+                    title: "Stewardship",
+                    detail: "Long-term support beyond transaction closure.",
+                    icon: <ShieldCheck size={16} />,
+                  },
+                ].map((item) => (
+                  <div key={item.title} className="border border-white/10 bg-black/55 p-5">
+                    <div className="flex items-center gap-2 text-[#c9a84c]">
+                      {item.icon}
+                      <p className="font-serif text-xl italic">{item.title}</p>
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-white/65">{item.detail}</p>
                   </div>
                 ))}
               </div>
@@ -270,62 +315,81 @@ export default async function HomePage() {
 
       {/* Removed extra spacer to eliminate gap before Top Developers */}
 
-      {/* <Reveal direction="scale">
+      <Reveal direction="scale">
         <HomeTopDevelopersSection
           heatPoints={heatPoints}
           listings={listingsForDevelopers}
           recentLaunches={recentLaunches}
         />
-      </Reveal> */}
+      </Reveal>
 
       <Reveal direction="right">
-        <section className="border-b border-white/5 bg-[#060606] py-16 md:px-20 md:py-24">
-        <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
-          <div className="mb-12 grid gap-8 md:grid-cols-2 md:gap-[15px]">
-            <div>
-              <div className="flex items-center gap-4">
-                <span className="h-px w-6 bg-gradient-to-r from-[#c9a84c] to-transparent md:w-8" />
-                <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-                  Our Achievements
-                </span>
+        <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
+        <div className="mx-auto max-w-[1280px] px-5 md:px-20">
+          <div className="mb-10 overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-transparent p-6 md:p-8">
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:gap-10">
+              <div>
+                <div className="flex items-center gap-4">
+                  <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
+                  <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
+                    Recognition & Awards
+                  </span>
+                </div>
+                <h2
+                  className="mt-4 font-serif text-[40px] font-light italic leading-[1.1] text-white/90 md:text-[56px]"
+                  style={{ fontFamily: "var(--font-playfair)" }}
+                >
+                  The
+                  <span className="block text-[#c9a84c]">Awards Wall</span>
+                </h2>
+                <p className="mt-4 max-w-[640px] text-sm font-light leading-relaxed text-white/55">
+                  {awardsCopy}
+                </p>
               </div>
-              <h2
-                className="mt-4 font-serif text-[48px] font-light italic leading-[68px] text-white/90 md:text-[56px]"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                Our <span className="block">Awards</span>
-              </h2>
-            </div>
-            <p className="max-w-[638px] font-normal leading-[22.75px] text-white/65 text-sm">
-              {awardsCopy}
-            </p>
-          </div>
-          <div className="relative">
-            <div className="overflow-x-auto pb-4 scrollbar-hide">
-              <div 
-                className="flex gap-6"
-                style={{ width: "max-content" }}
-              >
-                {awardImages.map((src, idx) => (
+              <div className="grid gap-3 sm:grid-cols-3">
+                {awardHighlights.map((item) => (
                   <div
-                    key={idx}
-                    className="card-premium relative shrink-0 overflow-hidden rounded-lg border border-white/10 transition-transform duration-500 hover:scale-[1.02]"
-                    style={{ width: "320px", height: "400px" }}
+                    key={item.label}
+                    className="border border-white/10 bg-black/40 px-4 py-4"
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={src}
-                      alt={`Award ${idx + 1}`}
-                      className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.05]"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                    <div className="flex items-center gap-2 text-[#c9a84c]">
+                      {item.icon}
+                      <p className="font-serif text-2xl italic">{item.year}</p>
+                    </div>
+                    <p className="mt-2 text-[11px] uppercase tracking-[1.5px] text-white/60">
+                      {item.label}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#060606] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#060606] to-transparent" />
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {awardImages.slice(0, 8).map((src, idx) => (
+              <div
+                key={idx}
+                className={`card-premium group relative overflow-hidden border border-white/10 ${
+                  idx === 0 ? "sm:col-span-2 sm:row-span-2 sm:min-h-[460px]" : "min-h-[220px]"
+                }`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={src}
+                  alt={`Award ${idx + 1}`}
+                  className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute left-4 top-4 border border-white/20 bg-black/45 px-2 py-1 text-[10px] uppercase tracking-[2px] text-[#c9a84c]">
+                  Award {String(idx + 1).padStart(2, "0")}
+                </div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <p className="text-[11px] uppercase tracking-[2px] text-white/70">
+                    Ark Vision Recognition
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         </section>
@@ -334,29 +398,49 @@ export default async function HomePage() {
       <Reveal direction="up">
         <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
           <div className="mx-auto max-w-[1280px] px-5 md:px-20">
-            <div className="flex items-center gap-4">
-              <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
-              <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-                The People
-              </span>
+            <div className="grid gap-8 border border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent p-6 md:grid-cols-[1.1fr_1fr] md:p-8">
+              <div>
+                <div className="flex items-center gap-4">
+                  <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
+                  <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
+                    Leadership
+                  </span>
+                </div>
+                <h2 className="mt-4 font-serif text-4xl font-light italic text-white/90 md:text-5xl">
+                  Executive Leadership
+                </h2>
+                <p className="mt-4 max-w-[520px] text-sm leading-relaxed text-white/60">
+                  The leadership team guiding strategy, market execution, and relationship quality for
+                  every Ark Vision client.
+                </p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="border border-white/10 bg-black/40 p-4">
+                  <p className="font-serif text-2xl italic text-[#c9a84c]">Strategic</p>
+                  <p className="mt-2 text-xs uppercase tracking-[2px] text-white/60">Developer Relations</p>
+                </div>
+                <div className="border border-white/10 bg-black/40 p-4">
+                  <p className="font-serif text-2xl italic text-[#c9a84c]">Private</p>
+                  <p className="mt-2 text-xs uppercase tracking-[2px] text-white/60">Client Advisory</p>
+                </div>
+              </div>
             </div>
-            <h2 className="mt-4 font-serif text-4xl font-light italic text-white/90 md:text-5xl">
-              Our Leadership
-            </h2>
-            <AboutLeadershipSection profiles={leadershipProfiles} />
+            <div className="mt-8">
+              <AboutLeadershipSection profiles={leadershipProfiles} />
+            </div>
           </div>
         </section>
       </Reveal>
 
       <Reveal direction="right">
-        <section className="border-b border-white/5 bg-[#060606] py-16 md:px-20 md:py-28">
-          <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
+        <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
+          <div className="mx-auto max-w-[1280px] px-5 md:px-20">
             {/* Section Header - Centered for better impact */}
-            <div className="mb-12 text-center lg:mb-16">
+            <div className="mb-12 text-center">
               <div className="flex items-center justify-center gap-4">
                 <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#c9a84c]" />
                 <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-                  Curated Portfolio
+                  Market Highlights
                 </span>
                 <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#c9a84c]" />
               </div>
@@ -364,27 +448,27 @@ export default async function HomePage() {
                 className="mt-6 font-serif text-[42px] font-normal italic leading-tight text-white/95 sm:text-[52px] md:text-[64px]"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
-                Exceptional <span className="text-[#c9a84c]">Residences</span>
+                Popular <span className="text-[#c9a84c]">Properties</span>
               </h2>
               <p className="mx-auto mt-4 max-w-[500px] font-normal text-white/70 text-sm leading-relaxed">
-                Handpicked luxury properties from Dubai&apos;s most prestigious addresses
+                High-demand opportunities curated from Dubai&apos;s most competitive corridors
               </p>
             </div>
 
             {/* Property Cards Grid */}
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4" style={{ gap: "24px" }}>
-              {exceptionalResidences.map((prop, i) => (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+              {recentLaunches.slice(0, 4).map((prop, i) => (
                 <div
-                  key={prop.title}
+                  key={prop.slug}
                   className="card-premium group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0a0a] transition-all duration-300 hover:border-[#c9a84c]/30"
                 >
                   {/* Image Container */}
-                  <Link href="/featured" className="block">
+                  <Link href={`/properties/${prop.slug}`} className="block">
                     <div className="relative aspect-[4/5] overflow-hidden">
                       {/* Property Image */}
                       <div
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-500 ease-out group-hover:scale-105"
-                        style={{ backgroundImage: `url(${propertyImages[i] ?? IMG.propertyVilla})` }}
+                        style={{ backgroundImage: `url(${prop.image})` }}
                       />
 
                       {/* Gradient Overlay */}
@@ -393,7 +477,7 @@ export default async function HomePage() {
                       {/* Top Badge - Property Type */}
                       <div className="absolute left-4 top-4">
                         <span className="rounded-full bg-black/60 px-3 py-1.5 text-[10px] uppercase tracking-wider text-white/90">
-                          {i === 0 ? "Penthouse" : i === 1 ? "Villa" : i === 2 ? "Apartment" : "Estate"}
+                          {prop.credenceCategory}
                         </span>
                       </div>
 
@@ -439,15 +523,15 @@ export default async function HomePage() {
                       {prop.title}
                     </h3>
 
-                    {/* Price (Estimated in AED) */}
+                    {/* Price */}
                     <p className="mt-3 text-base font-medium tracking-wide text-[#c9a84c]/90">
-                      {i === 0 ? "AED 90M" : i === 1 ? "AED 67M" : i === 2 ? "AED 47M" : "AED 118M"}
+                      {prop.price}
                     </p>
 
                     {/* CTA Buttons */}
                     <div className="mt-4 flex flex-col gap-2">
                       <Link
-                        href={`/featured?keyword=${encodeURIComponent(prop.title)}`}
+                        href={`/properties/${prop.slug}`}
                         className="group/btn flex h-11 items-center justify-center rounded-lg border border-[#c9a84c] bg-[#c9a84c]/10 text-sm font-medium text-[#c9a84c] transition-all duration-300 hover:bg-[#c9a84c] hover:text-[#060606]"
                       >
                         <span className="flex items-center gap-2">
@@ -456,7 +540,7 @@ export default async function HomePage() {
                         </span>
                       </Link>
                       <Link
-                        href="/featured"
+                        href={`/properties/${prop.slug}`}
                         className="flex h-10 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] text-xs font-normal text-white/80 transition-all duration-300 hover:border-white/30 hover:bg-white/[0.1] hover:text-white/95"
                       >
                         View Details
@@ -484,8 +568,8 @@ export default async function HomePage() {
       </Reveal>
 
       <Reveal direction="left">
-        <section className="border-b border-white/5 py-16 md:px-20 md:py-[120px]">
-        <div className="mx-auto max-w-[1200px] px-5 md:px-[120px]">
+        <section className="border-b border-white/5 py-16 md:py-24">
+        <div className="mx-auto max-w-[1280px] px-5 md:px-20">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <div className="flex items-center gap-4">
@@ -514,12 +598,12 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="mt-8 h-px w-full bg-white/10" />
-          <div className="mt-12 grid gap-6 lg:grid-cols-[607px_1fr] lg:gap-4">
+          <div className="mt-8 h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+          <div className="mt-12 grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:gap-6">
             {/* Featured (left) */}
             <Link
               href="/blog"
-              className="group relative overflow-hidden bg-white/5 lg:h-[438px]"
+              className="group relative overflow-hidden border border-white/10 bg-white/5 lg:h-[438px]"
               aria-label="Read featured blog"
             >
               <div
@@ -543,7 +627,7 @@ export default async function HomePage() {
                 <Link
                   key={`${post.title}-${i}`}
                   href="/blog"
-                  className="group grid grid-cols-[168px_1fr] overflow-hidden bg-white/5 transition-colors duration-300 hover:bg-white/7 sm:grid-cols-[174px_1fr]"
+                  className="group grid grid-cols-[168px_1fr] overflow-hidden border border-white/10 bg-white/5 transition-colors duration-300 hover:bg-white/7 sm:grid-cols-[174px_1fr]"
                   style={{ minHeight: "138px" }}
                   aria-label={`Read blog: ${post.title}`}
                 >
@@ -575,7 +659,8 @@ export default async function HomePage() {
 
       <Reveal direction="up">
         <section className="border-b border-white/5 py-16 md:py-24">
-        <div className="mx-auto max-w-[896px] px-5 md:px-16">
+        <div className="mx-auto max-w-[1280px] px-5 md:px-20">
+          <div className="max-w-[896px]">
           <h2
             className="font-serif text-[36px] font-light italic leading-tight text-white/90 md:text-[48px] md:leading-[54px]"
             style={{ fontFamily: "var(--font-playfair)" }}
@@ -586,13 +671,14 @@ export default async function HomePage() {
             A comprehensive guide to navigating Dubai&apos;s property market with confidence.
           </p>
           <HomeBuyingKnowAccordion />
+          </div>
         </div>
         </section>
       </Reveal>
 
       <Reveal direction="up">
-        <section id="contact" className="border-b border-white/5 py-16 md:px-20 md:py-24">
-        <div className="mx-auto grid max-w-[1280px] gap-16 px-5 md:grid-cols-2 md:px-[80px]">
+        <section id="contact" className="border-b border-white/5 py-16 md:py-24">
+        <div className="mx-auto grid max-w-[1280px] gap-10 border border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent px-5 py-8 md:grid-cols-2 md:px-20 md:py-12">
           <div>
             <div className="flex items-center gap-4">
               <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
@@ -610,7 +696,7 @@ export default async function HomePage() {
               Our advisors are available to discuss your requirements with complete discretion. Every
               inquiry is handled with the utmost care and confidentiality.
             </p>
-            <div className="mt-12 space-y-8">
+            <div className="mt-10 space-y-6">
               <div className="flex gap-4">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-white/20 text-[#c9a84c]">
                   <MapPin size={18} />
@@ -643,7 +729,7 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
-          <div className="card-premium rounded-lg border border-white/10 p-6 sm:p-8 md:p-12">
+          <div className="card-premium rounded-lg border border-white/10 bg-black/30 p-6 sm:p-8 md:p-12">
             <h3 className="font-serif text-xl font-medium text-white/90">Private Inquiry Form</h3>
             <div className="mt-6 h-px bg-white/10" />
             <form className="mt-8 space-y-6">

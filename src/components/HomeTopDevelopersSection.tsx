@@ -53,7 +53,7 @@ export default function HomeTopDevelopersSection({
         <div className="mb-10">
           <h2
             className="font-serif text-[42px] font-light italic leading-tight text-white/90 md:text-[56px] md:leading-[68px]"
-            style={{ fontFamily: "var(--font-cormorant)" }}
+            style={{ fontFamily: "var(--font-playfair)" }}
           >
             Choose from Top Developers
           </h2>
@@ -94,16 +94,15 @@ export default function HomeTopDevelopersSection({
           <div>
             <h3
               className="font-serif text-2xl font-light italic text-white/90 md:text-3xl"
-              style={{ fontFamily: "var(--font-cormorant)" }}
+              style={{ fontFamily: "var(--font-playfair)" }}
             >
               {recentLaunches?.length
-                ? "Most Recent Launches"
+                ? "Popular Properties"
                 : "Featured from selection"}
             </h3>
             {recentLaunches?.length ? (
               <p className="mt-1 text-xs font-light text-white/45">
-                Same spotlight projects as Credence — hand-picked from live
-                inventory.
+                Curated spotlight projects pulled from live inventory.
               </p>
             ) : null}
           </div>

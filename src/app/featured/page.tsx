@@ -1,4 +1,5 @@
 import FeaturedListingsClient from "@/components/FeaturedListingsClient";
+import { PremiumSection } from "@/components/PremiumSection";
 import { getPropertyListingsForFeatured } from "@/lib/propertyData";
 import { Suspense } from "react";
 
@@ -6,25 +7,22 @@ export default async function FeaturedPage() {
   const listings = await getPropertyListingsForFeatured();
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <section className="relative border-b border-white/5 py-20">
-        <div className="mx-auto max-w-[1280px] px-8 md:px-20">
-          <div className="flex items-center gap-4">
-            <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
-            <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-              Property Listings
-            </span>
-          </div>
-          <h1 className="mt-4 font-serif text-5xl font-light italic text-white/90 md:text-6xl">
-            Featured <span className="text-[#c9a84c]">Properties</span>
-          </h1>
-          <p className="mt-6 max-w-xl font-light text-white/50 text-sm leading-relaxed">
-            Handpicked from Dubai&apos;s most prestigious addresses. Each
-            property is a testament to uncompromising luxury and exceptional
-            craftsmanship.
-          </p>
+      <PremiumSection
+        eyebrow="Property Listings"
+        title={
+          <>
+            Curated
+            <span className="text-[#c9a84c]"> Opportunity Catalog</span>
+          </>
+        }
+        description="Explore high-conviction projects selected for location quality, developer credibility, and long-term return potential."
+      >
+        <div className="grid gap-4 border border-white/10 bg-white/[0.02] p-5 text-xs uppercase tracking-[2.4px] text-white/50 md:grid-cols-3">
+          <p>Verified market inventory</p>
+          <p>Multi-criteria discovery</p>
+          <p>Premium advisory support</p>
         </div>
-      </section>
+      </PremiumSection>
 
       <Suspense
         fallback={

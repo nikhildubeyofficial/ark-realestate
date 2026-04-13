@@ -429,7 +429,7 @@ export default function FeaturedListingsClient({
 
   return (
     <>
-      <section className="sticky top-[72px] z-40 border-b border-white/5 bg-[#080808]/95 py-4 backdrop-blur">
+      <section className="sticky top-[72px] z-40 border-b border-white/10 bg-[#080808]/95 py-4 backdrop-blur-xl">
         <div className="mx-auto max-w-[1280px] space-y-4 px-8 md:px-20">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <label className="block flex-1">
@@ -438,7 +438,7 @@ export default function FeaturedListingsClient({
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search by keyword, community, developer, or property ID (slug)…"
-                className="w-full border border-white/15 bg-black/30 px-4 py-2.5 font-light text-sm text-white/90 placeholder:text-white/35 focus:border-[#c9a84c]/50 focus:outline-none"
+                className="w-full border border-white/15 bg-black/40 px-4 py-2.5 font-light text-sm text-white/90 placeholder:text-white/35 focus:border-[#c9a84c]/50 focus:outline-none"
               />
             </label>
             <div className="flex flex-wrap gap-2">
@@ -490,7 +490,7 @@ export default function FeaturedListingsClient({
             </p>
           ) : (
             <>
-              <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {paginated.map((listing) => (
                   <PropertyCard 
                     key={listing.slug} 
@@ -621,9 +621,7 @@ function PropertyCard({
   };
 
   return (
-    <article
-      className="group overflow-hidden rounded-lg border border-white/10 bg-white/5 transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.8),0_0_20px_-10px_rgba(201,168,76,0.1)]"
-    >
+    <article className="group overflow-hidden rounded-xl border border-white/10 bg-[#0a0a0a] transition-all duration-500 hover:border-[#c9a84c]/40 hover:shadow-[0_20px_45px_-20px_rgba(0,0,0,0.8),0_0_20px_-10px_rgba(201,168,76,0.15)]">
       <div className="relative aspect-[4/3] bg-white/10 overflow-hidden">
         <Link
           href={`/properties/${listing.slug}`}
@@ -698,7 +696,7 @@ function PropertyCard({
             </span>
           ) : null}
         </div>
-        <h2 className="mt-2 font-serif text-xl font-medium text-white/90 transition-colors group-hover:text-[#c9a84c]">
+        <h2 className="mt-2 font-serif text-2xl font-medium text-white/90 transition-colors group-hover:text-[#c9a84c]">
           <Link
             href={`/properties/${listing.slug}`}
           >

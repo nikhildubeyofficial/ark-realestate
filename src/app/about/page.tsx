@@ -1,5 +1,6 @@
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
 import AboutTeamGrid from "@/components/AboutTeamGrid";
+import { PremiumSection, TrustMetricRail } from "@/components/PremiumSection";
 import { Reveal } from "@/components/Reveal";
 import Link from "next/link";
 import imagescManifest from "@/data/imagesc-manifest.json";
@@ -137,6 +138,21 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <Reveal direction="up">
+        <PremiumSection
+          eyebrow="Credibility"
+          title={
+            <>
+              Trusted by Investors,
+              <span className="text-[#c9a84c]"> Chosen by Families</span>
+            </>
+          }
+          description="A premium advisory business is measured by consistency, retention, and outcomes. Our operating standards are built around all three."
+        >
+          <TrustMetricRail items={stats} />
+        </PremiumSection>
+      </Reveal>
+
       <Reveal direction="right">
         <section className="border-b border-white/5 bg-[#060606] py-24">
           <div className="mx-auto max-w-[1280px] px-8 md:px-20">
@@ -261,23 +277,30 @@ export default function AboutPage() {
       </Reveal>
 
       <Reveal direction="scale">
-        <section className="border-b border-white/5 bg-[#060606] py-24">
-        <div className="mx-auto max-w-[1280px] px-8 md:px-20">
-          <div className="flex items-center gap-4">
-            <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
-            <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">Our Services</span>
-          </div>
-          <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">Expert Services for Every Journey</h2>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <PremiumSection
+          eyebrow="Our Services"
+          title={
+            <>
+              End-to-End Advisory
+              <span className="text-[#c9a84c]"> Architecture</span>
+            </>
+          }
+          description="From acquisition to portfolio strategy, every service is designed around transparency, speed, and premium client care."
+        >
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((item) => (
-              <div key={item} className="card-premium group relative border border-white/10 bg-[#080808] px-5 py-6">
+              <div
+                key={item}
+                className="card-premium group relative border border-white/10 bg-[#080808] px-5 py-6"
+              >
                 <p className="text-xs uppercase tracking-[2.6px] text-[#c9a84c]">Service</p>
-                <p className="mt-3 font-light text-sm leading-relaxed text-white/75 transition-colors duration-300 group-hover:text-white/90">{item}</p>
+                <p className="mt-3 font-light text-sm leading-relaxed text-white/75 transition-colors duration-300 group-hover:text-white/90">
+                  {item}
+                </p>
               </div>
             ))}
           </div>
-        </div>
-        </section>
+        </PremiumSection>
       </Reveal>
 
       {/* Communities In Focus / Portfolio Highlights - Hidden as requested
