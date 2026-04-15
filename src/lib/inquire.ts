@@ -12,7 +12,7 @@ export function buildInquireWhatsAppUrl(payload: {
   message?: string;
 }): string {
   const lines = [
-    "Hello, I'm interested in a property on Ark Vision.",
+    "Hello, I'm interested in a property on ARK Vision.",
     `Property: ${payload.propertyTitle}`,
     `Ref: ${payload.slug}`,
     `Location: ${payload.location}`,

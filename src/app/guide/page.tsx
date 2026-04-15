@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getAreaGuidesWithImages } from "@/lib/areaGuideImages.server";
 
 export const metadata = {
-  title: "Area Guides | Ark Vision",
+  title: "Area Guides | ARK Vision",
   description:
     "Explore Dubai’s key communities — waterfront, downtown, and investment corridors.",
 };

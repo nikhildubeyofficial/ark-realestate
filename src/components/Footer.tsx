@@ -23,7 +23,7 @@ export default function Footer() {
             />
           </div>
           <p className="mx-auto max-w-[280px] font-light leading-relaxed text-white/80 text-sm md:mx-0">
-            Ark Vision — Dubai&apos;s most trusted luxury real estate house,
+            ARK Vision — Dubai&apos;s most trusted luxury real estate house,
             curating extraordinary residences since 1998.
           </p>
           <div className="flex justify-center gap-2 md:justify-start">
@@ -91,7 +91,7 @@ export default function Footer() {
       {/* Bottom bar with section divider */}
       <div className="section-divider mx-auto mt-12 max-w-[1280px]" />
       <p className="mt-6 text-center text-[10px] uppercase tracking-[3px] text-white/30">
-        © {new Date().getFullYear()} Ark Vision International. All rights reserved.
+        © {new Date().getFullYear()} ARK Vision International. All rights reserved.
       </p>
     </footer>
   );

@@ -3,9 +3,10 @@
 @theme inline {
   /* Ark Vision design tokens from Figma */
   --color-gold: #c9a84c;
+  --color-gold-editorial: #c5a059;
   --color-gold-light: #fcf6ba;
   --color-gold-dark: #b38f28;
-  --color-black: #060606;
+  --color-black: #050505;
   --color-cod-gray: #080808;
   --color-white-90: rgba(255, 255, 255, 0.9);
   --color-white-80: rgba(255, 255, 255, 0.8);
@@ -16,7 +17,7 @@
   --color-white-30: rgba(255, 255, 255, 0.3);
   --color-white-5: rgba(255, 255, 255, 0.05);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-serif: var(--font-cormorant), Georgia, serif;
 }
 
 /* ─── Base ──────────────────────────────────────────────────────────── */
@@ -30,7 +31,7 @@ body {
 }
 
 .font-serif {
-  font-family: var(--font-playfair), Georgia, serif;
+  font-family: var(--font-serif), Georgia, serif;
 }
 
 .premium-section {
@@ -93,9 +94,33 @@ html {
   opacity: 0;
 }
 
+.hero-expertise-grid > div {
+  opacity: 0;
+  animation: hero-fade-in 0.9s ease-out forwards;
+}
+
+.hero-expertise-grid > div:nth-child(1) {
+  animation-delay: 0.34s;
+}
+.hero-expertise-grid > div:nth-child(2) {
+  animation-delay: 0.42s;
+}
+.hero-expertise-grid > div:nth-child(3) {
+  animation-delay: 0.5s;
+}
+.hero-expertise-grid > div:nth-child(4) {
+  animation-delay: 0.58s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-hero-title,
   .animate-hero-sub {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-expertise-grid > div {
     animation: none;
     opacity: 1;
     transform: none;
@@ -120,7 +145,7 @@ html {
   flex-shrink: 0;
   align-items: center;
   gap: 4rem;
-  animation: brand-marquee 28s linear infinite;
+  animation: brand-marquee 46s linear infinite;
   animation-play-state: running;
   will-change: transform;
 }

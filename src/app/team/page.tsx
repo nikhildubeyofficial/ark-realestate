@@ -10,16 +10,45 @@ import { useState, useRef, useEffect } from "react";
 const HERO_VIDEO_SRC = "/video/hero.mp4";
 
 const rnrVideos = [
-  "/RNR%20videos/AQMLl2zQPSEmne39MX8ZKm2cplr67NhmCcf-lpMRw2DEblobs14nV8BrJE-wASQp_SsYlS9UnAZX8nJB00sglNptvBcIOwjcUOdXTao.mp4",
-  "/RNR%20videos/AQN_yhu3mgIGdBwAqMiOyV3hfA5g-Kat9REqMlfgDd4DskGG2fkzCJYhaNrNkhRpQgqv28o-A-qXpEdJB3qwjDOb.mp4",
-  "/RNR%20videos/AQN1O3rYJYEwb75PQ11w5vF9ziobzUHErCiR3e5vvKiEA0WGFS78_YDKWV9fJ7jYbe_U_YO06JISpWIyljm0ma74IMOBq-dpjhK3AKY.mp4",
-  "/RNR%20videos/AQNl6-XwClEoejKHU1ofaw2ZeGrxpLi2_ZQoMiag_HfQo9gxDeWw-fZ2EblcGFc6KVR2DqI2em1ktsuzUs1Ws67aMg6ZLzlTBn29gck.mp4",
-  "/RNR%20videos/AQOD7mHhWt9Z8XjJQ9mi37RnsyGhsT_8rR6AmEclhM4AnZubKY3TS88Z1EjoIeaOxsAFa89xaN9ia98UrflrdOFCfOaZiuVa7jpTgHQ.mp4",
-  "/RNR%20videos/AQOGb71VB0fQKEfu_PXEvZMIYOXrvR1Q33t78-lL4ZLyM-FPalCCks9LxLYKh5Qc2OsljxpUMzSGOVNY1VDWilQwkAm47xYfZSBBLzs.mp4",
-  "/RNR%20videos/AQOVcZ7pXIcVmTCX43EbO76Cjf0AaCKVKZ-k3s5t8X3AhLV7APVfd_knPrg0cETZhO-7hzE4jx43S1QIPdAZn_Rn0RAKZjvfAQmGYOg.mp4",
-  "/RNR%20videos/AQOxik6hak1_lTEVTWi5oJdWv5p8CbKYnhs_XKDp5g7KKHbkU7YP5-_p8aDizDi1RsqrtitD3vP181QDWcmLK-qS1FOtSjets2mS63A.mp4",
-  "/RNR%20videos/Receiving%20the%20Top%20Broker%20Award%20at%20%40damacofficial%20Proud%20moment%20for%20all%20the%20Arkians%20%F0%9F%8F%86%F0%9F%9A%8F%40chelanivi.mp4",
-];
+  {
+    src: "/RNR%20videos/AQMLl2zQPSEmne39MX8ZKm2cplr67NhmCcf-lpMRw2DEblobs14nV8BrJE-wASQp_SsYlS9UnAZX8nJB00sglNptvBcIOwjcUOdXTao.mp4",
+    rotateCCW: false,
+  },
+  {
+    src: "/RNR%20videos/AQN_yhu3mgIGdBwAqMiOyV3hfA5g-Kat9REqMlfgDd4DskGG2fkzCJYhaNrNkhRpQgqv28o-A-qXpEdJB3qwjDOb.mp4",
+    rotateCCW: false,
+  },
+  {
+    src: "/RNR%20videos/AQN1O3rYJYEwb75PQ11w5vF9ziobzUHErCiR3e5vvKiEA0WGFS78_YDKWV9fJ7jYbe_U_YO06JISpWIyljm0ma74IMOBq-dpjhK3AKY.mp4",
+    rotateCCW: false,
+  },
+  {
+    src: "/RNR%20videos/AQNl6-XwClEoejKHU1ofaw2ZeGrxpLi2_ZQoMiag_HfQo9gxDeWw-fZ2EblcGFc6KVR2DqI2em1ktsuzUs1Ws67aMg6ZLzlTBn29gck.mp4",
+    rotateCCW: false,
+  },
+  {
+    src: "/RNR%20videos/AQOD7mHhWt9Z8XjJQ9mi37RnsyGhsT_8rR6AmEclhM4AnZubKY3TS88Z1EjoIeaOxsAFa89xaN9ia98UrflrdOFCfOaZiuVa7jpTgHQ.mp4",
+    rotateCCW: false,
+  },
+  {
+    src: "/RNR%20videos/AQOGb71VB0fQKEfu_PXEvZMIYOXrvR1Q33t78-lL4ZLyM-FPalCCks9LxLYKh5Qc2OsljxpUMzSGOVNY1VDWilQwkAm47xYfZSBBLzs.mp4",
+    rotateCCW: true,
+  },
+  {
+    src: "/RNR%20videos/AQOVcZ7pXIcVmTCX43EbO76Cjf0AaCKVKZ-k3s5t8X3AhLV7APVfd_knPrg0cETZhO-7hzE4jx43S1QIPdAZn_Rn0RAKZjvfAQmGYOg.mp4",
+    rotateCCW: false,
+  },
+  {
+    src: "/RNR%20videos/AQOxik6hak1_lTEVTWi5oJdWv5p8CbKYnhs_XKDp5g7KKHbkU7YP5-_p8aDizDi1RsqrtitD3vP181QDWcmLK-qS1FOtSjets2mS63A.mp4",
+    rotateCCW: false,
+  },
+  {
+    src: "/RNR%20videos/Receiving%20the%20Top%20Broker%20Award%20at%20%40damacofficial%20Proud%20moment%20for%20all%20the%20Arkians%20%F0%9F%8F%86%F0%9F%9A%8F%40chelanivi.mp4",
+    rotateCCW: false,
+  },
+] as const;
+
+const visibleRnrVideos = rnrVideos.filter((_, index) => ![1, 2, 6, 7, 8].includes(index));
 
 function RewardsAndRecognition() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -46,12 +75,12 @@ function RewardsAndRecognition() {
   };
 
   const nextSlide = () => {
-    const nextIndex = (activeIndex + 1) % rnrVideos.length;
+    const nextIndex = (activeIndex + 1) % visibleRnrVideos.length;
     goToSlide(nextIndex);
   };
 
   const prevSlide = () => {
-    const prevIndex = (activeIndex - 1 + rnrVideos.length) % rnrVideos.length;
+    const prevIndex = (activeIndex - 1 + visibleRnrVideos.length) % visibleRnrVideos.length;
     goToSlide(prevIndex);
   };
 
@@ -83,7 +112,7 @@ function RewardsAndRecognition() {
           </div>
           <h2
             className="mt-4 font-serif text-[40px] font-light italic leading-tight text-white/90 md:text-[50px]"
-            style={{ fontFamily: "var(--font-playfair)" }}
+            style={{ fontFamily: "var(--font-serif)" }}
           >
             Rewards & <span className="text-[#c9a84c]">Recognition</span>
           </h2>
@@ -101,8 +130,8 @@ function RewardsAndRecognition() {
             >
               <video
                 ref={videoRef}
-                src={rnrVideos[activeIndex]}
-                className="h-full w-full object-contain"
+                src={visibleRnrVideos[activeIndex]?.src}
+                className={`h-full w-full object-contain ${visibleRnrVideos[activeIndex]?.rotateCCW ? "-rotate-90" : ""}`}
                 onEnded={handleVideoEnded}
                 playsInline
                 preload="metadata"
@@ -131,7 +160,7 @@ function RewardsAndRecognition() {
                     Award Video
                   </p>
                   <p className="text-xs uppercase tracking-[2px] text-[#c9a84c]/80">
-                    {activeIndex + 1} of {rnrVideos.length}
+                    {activeIndex + 1} of {visibleRnrVideos.length}
                   </p>
                 </div>
                 
@@ -141,7 +170,7 @@ function RewardsAndRecognition() {
                   </span>
                   <span className="text-white/30">/</span>
                   <span className="font-serif text-sm text-white/50">
-                    {String(rnrVideos.length).padStart(2, "0")}
+                    {String(visibleRnrVideos.length).padStart(2, "0")}
                   </span>
                 </div>
               </div>
@@ -166,7 +195,7 @@ function RewardsAndRecognition() {
         </div>
 
         <div className="mt-10 flex items-center justify-center gap-3">
-          {rnrVideos.map((_, index) => (
+          {visibleRnrVideos.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
@@ -213,7 +242,7 @@ export default function TeamPage() {
               <span className="bg-gradient-to-r from-[#c9a84c] via-[#fcf6ba] to-[#b38f28] bg-clip-text text-transparent">Team</span>
             </h1>
             <p className="mt-5 max-w-[760px] font-light text-sm leading-relaxed text-white/70 md:text-base">
-              The talented individuals behind Ark Vision who make every client experience exceptional.
+              The talented individuals behind ARK Vision who make every client experience exceptional.
             </p>
           </div>
         </div>

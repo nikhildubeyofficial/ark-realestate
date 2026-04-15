@@ -1,6 +1,9 @@
 import Link from "next/link";
-import HeroBackgroundVideo from "@/components/HeroBackgroundVideo";
+import Image from "next/image";
+import HomeHero from "@/components/HomeHero";
 import { Reveal, StaggerReveal } from "@/components/Reveal";
+import FlowParallax from "@/components/FlowParallax";
+import AwardsWallCarousel from "@/components/AwardsWallCarousel";
 import {
   Heart,
   MapPin,
@@ -11,20 +14,15 @@ import {
   BarChart3,
   Building2,
   Gem,
-  Handshake,
   Landmark,
-  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import HomeBuyingKnowAccordion from "@/components/HomeBuyingKnowAccordion";
-import HomeTopDevelopersSection from "@/components/HomeTopDevelopersSection";
 import AboutLeadershipSection from "@/components/AboutLeadershipSection";
 import TestimonialVideos from "@/components/TestimonialVideos";
 import { PremiumSection, TrustMetricRail } from "@/components/PremiumSection";
 import { leadershipProfiles } from "@/data/leadershipProfiles";
 import {
-  getHeatPointsForDevelopers,
-  getPropertyData,
   getPropertyListingsByProjectIds,
 } from "@/lib/propertyData";
 import { RECENT_LAUNCH_IDS } from "@/lib/recentLaunches";
@@ -72,13 +70,13 @@ const blogPosts = [
 ];
 
 const awardsCopy =
-  "At Ark Vision, we don't just sell properties, we curate opportunities. Whether you're an off-plan investor, a global buyer seeking a second home, or looking for rental yields, we guide you with transparency, insight, and uncompromising dedication.";
+  "At ARK Vision, we don't just sell properties, we curate opportunities. Whether you're an off-plan investor, a global buyer seeking a second home, or looking for rental yields, we guide you with transparency, insight, and uncompromising dedication.";
 
 const trustMetrics = [
-  { value: "Top 10", label: "Dubai Best Sellers", icon: <Award size={18} /> },
-  { value: "25+", label: "Years in Market", icon: <BadgeCheck size={18} /> },
-  { value: "AED 5B+", label: "Portfolio Value", icon: <Landmark size={18} /> },
-  { value: "100K+", label: "Units Advised", icon: <BarChart3 size={18} /> },
+  { value: "Top 10", label: "Ranked among Dubai's most trusted brokerage teams", icon: <Award size={18} /> },
+  { value: "25+", label: "Years of advisory continuity across market cycles", icon: <BadgeCheck size={18} /> },
+  { value: "AED 5B+", label: "Collective portfolio value guided with precision", icon: <Landmark size={18} /> },
+  { value: "100K+", label: "Homeowners and investors advised with discretion", icon: <BarChart3 size={18} /> },
 ];
 
 const awardHighlights = [
@@ -94,8 +92,14 @@ const servicePillars = [
   { title: "Leasing and yield support", icon: <Building2 size={16} /> },
 ];
 
-/** Place `hero.mp4` in `public/video/` (served at `/video/hero.mp4`). */
-const HERO_VIDEO_SRC = "/video/hero.mp4";
+const marqueeBrands = [
+  { name: "Azizi", sub: "Venice · Riviera", style: "serif" as const },
+  { name: "Riviera", sub: "Residences by Mered", style: "serif" as const },
+  { name: "DEYAAR", logo: "/logos/deyaar.svg" },
+  { name: "OMNIYAT", logo: "/logos/OMNIYAT_id3ynQ1ti7_1.svg" },
+  { name: "ARADA", logo: "/logos/arada.svg" },
+  { name: "DAMAC", logo: "/logos/damac.svg" },
+] as const;
 
 // Curated Unsplash URLs — Dubai/luxury real estate to match Figma
 const IMG = {
@@ -128,87 +132,34 @@ const IMG = {
 } as const;
 
 export default async function HomePage() {
-  const [heatPoints, listingsForDevelopers, recentLaunches] = await Promise.all([
-    getHeatPointsForDevelopers(),
-    getPropertyData(80),
-    getPropertyListingsByProjectIds(RECENT_LAUNCH_IDS),
-  ]);
+  const recentLaunches = await getPropertyListingsByProjectIds(RECENT_LAUNCH_IDS);
   return (
-    <div className="min-h-screen overflow-x-clip bg-[#080808]">
-      {/* Hero — responsive height; top bar lives in Header only */}
-      <section className="relative -mt-px min-h-[72dvh] w-full sm:min-h-[80dvh] lg:min-h-[900px]">
-        <HeroBackgroundVideo src={HERO_VIDEO_SRC} />
-        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#080808] via-black/55 to-black/20" />
-        <div className="absolute left-0 right-0 top-0 z-[2] flex min-h-[inherit] items-start px-5 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-20 lg:pb-24 lg:pt-24">
-          <div className="mx-auto w-full max-w-[1280px]">
-            <div className="max-w-[920px] text-left">
-              <h1
-                className="animate-hero-title font-serif text-[2.5rem] font-light italic leading-[1.08] tracking-tight text-white/[0.98] drop-shadow-[0_6px_40px_rgba(0,0,0,0.88)] sm:text-5xl sm:leading-[1.08] md:text-6xl md:leading-[1.06] lg:text-[4.5rem] lg:leading-[1.05]"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                Where Luxury Meets Vision
-              </h1>
-              <p className="animate-hero-sub mt-6 max-w-[640px] font-light text-white/[0.88] text-[0.95rem] leading-[1.75] sm:mt-8 sm:text-lg sm:leading-[1.7] md:text-xl md:leading-[1.65]">
-                Dubai&apos;s most trusted authority in luxury real estate. Curating extraordinary
-                residences for the world&apos;s most discerning individuals since 1998.
-              </p>
-              <div className="animate-hero-sub mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/featured"
-                  className="btn-magnetic border border-[#c9a84c] bg-[#c9a84c]/15 px-6 py-2.5 text-sm font-light text-[#c9a84c] transition-all duration-400 hover:bg-[#c9a84c] hover:text-[#060606] hover:shadow-[0_0_25px_-5px_rgba(201,168,76,0.5)]"
-                >
-                  Explore listings
-                </Link>
-                <Link
-                  href="/guide"
-                  className="btn-magnetic border border-white/25 bg-black/45 px-6 py-2.5 text-sm font-normal text-white/90 transition-all duration-400 hover:border-[#c9a84c] hover:bg-black/65 hover:text-[#c9a84c] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.3)]"
-                >
-                  Area guides
-                </Link>
-              </div>
-              <div className="animate-hero-sub mt-10 grid max-w-[760px] gap-3 border border-white/10 bg-black/45 p-4 sm:grid-cols-2 lg:grid-cols-4">
-                {servicePillars.map((pillar) => (
-                  <div key={pillar.title} className="border border-white/10 bg-black/40 px-3 py-3">
-                    <div className="flex items-center gap-2 text-[#c9a84c]">
-                      {pillar.icon}
-                      <p className="text-[10px] uppercase tracking-[2px]">Expertise</p>
-                    </div>
-                    <p className="mt-2 text-sm text-white/80">{pillar.title}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen overflow-x-clip bg-[#050505]">
+      <HomeHero servicePillars={servicePillars} />
 
       {/* Marquee: not wrapped in Reveal so CSS animation runs immediately */}
-      <section className="brand-marquee border-y border-white/5 bg-[#060606] py-10 md:py-12">
-        <div className="relative mx-auto max-w-[1440px] overflow-hidden px-5 md:px-20">
+      <section className="brand-marquee border-y border-white/10 bg-[#050505] py-24 md:py-48">
+        <FlowParallax className="relative mx-auto max-w-[1440px] overflow-hidden px-5 md:px-20" speed={0.05}>
           <div className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-24 bg-gradient-to-r from-[#060606] to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-24 bg-gradient-to-l from-[#060606] to-transparent" />
 
           <div className="brand-marquee-track">
-            {[
-              { name: "Ellington", sub: "management group", style: "serif" as const },
-              { name: "DEYAAR", sub: "", style: "block" as const },
-              { name: "OMNIYAT", sub: "", style: "wide" as const },
-              { name: "ARADA", sub: "", style: "block" as const },
-              { name: "DAMAC", sub: "", style: "wide" as const },
-            ]
-              .concat([
-                { name: "Ellington", sub: "management group", style: "serif" as const },
-                { name: "DEYAAR", sub: "", style: "block" as const },
-                { name: "OMNIYAT", sub: "", style: "wide" as const },
-                { name: "ARADA", sub: "", style: "block" as const },
-                { name: "DAMAC", sub: "", style: "wide" as const },
-              ])
-              .map((b, idx) => (
+            {marqueeBrands.concat(marqueeBrands).map((b, idx) => (
                 <div
                   key={`${b.name}-${idx}`}
                   className="flex min-w-[180px] shrink-0 items-center justify-center text-white/90 md:min-w-[220px]"
                 >
-                  {b.style === "serif" ? (
+                  {"logo" in b ? (
+                    <div className="flex h-8 w-[140px] items-center justify-center md:h-9 md:w-[160px]">
+                      <Image
+                        src={b.logo}
+                        alt={`${b.name} logo`}
+                        width={160}
+                        height={36}
+                        className="max-h-full max-w-full object-contain opacity-80 grayscale contrast-125"
+                      />
+                    </div>
+                  ) : (
                     <div className="text-center">
                       <div className="font-serif text-xl italic tracking-wide md:text-2xl">
                         {b.name}
@@ -217,21 +168,11 @@ export default async function HomePage() {
                         {b.sub}
                       </div>
                     </div>
-                  ) : (
-                    <div className="text-center">
-                      <div
-                        className={`text-xl font-semibold md:text-2xl ${
-                          b.style === "wide" ? "tracking-[6px]" : "tracking-[3px]"
-                        }`}
-                      >
-                        {b.name}
-                      </div>
-                    </div>
                   )}
                 </div>
               ))}
           </div>
-        </div>
+        </FlowParallax>
       </section>
 
       <Reveal direction="up">
@@ -249,9 +190,9 @@ export default async function HomePage() {
         </PremiumSection>
       </Reveal>
 
-      {/* Our Legacy / Why Ark Vision (inserted below brand marquee) */}
+      {/* Our Legacy / Why ARK Vision (inserted below brand marquee) */}
       <Reveal direction="left">
-        <section className="relative overflow-hidden border-b border-white/5 bg-black py-16 md:py-24">
+        <section className="relative overflow-hidden border-b border-white/10 bg-[#050505] py-24 md:py-48">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${IMG.legacyBg})` }}
@@ -259,7 +200,7 @@ export default async function HomePage() {
           <div className="absolute inset-0 bg-black/65" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-transparent" />
 
-          <div className="relative mx-auto max-w-[1280px] px-5 md:px-20">
+          <FlowParallax className="relative mx-auto max-w-[1280px] px-5 md:px-20" speed={0.07}>
             <div className="max-w-[760px]">
               <div className="flex items-center gap-4">
                 <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
@@ -269,63 +210,53 @@ export default async function HomePage() {
               </div>
               <h2
                 className="mt-4 font-serif text-4xl font-light italic leading-tight text-white/90 sm:text-5xl md:text-6xl"
-                style={{ fontFamily: "var(--font-playfair)" }}
+                style={{ fontFamily: "var(--font-serif)" }}
               >
                 Why Investors Choose
-                <span className="block text-[#c9a84c]">Ark Vision</span>
+                <span className="block text-[#c9a84c]">ARK Vision</span>
               </h2>
 
               <p className="mt-6 max-w-[680px] font-light text-white/60 text-sm leading-relaxed md:text-base">
-                At Ark Vision, we don&apos;t just sell properties, we curate opportunities. Whether
+                At ARK Vision, we don&apos;t just sell properties, we curate opportunities. Whether
                 you&apos;re an off-plan investor, a global buyer seeking a second home, or looking for
                 rental yields, we guide you with transparency, insight, and an uncompromising
                 dedication.
               </p>
-              <div className="mt-10 grid max-w-[760px] gap-4 sm:grid-cols-3">
+              <StaggerReveal className="mt-10 grid max-w-[760px] gap-4 sm:grid-cols-3">
                 {[
                   {
+                    numeral: "01",
                     title: "Advisory",
                     detail: "Evidence-led recommendations, not sales pressure.",
-                    icon: <Handshake size={16} />,
                   },
                   {
+                    numeral: "02",
                     title: "Execution",
                     detail: "Fast, transparent process from shortlist to handover.",
-                    icon: <BadgeCheck size={16} />,
                   },
                   {
+                    numeral: "03",
                     title: "Stewardship",
                     detail: "Long-term support beyond transaction closure.",
-                    icon: <ShieldCheck size={16} />,
                   },
                 ].map((item) => (
-                  <div key={item.title} className="border border-white/10 bg-black/55 p-5">
-                    <div className="flex items-center gap-2 text-[#c9a84c]">
-                      {item.icon}
-                      <p className="font-serif text-xl italic">{item.title}</p>
+                  <div key={item.title} className="stagger-child border border-white/10 bg-white/5 p-5 backdrop-blur-lg">
+                    <div className="flex items-center gap-2 text-[#C5A059]">
+                      <p className="font-serif text-sm italic tracking-[0.16em]">{item.numeral}</p>
+                      <p className="font-serif text-xl italic text-white/90">{item.title}</p>
                     </div>
                     <p className="mt-2 text-sm leading-relaxed text-white/65">{item.detail}</p>
                   </div>
                 ))}
-              </div>
+              </StaggerReveal>
             </div>
-          </div>
+          </FlowParallax>
         </section>
       </Reveal>
 
-      {/* Removed extra spacer to eliminate gap before Top Developers */}
-
-      <Reveal direction="scale">
-        <HomeTopDevelopersSection
-          heatPoints={heatPoints}
-          listings={listingsForDevelopers}
-          recentLaunches={recentLaunches}
-        />
-      </Reveal>
-
       <Reveal direction="right">
-        <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
-        <div className="mx-auto max-w-[1280px] px-5 md:px-20">
+        <section className="border-b border-[#C5A059]/45 bg-[#050505] py-24 md:py-48">
+        <FlowParallax className="mx-auto max-w-[1280px] px-5 md:px-20" speed={0.06}>
           <div className="mb-10 overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-transparent p-6 md:p-8">
             <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:gap-10">
               <div>
@@ -337,7 +268,7 @@ export default async function HomePage() {
                 </div>
                 <h2
                   className="mt-4 font-serif text-[40px] font-light italic leading-[1.1] text-white/90 md:text-[56px]"
-                  style={{ fontFamily: "var(--font-playfair)" }}
+                  style={{ fontFamily: "var(--font-serif)" }}
                 >
                   The
                   <span className="block text-[#c9a84c]">Awards Wall</span>
@@ -364,39 +295,13 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {awardImages.slice(0, 8).map((src, idx) => (
-              <div
-                key={idx}
-                className={`card-premium group relative overflow-hidden border border-white/10 ${
-                  idx === 0 ? "sm:col-span-2 sm:row-span-2 sm:min-h-[460px]" : "min-h-[220px]"
-                }`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={src}
-                  alt={`Award ${idx + 1}`}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute left-4 top-4 border border-white/20 bg-black/45 px-2 py-1 text-[10px] uppercase tracking-[2px] text-[#c9a84c]">
-                  Award {String(idx + 1).padStart(2, "0")}
-                </div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <p className="text-[11px] uppercase tracking-[2px] text-white/70">
-                    Ark Vision Recognition
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+          <AwardsWallCarousel images={awardImages} />
+        </FlowParallax>
         </section>
       </Reveal>
 
       <Reveal direction="up">
-        <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
+        <section className="border-b border-white/10 bg-[#050505] py-24 md:py-48">
           <div className="mx-auto max-w-[1280px] px-5 md:px-20">
             <div className="grid gap-8 border border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent p-6 md:grid-cols-[1.1fr_1fr] md:p-8">
               <div>
@@ -411,7 +316,7 @@ export default async function HomePage() {
                 </h2>
                 <p className="mt-4 max-w-[520px] text-sm leading-relaxed text-white/60">
                   The leadership team guiding strategy, market execution, and relationship quality for
-                  every Ark Vision client.
+                  every ARK Vision client.
                 </p>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -433,8 +338,8 @@ export default async function HomePage() {
       </Reveal>
 
       <Reveal direction="right">
-        <section className="border-b border-white/5 bg-[#060606] py-16 md:py-24">
-          <div className="mx-auto max-w-[1280px] px-5 md:px-20">
+        <section className="border-b border-white/10 bg-[#050505] py-24 md:py-48">
+          <FlowParallax className="mx-auto max-w-[1280px] px-5 md:px-20" speed={0.08}>
             {/* Section Header - Centered for better impact */}
             <div className="mb-12 text-center">
               <div className="flex items-center justify-center gap-4">
@@ -446,7 +351,7 @@ export default async function HomePage() {
               </div>
               <h2
                 className="mt-6 font-serif text-[42px] font-normal italic leading-tight text-white/95 sm:text-[52px] md:text-[64px]"
-                style={{ fontFamily: "var(--font-playfair)" }}
+                style={{ fontFamily: "var(--font-serif)" }}
               >
                 Popular <span className="text-[#c9a84c]">Properties</span>
               </h2>
@@ -456,8 +361,8 @@ export default async function HomePage() {
             </div>
 
             {/* Property Cards Grid */}
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-              {recentLaunches.slice(0, 4).map((prop, i) => (
+            <div className="mx-auto grid max-w-[1120px] grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {recentLaunches.slice(0, 3).map((prop) => (
                 <div
                   key={prop.slug}
                   className="card-premium group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0a0a] transition-all duration-300 hover:border-[#c9a84c]/30"
@@ -467,7 +372,7 @@ export default async function HomePage() {
                     <div className="relative aspect-[4/5] overflow-hidden">
                       {/* Property Image */}
                       <div
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 ease-out group-hover:scale-105"
+                        className="absolute inset-0 bg-cover bg-center transition duration-500 ease-out group-hover:scale-105 group-hover:saturate-150"
                         style={{ backgroundImage: `url(${prop.image})` }}
                       />
 
@@ -491,17 +396,17 @@ export default async function HomePage() {
                         <div className="flex items-center justify-between border-t border-white/10 pt-3">
                           <div className="flex items-center gap-3 text-white/90">
                             <div className="flex items-center gap-1.5">
-                              <span className="font-serif text-lg italic text-[#c9a84c]" style={{ fontFamily: "var(--font-playfair)" }}>{prop.beds}</span>
+                              <span className="font-serif text-lg italic text-[#c9a84c]" style={{ fontFamily: "var(--font-serif)" }}>{prop.beds}</span>
                               <span className="text-[10px] uppercase tracking-wider text-white/60">Beds</span>
                             </div>
                             <span className="text-white/20">|</span>
                             <div className="flex items-center gap-1.5">
-                              <span className="font-serif text-lg italic text-[#c9a84c]" style={{ fontFamily: "var(--font-playfair)" }}>{prop.baths}</span>
+                              <span className="font-serif text-lg italic text-[#c9a84c]" style={{ fontFamily: "var(--font-serif)" }}>{prop.baths}</span>
                               <span className="text-[10px] uppercase tracking-wider text-white/60">Baths</span>
                             </div>
                             <span className="text-white/20">|</span>
                             <div className="flex items-center gap-1.5">
-                              <span className="font-serif text-lg italic text-[#c9a84c]" style={{ fontFamily: "var(--font-playfair)" }}>{prop.sqft}</span>
+                              <span className="font-serif text-lg italic text-[#c9a84c]" style={{ fontFamily: "var(--font-serif)" }}>{prop.sqft}</span>
                               <span className="text-[10px] uppercase tracking-wider text-white/60">ft²</span>
                             </div>
                           </div>
@@ -519,7 +424,7 @@ export default async function HomePage() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="mt-2 font-serif text-xl font-normal italic leading-tight text-white/95 transition-colors duration-300 group-hover:text-[#c9a84c]" style={{ fontFamily: "var(--font-playfair)" }}>
+                    <h3 className="mt-2 font-serif text-xl font-normal italic leading-tight text-white/95 transition-colors duration-300 group-hover:text-[#c9a84c]" style={{ fontFamily: "var(--font-serif)" }}>
                       {prop.title}
                     </h3>
 
@@ -541,7 +446,7 @@ export default async function HomePage() {
                       </Link>
                       <Link
                         href={`/properties/${prop.slug}`}
-                        className="flex h-10 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] text-xs font-normal text-white/80 transition-all duration-300 hover:border-white/30 hover:bg-white/[0.1] hover:text-white/95"
+                        className="btn-magnetic flex h-10 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] text-xs font-normal text-white/80 transition-all duration-300 hover:border-white/30 hover:bg-white/[0.1] hover:text-white/95"
                       >
                         View Details
                       </Link>
@@ -563,13 +468,13 @@ export default async function HomePage() {
                 </span>
               </Link>
             </div>
-          </div>
+          </FlowParallax>
         </section>
       </Reveal>
 
       <Reveal direction="left">
-        <section className="border-b border-white/5 py-16 md:py-24">
-        <div className="mx-auto max-w-[1280px] px-5 md:px-20">
+        <section className="border-b border-white/10 bg-[#050505] py-24 md:py-48">
+        <FlowParallax className="mx-auto max-w-[1280px] px-5 md:px-20" speed={0.07}>
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <div className="flex items-center gap-4">
@@ -580,7 +485,7 @@ export default async function HomePage() {
               </div>
               <h2
                 className="mt-4 font-serif text-[48px] font-light italic leading-[68px] text-white/90 md:text-[56px]"
-                style={{ fontFamily: "var(--font-playfair)" }}
+                style={{ fontFamily: "var(--font-serif)" }}
               >
                 Latest <span className="text-[#c9a84c]">Blogs</span>
               </h2>
@@ -651,19 +556,19 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
-        </div>
+        </FlowParallax>
         </section>
       </Reveal>
 
       <TestimonialVideos />
 
       <Reveal direction="up">
-        <section className="border-b border-white/5 py-16 md:py-24">
-        <div className="mx-auto max-w-[1280px] px-5 md:px-20">
+        <section className="border-b border-white/10 bg-[#050505] py-24 md:py-48">
+        <FlowParallax className="mx-auto max-w-[1280px] px-5 md:px-20" speed={0.06}>
           <div className="max-w-[896px]">
           <h2
             className="font-serif text-[36px] font-light italic leading-tight text-white/90 md:text-[48px] md:leading-[54px]"
-            style={{ fontFamily: "var(--font-playfair)" }}
+            style={{ fontFamily: "var(--font-serif)" }}
           >
             Everything You Need to Know Before Buying
           </h2>
@@ -672,13 +577,13 @@ export default async function HomePage() {
           </p>
           <HomeBuyingKnowAccordion />
           </div>
-        </div>
+        </FlowParallax>
         </section>
       </Reveal>
 
       <Reveal direction="up">
-        <section id="contact" className="border-b border-white/5 py-16 md:py-24">
-        <div className="mx-auto grid max-w-[1280px] gap-10 border border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent px-5 py-8 md:grid-cols-2 md:px-20 md:py-12">
+        <section id="contact" className="border-b border-white/10 bg-[#050505] py-24 md:py-48">
+        <FlowParallax className="mx-auto grid max-w-[1280px] gap-10 border border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent px-5 py-8 md:grid-cols-2 md:px-20 md:py-12" speed={0.06}>
           <div>
             <div className="flex items-center gap-4">
               <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
@@ -688,7 +593,7 @@ export default async function HomePage() {
             </div>
             <h2
               className="mt-4 font-serif text-[48px] font-light italic leading-[53px] text-white/90 md:text-[56px]"
-              style={{ fontFamily: "var(--font-playfair)" }}
+              style={{ fontFamily: "var(--font-serif)" }}
             >
               Begin Your <span className="block">Journey</span>
             </h2>
@@ -775,7 +680,7 @@ export default async function HomePage() {
               </button>
             </form>
           </div>
-        </div>
+        </FlowParallax>
         </section>
       </Reveal>
     </div>

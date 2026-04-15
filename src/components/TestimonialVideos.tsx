@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
+import FlowParallax from "@/components/FlowParallax";
 
 const testimonials = [
   {
@@ -74,26 +75,26 @@ export default function TestimonialVideos() {
   };
 
   return (
-    <section className="relative border-b border-white/5 bg-[#060606] py-16 md:py-24 overflow-hidden">
+    <section className="relative overflow-hidden border-b border-[#C5A059]/40 bg-[#050505] py-24 md:py-48">
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
       
-      <div className="relative mx-auto max-w-[1280px] px-5 md:px-12">
+      <FlowParallax className="relative mx-auto max-w-[1280px] px-5 md:px-12" speed={0.08}>
         <div className="mb-12 text-center">
           <div className="flex items-center justify-center gap-4">
-            <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#c9a84c]" />
-            <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
+            <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#C5A059]" />
+            <span className="text-[10px] font-light uppercase tracking-[5px] text-[#C5A059]">
               Client Voices
             </span>
-            <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#c9a84c]" />
+            <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#C5A059]" />
           </div>
           <h2
             className="mt-4 font-serif text-[40px] font-light italic leading-tight text-white/90 md:text-[50px]"
-            style={{ fontFamily: "var(--font-playfair)" }}
+            style={{ fontFamily: "var(--font-serif)" }}
           >
-            Words of <span className="text-[#c9a84c]">Trust</span>
+            Words of <span className="text-[#C5A059]">Trust</span>
           </h2>
           <p className="mx-auto mt-4 max-w-[500px] font-light text-white/50 text-sm">
-            Hear directly from our satisfied clients about their experience with Ark Vision
+            Hear directly from our satisfied clients about their experience with ARK Vision
           </p>
         </div>
 
@@ -184,7 +185,7 @@ export default function TestimonialVideos() {
             />
           ))}
         </div>
-      </div>
+      </FlowParallax>
     </section>
   );
 }

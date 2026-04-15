@@ -157,10 +157,10 @@ export default function Header() {
           >
             <Image
               src="/ARK LOGO BLACK.png"
-              alt="Ark Vision Logo"
-              width={140}
-              height={45}
-              className="h-[86px] w-[106px] object-contain"
+              alt="ARK Vision Logo"
+              width={180}
+              height={58}
+              className="h-[96px] w-[126px] object-contain"
               priority
             />
           </Link>

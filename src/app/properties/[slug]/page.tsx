@@ -7,9 +7,9 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const data = await getProjectDetailBySlug(slug);
-  if (!data) return { title: "Property | Ark Vision" };
+  if (!data) return { title: "Property | ARK Vision" };
   return {
-    title: `${data.listing.title} | Ark Vision`,
+    title: `${data.listing.title} | ARK Vision`,
     description: data.listing.excerpt || data.listing.location,
   };
 }

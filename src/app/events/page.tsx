@@ -7,7 +7,7 @@ const events = [
     title: "Private Viewing — Palm Jumeirah Residences",
     date: "April 12, 2025",
     time: "6:00 PM – 9:00 PM",
-    location: "Ark Vision Gallery, Downtown Dubai",
+    location: "ARK Vision Gallery, Downtown Dubai",
     excerpt:
       "An invitation-only evening showcasing off-market waterfront estates with champagne reception.",
   },
@@ -59,7 +59,7 @@ export default function EventsPage() {
             </div>
             <h1
               className="mt-4 font-serif text-4xl font-light italic text-white/90 md:text-6xl"
-              style={{ fontFamily: "var(--font-playfair)" }}
+              style={{ fontFamily: "var(--font-serif)" }}
             >
               Upcoming <span className="text-[#c9a84c]">Events</span>
             </h1>
@@ -114,9 +114,9 @@ export default function EventsPage() {
           <div className="mx-auto max-w-[640px] px-5 text-center">
             <h2
               className="font-serif text-3xl font-light italic text-white/90 md:text-4xl"
-              style={{ fontFamily: "var(--font-playfair)" }}
+              style={{ fontFamily: "var(--font-serif)" }}
             >
-              Host a private event with Ark Vision
+              Host a private event with ARK Vision
             </h2>
             <p className="mt-4 font-light text-white/50 text-sm">
               Our team coordinates bespoke viewings and corporate hospitality for qualified buyers

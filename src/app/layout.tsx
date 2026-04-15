@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -10,6 +10,12 @@ import BackToTop from "@/components/BackToTop";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
 });
@@ -51,7 +57,7 @@ const tobias = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Ark Vision — Dubai Luxury Real Estate",
+  title: "ARK Vision — Dubai Luxury Real Estate",
   description:
     "Dubai's most trusted luxury real estate house, curating extraordinary residences since 1998.",
 };
@@ -64,7 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${tobias.variable}`}
+      className={`${inter.variable} ${cormorant.variable} ${tobias.variable}`}
     >
       <body className="min-h-screen overflow-x-clip bg-[#080808] text-white/80 antialiased">
         <RouteLoadingBar />

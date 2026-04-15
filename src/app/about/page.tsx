@@ -99,7 +99,7 @@ export default function AboutPage() {
             </div>
             <h1 className="mt-4 flex flex-wrap items-baseline gap-2 font-serif text-5xl font-light italic leading-tight text-white/90 md:text-6xl lg:text-7xl">
               <span>About</span>
-              <span className="bg-gradient-to-r from-[#c9a84c] via-[#fcf6ba] to-[#b38f28] bg-clip-text text-transparent">Ark Vision</span>
+              <span className="bg-gradient-to-r from-[#c9a84c] via-[#fcf6ba] to-[#b38f28] bg-clip-text text-transparent">ARK Vision</span>
             </h1>
             <p className="mt-5 max-w-[760px] font-light text-sm leading-relaxed text-white/70 md:text-base">
               Expert services for every real estate journey - from advisory and acquisition to portfolio growth in Dubai&apos;s most prestigious addresses.
@@ -116,7 +116,7 @@ export default function AboutPage() {
               <span className="bg-gradient-to-r from-[#c9a84c] to-[#fcf6ba] bg-clip-text text-transparent">Unrivalled Excellence</span>
             </h2>
             <div className="space-y-5 font-light text-white/40 text-sm leading-[1.6]">
-              <p>At Ark Vision, we redefine living spaces with innovative design, insight-backed advisory, and premium execution at every stage.</p>
+              <p>At ARK Vision, we redefine living spaces with innovative design, insight-backed advisory, and premium execution at every stage.</p>
               <p>We do not just broker properties. We curate opportunities for investors, families, and global buyers with clarity, confidence, and measurable value.</p>
               <p>From first consultation to handover and beyond, every interaction is intentionally crafted to deliver peace of mind and long-term growth.</p>
             </div>
@@ -355,7 +355,7 @@ export default function AboutPage() {
               </span>
             </div>
             <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">
-              The Team Behind Ark Vision
+              The Team Behind ARK Vision
             </h2>
             <p className="mt-5 max-w-[760px] font-light text-sm leading-relaxed text-white/45">
               Our advisors, strategists, and relationship experts deliver a seamless real estate
@@ -385,7 +385,10 @@ export default function AboutPage() {
             A visual journey of our team, client experiences, and signature project milestones.
           </p>
           <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {aboutUsGallery.map((src, index) => (
+            {aboutUsGallery
+              .map((src, index) => ({ src, frameNo: index + 1 }))
+              .filter((item) => ![5, 7, 8].includes(item.frameNo))
+              .map(({ src, frameNo }) => (
               <div key={src} className="group relative aspect-[4/5] overflow-hidden rounded-sm border border-white/10 bg-black">
                 <div
                   className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.05]"
@@ -393,7 +396,7 @@ export default function AboutPage() {
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70" />
                 <span className="pointer-events-none absolute bottom-3 left-3 text-[10px] uppercase tracking-[2.8px] text-white/60">
-                  Frame {String(index + 1).padStart(2, "0")}
+                  Frame {String(frameNo).padStart(2, "0")}
                 </span>
               </div>
             ))}

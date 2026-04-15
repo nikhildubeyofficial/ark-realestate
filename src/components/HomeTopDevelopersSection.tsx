@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Heart, MapPin } from "lucide-react";
-import DeveloperHeatmapClient from "@/components/DeveloperHeatmapClient";
 import InquireModal from "@/components/InquireModal";
+import { StaggerReveal } from "@/components/Reveal";
+import FlowParallax from "@/components/FlowParallax";
 import {
   getHomeDeveloperChips,
-  heatPointMatchesPriorityFilter,
   listingMatchesPriorityDeveloper,
 } from "@/lib/developerPriority";
 import type { HeatPoint, PropertyListing } from "@/lib/propertyData";
@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default function HomeTopDevelopersSection({
-  heatPoints,
+  heatPoints: _heatPoints,
   listings,
   recentLaunches,
 }: Props) {
@@ -29,35 +29,25 @@ export default function HomeTopDevelopersSection({
 
   const chips = useMemo(() => getHomeDeveloperChips(), []);
 
-  const filteredPoints = useMemo(
-    () =>
-      filter === "All"
-        ? heatPoints
-        : heatPoints.filter((p) =>
-            heatPointMatchesPriorityFilter(p.name, filter)
-          ),
-    [heatPoints, filter]
-  );
-
   const displayListings = useMemo(() => {
-    if (recentLaunches && recentLaunches.length > 0) return recentLaunches;
+    if (recentLaunches && recentLaunches.length > 0) return recentLaunches.slice(0, 3);
     const matched = listings.filter((l) =>
       listingMatchesPriorityDeveloper(l.builder, filter)
     );
-    return matched.slice(0, 4);
+    return matched.slice(0, 3);
   }, [listings, filter, recentLaunches]);
 
   return (
-    <section className="border-b border-white/5 bg-[#080808] pb-16 pt-12 md:px-20 md:pb-24 md:pt-[67px]">
-      <div className="mx-auto max-w-[1280px] px-5 md:px-[80px]">
+    <section className="border-b border-white/10 bg-[#050505] py-24 md:px-20 md:py-48">
+      <FlowParallax className="mx-auto max-w-[1280px] px-5 md:px-[80px]" speed={0.07}>
         <div className="mb-10">
           <h2
             className="font-serif text-[42px] font-light italic leading-tight text-white/90 md:text-[56px] md:leading-[68px]"
-            style={{ fontFamily: "var(--font-playfair)" }}
+            style={{ fontFamily: "var(--font-serif)" }}
           >
             Choose from Top Developers
           </h2>
-          <p className="mt-3 max-w-3xl font-light text-sm text-white/45">
+          <p className="mt-3 max-w-3xl font-light text-sm text-white/60">
             Developers are ordered by strategic priority (EMAAR, NAKHEEL, DUBAI
             HOLDING, and onward). Scroll chips to explore; open Property Listings
             for full filters, map view, and compare.
@@ -68,10 +58,10 @@ export default function HomeTopDevelopersSection({
                 key={name}
                 type="button"
                 onClick={() => setFilter(name)}
-                className={`flex min-h-12 shrink-0 items-center border px-3 font-light transition-all duration-400 active:scale-[0.97] sm:px-[10px] ${
+                className={`flex min-h-12 shrink-0 items-center border-b border-transparent px-1 py-2 text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 active:scale-[0.98] sm:px-[2px] ${
                   filter === name
-                    ? "border-[#c9a84c] bg-[#c9a84c]/10 text-[#c9a84c] shadow-[0_0_15px_-5px_rgba(201,168,76,0.3)]"
-                    : "border-white/20 bg-transparent text-white/80 hover:border-[#c9a84c] hover:text-[#c9a84c] hover:shadow-[0_0_12px_-5px_rgba(201,168,76,0.2)]"
+                    ? "border-[#C5A059] text-[#C5A059]"
+                    : "text-white/60 hover:border-white/35 hover:text-white/90"
                 }`}
               >
                 {name}
@@ -79,22 +69,18 @@ export default function HomeTopDevelopersSection({
             ))}
             <Link
               href="/featured"
-              className="flex min-h-12 shrink-0 items-center border border-white/15 px-3 text-sm font-light text-white/60 transition hover:border-[#c9a84c]/50 hover:text-[#c9a84c]"
+              className="flex min-h-12 shrink-0 items-center border-b border-transparent px-1 text-[11px] font-medium uppercase tracking-[0.2em] text-white/60 transition hover:border-white/35 hover:text-white/90"
             >
               Full list →
             </Link>
           </div>
         </div>
 
-        <div className="mb-10 overflow-hidden border border-white/10 bg-[#060606]">
-          <DeveloperHeatmapClient points={filteredPoints} />
-        </div>
-
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h3
               className="font-serif text-2xl font-light italic text-white/90 md:text-3xl"
-              style={{ fontFamily: "var(--font-playfair)" }}
+              style={{ fontFamily: "var(--font-serif)" }}
             >
               {recentLaunches?.length
                 ? "Popular Properties"
@@ -108,22 +94,16 @@ export default function HomeTopDevelopersSection({
           </div>
         </div>
 
-        <div
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
-          style={{ gap: "21px" }}
-        >
+        <StaggerReveal className="grid grid-cols-1 gap-[21px] sm:grid-cols-2 xl:grid-cols-3">
           {displayListings.map((prop) => (
-            <div
-              key={prop.slug}
-              className="card-premium group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/5 md:rounded-t-[30px]"
-            >
+            <div key={prop.slug} className="card-premium group relative mx-auto w-full max-w-[413px] overflow-hidden rounded-t-2xl border border-white/10 bg-white/[0.03] md:rounded-t-[30px]">
               <Link
                 href={`/properties/${prop.slug}`}
                 className="block"
               >
-                <div className="relative h-[240px] w-full overflow-hidden rounded-t-2xl sm:h-[280px] md:h-[310px] md:rounded-t-[30px]">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-t-2xl md:rounded-t-[30px]">
                   <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.04]"
+                    className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-105 group-hover:saturate-150"
                     style={{ backgroundImage: `url(${prop.image})` }}
                   />
                   <div className="absolute left-3 top-3 flex flex-wrap gap-2">
@@ -166,7 +146,7 @@ export default function HomeTopDevelopersSection({
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Link
                     href={`/properties/${prop.slug}`}
-                    className="btn-magnetic border border-[#c9a84c] bg-[#c9a84c]/10 px-4 py-2 text-xs font-light text-[#c9a84c] transition-all duration-400 hover:bg-[#c9a84c] hover:text-[#060606] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.4)]"
+                    className="btn-magnetic border border-[#C5A059] bg-[#C5A059]/10 px-4 py-2 text-xs font-light text-[#C5A059] transition-all duration-400 hover:bg-[#C5A059] hover:text-[#050505] hover:shadow-[0_0_20px_-5px_rgba(197,160,89,0.4)]"
                   >
                     View details
                   </Link>
@@ -181,7 +161,7 @@ export default function HomeTopDevelopersSection({
               </div>
             </div>
           ))}
-        </div>
+        </StaggerReveal>
         {displayListings.length === 0 ? (
           <p className="mt-8 text-center font-light text-sm text-white/45">
             No sample listings on the home preview. View all on{" "}
@@ -194,7 +174,7 @@ export default function HomeTopDevelopersSection({
             .
           </p>
         ) : null}
-      </div>
+      </FlowParallax>
       <InquireModal listing={inquire} onClose={() => setInquire(null)} />
     </section>
   );
