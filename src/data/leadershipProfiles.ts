@@ -9,12 +9,12 @@ const LEADERS_BASE = "/final%20images/Leaders";
 
 export const leadershipProfiles: LeadershipProfile[] = [
   {
-    name: "Karan",
+    name: "Karan Hotchandani",
     designation: "Founder",
     image: `${LEADERS_BASE}/karan boss (1).png`,
   },
   {
-    name: "Vinay",
+    name: "Vinay Chelani",
     designation: "Founder",
     image: `${LEADERS_BASE}/vinay boss.png`,
   },
@@ -24,7 +24,7 @@ export const leadershipProfiles: LeadershipProfile[] = [
     image: `${LEADERS_BASE}/Arpana.JPG`,
   },
   {
-    name: "Vinit",
+    name: "Vinit Chelani",
     designation: "Vice President",
     image: `${LEADERS_BASE}/vinat sir.jpg.jpeg`,
   },

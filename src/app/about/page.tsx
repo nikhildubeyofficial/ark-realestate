@@ -221,20 +221,20 @@ export default function AboutPage() {
 
             {/* Founders Grid */}
             <div className="grid gap-8 md:grid-cols-2">
-              {/* Karan - Founder */}
+              {/* Karan Hotchandani - Founder */}
               <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-[#0a0a0a]">
                 <div className="relative aspect-[4/5] overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={karanImage}
-                    alt="Karan - Founder"
+                    alt="Karan Hotchandani - Founder"
                     className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="rounded-lg border border-white/10 bg-black/60 backdrop-blur-sm p-4">
-                    <p className="font-serif text-xl font-light italic text-[#c9a84c]">Karan</p>
+                    <p className="font-serif text-xl font-light italic text-[#c9a84c]">Karan Hotchandani</p>
                     <p className="text-xs uppercase tracking-[2px] text-white/60">Founder</p>
                     <p className="mt-2 text-sm text-white/50 leading-relaxed">
                       Visionary leader with a passion for transforming Dubai&apos;s real estate landscape.
@@ -243,20 +243,20 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              {/* Vinay - Founder */}
+              {/* Vinay Chelani - Founder */}
               <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-[#0a0a0a]">
                 <div className="relative aspect-[4/5] overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={vinayImage}
-                    alt="Vinay - Founder"
+                    alt="Vinay Chelani - Founder"
                     className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="rounded-lg border border-white/10 bg-black/60 backdrop-blur-sm p-4">
-                    <p className="font-serif text-xl font-light italic text-[#c9a84c]">Vinay</p>
+                    <p className="font-serif text-xl font-light italic text-[#c9a84c]">Vinay Chelani</p>
                     <p className="text-xs uppercase tracking-[2px] text-white/60">Founder</p>
                     <p className="mt-2 text-sm text-white/50 leading-relaxed">
                       Strategic mind driving excellence and innovation in every client relationship.
