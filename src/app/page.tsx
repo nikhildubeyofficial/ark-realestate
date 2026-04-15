@@ -3,7 +3,7 @@ import Image from "next/image";
 import HomeHero from "@/components/HomeHero";
 import { Reveal, StaggerReveal } from "@/components/Reveal";
 import FlowParallax from "@/components/FlowParallax";
-import AwardsWallCarousel from "@/components/AwardsWallCarousel";
+import AwardsRollCarousel from "@/components/AwardsRollCarousel";
 import {
   Heart,
   MapPin,
@@ -295,7 +295,7 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
-          <AwardsWallCarousel images={awardImages} />
+          <AwardsRollCarousel images={awardImages} bodyText={awardsCopy} />
         </FlowParallax>
         </section>
       </Reveal>

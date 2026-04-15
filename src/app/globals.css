@@ -167,6 +167,159 @@ html {
   }
 }
 
+/* ─── Awards Speed Roll Carousel ─────────────────────────────────── */
+
+@keyframes awards-speed-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.awards-roll-wrap .awards-speed-carousel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #333;
+  background:
+    radial-gradient(80% 80% at 50% -10%, rgba(197, 160, 89, 0.08), transparent 70%),
+    #121212;
+  min-height: 340px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 28px rgba(197, 160, 89, 0.06);
+}
+
+.awards-roll-wrap .awards-speed-gridlines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 34px 34px;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.awards-roll-wrap .awards-speed-track {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: max-content;
+  padding: 1.25rem;
+  animation: awards-speed-scroll 24s linear infinite;
+  will-change: transform;
+  position: relative;
+  z-index: 2;
+}
+
+.awards-roll-wrap .awards-speed-carousel:hover .awards-speed-track {
+  animation-play-state: paused;
+}
+
+.awards-roll-wrap .awards-speed-carousel.is-rolled .awards-speed-track {
+  animation-play-state: paused;
+  transform: scale(0.9);
+  filter: saturate(0.72) blur(0.8px);
+}
+
+.awards-roll-wrap .awards-panel {
+  position: relative;
+  width: 320px;
+  height: 210px;
+  flex-shrink: 0;
+  border: 1px solid #333;
+  overflow: hidden;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(4px);
+}
+
+.awards-roll-wrap .awards-panel::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.85), transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.awards-roll-wrap .awards-panel:hover {
+  transform: scale(1.03);
+}
+
+.awards-roll-wrap .awards-panel:hover::after {
+  opacity: 1;
+}
+
+.awards-roll-wrap .awards-panel.is-compressed {
+  transform: scale(0.94);
+  opacity: 0.82;
+}
+
+.awards-roll-wrap .awards-panel.is-main-realty {
+  border-color: rgba(197, 160, 89, 0.45);
+}
+
+.awards-roll-wrap .awards-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 140px;
+  z-index: 20;
+  pointer-events: none;
+  backdrop-filter: blur(3px);
+}
+
+.awards-roll-wrap .awards-edge-left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(18, 18, 18, 0.98) 0%, rgba(18, 18, 18, 0.62) 52%, transparent 100%);
+}
+
+.awards-roll-wrap .awards-edge-right {
+  right: 0;
+  background: linear-gradient(270deg, rgba(18, 18, 18, 0.98) 0%, rgba(18, 18, 18, 0.62) 52%, transparent 100%);
+}
+
+.awards-roll-wrap .awards-roll-front {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(92vw, 720px);
+  aspect-ratio: 16 / 10;
+  transform: translate(-50%, -50%) perspective(1200px) rotateX(2deg) scale(1.06);
+  z-index: 40;
+  animation: awards-roll-front-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes awards-roll-front-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -44%) perspective(1200px) rotateX(6deg) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) perspective(1200px) rotateX(2deg) scale(1.06);
+  }
+}
+
+@media (max-width: 768px) {
+  .awards-roll-wrap .awards-speed-carousel {
+    min-height: 300px;
+  }
+  .awards-roll-wrap .awards-panel {
+    width: 250px;
+    height: 170px;
+  }
+  .awards-roll-wrap .awards-edge {
+    width: 68px;
+  }
+}
+
 /* ─── Gold Shimmer Text Effect ──────────────────────────────────────── */
 
 @keyframes gold-shimmer {
