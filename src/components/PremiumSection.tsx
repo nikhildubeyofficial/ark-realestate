@@ -6,10 +6,11 @@ type PremiumSectionProps = {
   eyebrow?: string;
   title: ReactNode;
   description?: ReactNode;
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   contentClassName?: string;
   center?: boolean;
+  compact?: boolean;
 };
 
 export function PremiumSection({
@@ -20,9 +21,10 @@ export function PremiumSection({
   className = "",
   contentClassName = "",
   center = false,
+  compact = false,
 }: PremiumSectionProps) {
   return (
-    <section className={`premium-section border-b border-white/10 py-16 md:py-28 ${className}`}>
+    <section className={`premium-section border-b border-white/10 ${compact ? 'py-10 md:py-14' : 'py-16 md:py-28'} ${className}`}>
       <div className={`mx-auto max-w-[1280px] px-5 md:px-20 ${contentClassName}`}>
         <div className={center ? "text-center" : ""}>
           {eyebrow ? (
@@ -51,7 +53,7 @@ export function PremiumSection({
             </p>
           ) : null}
         </div>
-        <div className="mt-10">{children}</div>
+        {children ? <div className={compact ? "" : "mt-10"}>{children}</div> : null}
       </div>
     </section>
   );

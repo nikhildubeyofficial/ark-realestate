@@ -63,7 +63,7 @@ export default function HomeHero({ servicePillars }: { servicePillars: HeroServi
   return (
     <section
       ref={sectionRef}
-      className="relative -mt-px min-h-[88dvh] w-full sm:min-h-[85dvh] lg:min-h-[min(92dvh,980px)]"
+      className="relative min-h-[88dvh] w-full sm:min-h-[85dvh] lg:min-h-[min(92dvh,980px)]"
     >
       <HeroBackgroundVideo src={HERO_VIDEO_SRC} />
       <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#080808] via-black/55 to-black/20" />

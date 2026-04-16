@@ -4,6 +4,7 @@ import HomeHero from "@/components/HomeHero";
 import { Reveal, StaggerReveal } from "@/components/Reveal";
 import FlowParallax from "@/components/FlowParallax";
 import AwardsRollCarousel from "@/components/AwardsRollCarousel";
+import ScrollHandler from "@/components/ScrollHandler";
 import {
   Heart,
   MapPin,
@@ -18,10 +19,9 @@ import {
   Sparkles,
 } from "lucide-react";
 import HomeBuyingKnowAccordion from "@/components/HomeBuyingKnowAccordion";
-import AboutLeadershipSection from "@/components/AboutLeadershipSection";
 import TestimonialVideos from "@/components/TestimonialVideos";
 import { PremiumSection, TrustMetricRail } from "@/components/PremiumSection";
-import { leadershipProfiles } from "@/data/leadershipProfiles";
+import { blogPosts as landingBlogPosts } from "@/data/blogPosts";
 import {
   getPropertyListingsByProjectIds,
 } from "@/lib/propertyData";
@@ -41,11 +41,7 @@ const awardImages = [
   "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.42%20PM%20(1).jpeg",
 ];
 
-const blogPosts = [
-  { title: "Prices in Dubai to Rise", excerpt: "From property viewings by private helicopter to seamless key handover — every detail considered." },
-  { title: "Prices in Dubai to Rise", excerpt: "From property viewings by private helicopter to seamless key handover — every detail considered." },
-  { title: "Prices in Dubai to Rise", excerpt: "From property viewings by private helicopter to seamless key handover — every detail considered." },
-];
+const blogPosts = landingBlogPosts.slice(0, 3);
 
 const awardsCopy =
   "At ARK Vision, we don't just sell properties, we curate opportunities. Whether you're an off-plan investor, a global buyer seeking a second home, or looking for rental yields, we guide you with transparency, insight, and uncompromising dedication.";
@@ -115,6 +111,7 @@ export default async function HomePage() {
   const recentLaunches = await getPropertyListingsByProjectIds(RECENT_LAUNCH_IDS);
   return (
     <div className="min-h-screen overflow-x-clip bg-[#050505]">
+      <ScrollHandler />
       <HomeHero servicePillars={servicePillars} />
 
       {/* Marquee: not wrapped in Reveal so CSS animation runs immediately */}
@@ -272,43 +269,6 @@ export default async function HomePage() {
           </div>
           <AwardsRollCarousel images={awardImages} bodyText={awardsCopy} />
         </FlowParallax>
-        </section>
-      </Reveal>
-
-      <Reveal direction="up">
-        <section className="border-b border-white/10 bg-[#050505] py-14 md:py-20">
-          <div className="mx-auto max-w-[1280px] px-5 md:px-20">
-            <div className="grid gap-8 border border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent p-6 md:grid-cols-[1.1fr_1fr] md:p-8">
-              <div>
-                <div className="flex items-center gap-4">
-                  <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
-                  <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-                    Leadership
-                  </span>
-                </div>
-                <h2 className="mt-4 font-serif text-4xl font-light italic text-white/90 md:text-5xl">
-                  Executive Leadership
-                </h2>
-                <p className="mt-4 max-w-[520px] text-sm leading-relaxed text-white/60">
-                  The leadership team guiding strategy, market execution, and relationship quality for
-                  every ARK Vision client.
-                </p>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="border border-white/10 bg-black/40 p-4">
-                  <p className="font-serif text-2xl italic text-[#c9a84c]">Strategic</p>
-                  <p className="mt-2 text-xs uppercase tracking-[2px] text-white/60">Developer Relations</p>
-                </div>
-                <div className="border border-white/10 bg-black/40 p-4">
-                  <p className="font-serif text-2xl italic text-[#c9a84c]">Private</p>
-                  <p className="mt-2 text-xs uppercase tracking-[2px] text-white/60">Client Advisory</p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-8">
-              <AboutLeadershipSection profiles={leadershipProfiles} />
-            </div>
-          </div>
         </section>
       </Reveal>
 
@@ -482,7 +442,7 @@ export default async function HomePage() {
           <div className="mt-12 grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:gap-6">
             {/* Featured (left) */}
             <Link
-              href="/blog"
+              href={`/blog/${blogPosts[0]?.slug ?? ""}`}
               className="group relative overflow-hidden border border-white/10 bg-white/5 lg:h-[438px]"
               aria-label="Read featured blog"
             >
@@ -492,11 +452,11 @@ export default async function HomePage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
               <div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
-                <p className="font-serif text-base font-light italic text-white/90 sm:text-lg">
-                  {blogPosts[0]?.title ?? "Prices in Dubai to Rise"}
+                <p className="font-sans text-lg font-semibold text-white/95 sm:text-xl">
+                  {blogPosts[0]?.title ?? "Latest Blog"}
                 </p>
-                <p className="mt-2 max-w-[420px] font-light text-white/70 text-sm leading-relaxed">
-                  {blogPosts[0]?.excerpt}
+                <p className="mt-2 max-w-[420px] font-sans text-white/80 text-sm leading-relaxed">
+                  {blogPosts[0]?.excerpt ?? ""}
                 </p>
               </div>
             </Link>
@@ -506,7 +466,7 @@ export default async function HomePage() {
               {blogPosts.map((post, i) => (
                 <Link
                   key={`${post.title}-${i}`}
-                  href="/blog"
+                  href={`/blog/${post.slug}`}
                   className="group grid grid-cols-[168px_1fr] overflow-hidden border border-white/10 bg-white/5 transition-colors duration-300 hover:bg-white/7 sm:grid-cols-[174px_1fr]"
                   style={{ minHeight: "138px" }}
                   aria-label={`Read blog: ${post.title}`}
@@ -520,10 +480,10 @@ export default async function HomePage() {
                     }}
                   />
                   <div className="flex flex-col justify-center bg-black/40 px-6 py-5">
-                    <p className="font-serif text-base font-light italic text-white/90">
+                    <p className="font-sans text-base font-semibold text-white/95">
                       {post.title}
                     </p>
-                    <p className="mt-2 max-w-[420px] font-light text-white/70 text-sm leading-relaxed line-clamp-3">
+                    <p className="mt-2 max-w-[420px] font-sans text-white/80 text-sm leading-relaxed line-clamp-3">
                       {post.excerpt}
                     </p>
                   </div>
@@ -583,8 +543,8 @@ export default async function HomePage() {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-widest text-white/50">Our Address</p>
-                  <p className="font-light text-white/80 text-sm">Level 45, Burj Khalifa</p>
-                  <p className="font-light text-white/80 text-sm">Downtown Dubai, UAE</p>
+                  <p className="font-light text-white/80 text-sm">Office 1101, CONTROL TOWER</p>
+                  <p className="font-light text-white/80 text-sm">AL Hebiah First - Dubai Motor City - Dubai</p>
                 </div>
               </div>
               <div className="flex gap-4">

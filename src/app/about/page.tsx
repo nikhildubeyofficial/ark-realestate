@@ -21,7 +21,7 @@ const services = [
 
 export default function AboutPage() {
   // About page (except founders) uses curated visual references.
-  const heroImage = "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1440&q=80&auto=format&fit=crop";
+  const heroImage = "/about%20us.JPG";
   // Founders images
   const karanImage = "/final%20images/Leaders/karan%20boss%20(1).png";
   const vinayImage = "/final%20images/Leaders/vinay%20boss.png";

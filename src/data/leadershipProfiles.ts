@@ -28,4 +28,9 @@ export const leadershipProfiles: LeadershipProfile[] = [
     designation: "Vice President",
     image: `${LEADERS_BASE}/vinat sir.jpg.jpeg`,
   },
+  {
+    name: "Pulkit Goyal",
+    designation: "Director of Sales",
+    image: `/Director%20of%20sales/Pulkit.jpeg`,
+  },
 ];

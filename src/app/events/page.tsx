@@ -7,7 +7,7 @@ const events = [
     title: "Private Viewing — Palm Jumeirah Residences",
     date: "April 12, 2025",
     time: "6:00 PM – 9:00 PM",
-    location: "ARK Vision Gallery, Downtown Dubai",
+    location: "Office 1101, CONTROL TOWER - Dubai Motor City",
     excerpt:
       "An invitation-only evening showcasing off-market waterfront estates with champagne reception.",
   },
@@ -15,7 +15,7 @@ const events = [
     title: "Dubai Luxury Market Outlook 2025",
     date: "April 26, 2025",
     time: "4:00 PM – 6:30 PM",
-    location: "Level 45, Burj Khalifa",
+    location: "Office 1101, CONTROL TOWER - Dubai Motor City",
     excerpt:
       "Executive briefing on investment trends, Golden Visa pathways, and prime developer launches.",
   },

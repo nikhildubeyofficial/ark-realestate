@@ -82,8 +82,8 @@ export default function TestimonialVideos() {
           <div
             className={`relative overflow-hidden rounded-xl border border-white/10 bg-black ${
               activeOrientation === "landscape"
-                ? "w-full max-w-[900px] aspect-[16/10]"
-                : "w-full max-w-[520px] aspect-[3/4]"
+                ? "w-full max-w-[600px] aspect-[16/10]"
+                : "w-full max-w-[340px] aspect-[3/4]"
             }`}
           >
             <Image

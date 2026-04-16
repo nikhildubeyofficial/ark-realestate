@@ -429,7 +429,7 @@ export default function FeaturedListingsClient({
 
   return (
     <>
-      <section className="sticky top-[72px] z-40 border-b border-white/10 bg-[#080808]/95 py-4 backdrop-blur-xl">
+      <section className="sticky top-[88px] z-40 border-b border-white/10 bg-[#080808]/95 py-4 backdrop-blur-xl">
         <div className="mx-auto max-w-[1280px] space-y-4 px-8 md:px-20">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <label className="block flex-1">

@@ -2,8 +2,23 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useCallback } from "react";
+
+function scrollToContact() {
+  const contactSection = document.getElementById('contact');
+  if (contactSection) {
+    // Scroll with offset for fixed header
+    const headerOffset = 80;
+    const elementPosition = contactSection.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - headerOffset;
+    
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth"
+    });
+  }
+}
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -18,7 +33,17 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const isLandingPage = pathname === "/";
+
+  const handleContactClick = useCallback(() => {
+    if (isLandingPage) {
+      scrollToContact();
+    } else {
+      // Use window.location for full page navigation to ensure proper scroll
+      window.location.href = "/?scrollTo=contact";
+    }
+  }, [isLandingPage]);
 
   // Refs for the sliding nav indicator
   const navRef = useRef<HTMLElement>(null);
@@ -125,7 +150,7 @@ export default function Header() {
             />
           </div>
         )}
-        <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 sm:h-[72px] sm:px-8 lg:px-[120px]">
+        <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-4 sm:h-[88px] sm:px-8 lg:px-[120px]">
           <Link
             href="/"
             onClick={(e) => {
@@ -139,9 +164,9 @@ export default function Header() {
             <Image
               src="/ARK LOGO BLACK.png"
               alt="ARK Vision Logo"
-              width={180}
-              height={58}
-              className="h-12 w-[94px] object-contain sm:h-[68px] sm:w-[112px]"
+              width={220}
+              height={72}
+              className="h-14 w-[110px] object-contain sm:h-[80px] sm:w-[140px]"
               priority
             />
           </Link>
@@ -173,12 +198,13 @@ export default function Header() {
                 {label}
               </Link>
             ))}
-            <Link
-              href="/#contact"
+            <button
+              type="button"
+              onClick={handleContactClick}
               className="btn-magnetic border border-white/80 bg-transparent px-4 py-2.5 text-sm text-white/80 transition-all duration-400 hover:border-[#c9a84c] hover:bg-[#c9a84c] hover:text-[#060606] hover:shadow-[0_0_20px_-5px_rgba(201,168,76,0.4)]"
             >
               Contact Us
-            </Link>
+            </button>
           </nav>
 
           {/* Mobile hamburger */}
@@ -201,7 +227,7 @@ export default function Header() {
 
         {/* Mobile menu */}
         <div
-          className={`fixed inset-x-0 bottom-0 top-16 z-40 md:hidden transition-all duration-300 sm:top-[72px] ${
+          className={`fixed inset-x-0 bottom-0 top-20 z-40 md:hidden transition-all duration-300 sm:top-[88px] ${
             open ? "visible opacity-100" : "invisible pointer-events-none opacity-0"
           }`}
         >
@@ -220,12 +246,16 @@ export default function Header() {
                   {label}
                 </Link>
               ))}
-              <Link
-                href="/#contact"
-                className="mt-3 rounded-md border border-[#c9a84c] px-3 py-3 text-center text-sm font-medium text-[#c9a84c] transition-all duration-300 hover:bg-[#c9a84c] hover:text-[#060606]"
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  handleContactClick();
+                }}
+                className="mt-3 w-full rounded-md border border-[#c9a84c] px-3 py-3 text-center text-sm font-medium text-[#c9a84c] transition-all duration-300 hover:bg-[#c9a84c] hover:text-[#060606]"
               >
                 Contact Us
-              </Link>
+              </button>
             </nav>
           </div>
         </div>

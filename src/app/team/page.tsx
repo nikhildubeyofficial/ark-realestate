@@ -1,19 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import AboutLeadershipSection from "@/components/AboutLeadershipSection";
 import { PremiumSection } from "@/components/PremiumSection";
 import { Reveal } from "@/components/Reveal";
-import { leadershipProfiles } from "@/data/leadershipProfiles";
 
-const HERO_VIDEO_SRC = "/video/hero.mp4";
 const directorOfSales = [
-  { name: "Sachin Madhan", image: "/Director%20of%20sales/sachin.JPG" },
-  { name: "Pranav Anand", image: "/Director%20of%20sales/Pranav.JPG" },
-  { name: "Krishna Kumar", image: "/Director%20of%20sales/Ganesh.png" },
-  { name: "Anisha Antony", image: "/Director%20of%20sales/anisha.JPG" },
-  { name: "Nikhil chandani", image: "/Director%20of%20sales/Nikhil.JPG" },
-  { name: "Sumitra nayar", image: "/Director%20of%20sales/Sumitra.JPG" },
+  { name: "Sachin Madhan", designation: "Director of Sales", image: "/Director%20of%20sales/sachin.JPG" },
+  { name: "Pranav Anand", designation: "Director of Sales", image: "/Director%20of%20sales/Pranav.JPG" },
+  { name: "Ganesh Shankar", designation: "Director of Sales", image: "/Director%20of%20sales/Ganesh.png" },
+  { name: "Anisha Antony", designation: "Director of Sales", image: "/Director%20of%20sales/anisha.JPG" },
+  { name: "Nikhil Chandani", designation: "Director of Sales", image: "/Director%20of%20sales/Nikhil.JPG" },
+  { name: "Sumitra Nayar", designation: "Director of Sales", image: "/Director%20of%20sales/Sumitra.JPG" },
+  { name: "Aarthi", designation: "International Director of Sales", image: "/Director%20of%20sales/Arti.jpeg" },
+  { name: "Krishna Kumar", designation: "Director of Sales", image: "/Director%20of%20sales/Krishna.jpeg" },
+  { name: "Pulkit Goyal", designation: "International Director of Sales", image: "/Director%20of%20sales/Pulkit.jpeg" },
 ] as const;
 
 const rewardsRecognitionImages = [
@@ -30,17 +30,13 @@ export default function TeamPage() {
     <div className="min-h-screen">
       <section className="relative min-h-[600px] overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <video
-            className="absolute inset-0 z-0 h-full w-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden
-          >
-            <source src={HERO_VIDEO_SRC} type="video/mp4" />
-          </video>
+          <Image
+            src="/team.JPG"
+            alt="ARK Vision team"
+            fill
+            className="z-0 object-cover"
+            priority
+          />
         </div>
         <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#080808] via-black/60 to-black/40" />
         <div className="absolute inset-0 z-[2] flex items-end">
@@ -61,39 +57,6 @@ export default function TeamPage() {
       </section>
 
       <Reveal direction="up">
-        <section className="border-b border-white/10 bg-[#050505] py-10 md:py-14">
-          <div className="mx-auto max-w-[1280px] px-5 md:px-20">
-            <div className="relative overflow-hidden rounded-xl border border-white/10">
-              <Image
-                src="/team.JPG"
-                alt="ARK Vision team"
-                width={1400}
-                height={900}
-                className="h-auto w-full object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </section>
-      </Reveal>
-
-      {/* Our Leadership Section */}
-      <Reveal direction="up">
-        <PremiumSection
-          eyebrow="Leadership"
-          title={
-            <>
-              Executive
-              <span className="text-[#c9a84c]"> Leadership Team</span>
-            </>
-          }
-          description="The leadership group driving strategy, market positioning, and client outcomes across Dubai's premium real estate segment."
-        >
-          <AboutLeadershipSection profiles={leadershipProfiles} />
-        </PremiumSection>
-      </Reveal>
-
-      <Reveal direction="up">
         <PremiumSection
           eyebrow="Sales Team"
           title={
@@ -112,7 +75,7 @@ export default function TeamPage() {
                 </div>
                 <div className="border-t border-white/10 p-4">
                   <p className="font-serif text-xl italic text-[#c9a84c]">{person.name}</p>
-                  <p className="mt-1 text-xs uppercase tracking-[2px] text-white/60">Director of Sales</p>
+                  <p className="mt-1 text-xs uppercase tracking-[2px] text-white/60">{person.designation}</p>
                 </div>
               </article>
             ))}
