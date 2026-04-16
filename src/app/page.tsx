@@ -451,7 +451,7 @@ export default async function HomePage() {
             >
               <div
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.02]"
-                style={{ backgroundImage: `url(${IMG.blogFeatured})` }}
+                style={{ backgroundImage: `url(${blogPosts[0]?.image ?? IMG.blogFeatured})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
               <div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
@@ -477,9 +477,7 @@ export default async function HomePage() {
                   <div
                     className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.02]"
                     style={{
-                      backgroundImage: `url(${
-                        [IMG.blogThumb, IMG.blogThumb2, IMG.blogThumb3][i] ?? IMG.blogThumb
-                      })`,
+                      backgroundImage: `url(${post.image})`,
                     }}
                   />
                   <div className="flex flex-col justify-center bg-black/40 px-6 py-5">
