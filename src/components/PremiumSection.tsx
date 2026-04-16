@@ -22,7 +22,7 @@ export function PremiumSection({
   center = false,
 }: PremiumSectionProps) {
   return (
-    <section className={`premium-section border-b border-white/10 py-24 md:py-48 ${className}`}>
+    <section className={`premium-section border-b border-white/10 py-16 md:py-28 ${className}`}>
       <div className={`mx-auto max-w-[1280px] px-5 md:px-20 ${contentClassName}`}>
         <div className={center ? "text-center" : ""}>
           {eyebrow ? (
@@ -32,7 +32,7 @@ export function PremiumSection({
               }`}
             >
               <span className="h-px w-10 bg-gradient-to-r from-[#C5A059] to-transparent" />
-              <span className="text-[10px] font-light uppercase tracking-[5px] text-[#C5A059]">
+              <span className="font-sans text-sm font-semibold tracking-[0.06em] text-[#C5A059]">
                 {eyebrow}
               </span>
               <span className="h-px w-10 bg-gradient-to-l from-[#C5A059] to-transparent" />
@@ -63,17 +63,17 @@ export function TrustMetricRail({
   items: Array<{ value: string; label: string; icon?: ReactNode }>;
 }) {
   return (
-    <div className="premium-metric-rail grid grid-cols-1 overflow-hidden border border-white/10 bg-[#050505]/90 md:grid-cols-4">
+    <div className="premium-metric-rail grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       {items.map((item, index) => (
         <div
           key={item.label}
-          className={`bg-[#050505] px-6 py-8 md:px-8 ${index !== items.length - 1 ? "md:border-r md:border-white/10" : ""}`}
+          className={`rounded-lg border border-white/10 bg-[#050505] px-6 py-7 md:px-7 ${index !== items.length - 1 ? "" : ""}`}
         >
           {item.icon ? <div className="mb-4 text-[#C5A059]">{item.icon}</div> : null}
-          <p className="font-serif text-3xl font-light italic text-[#C5A059] md:text-4xl">
+          <p className="font-sans text-3xl font-semibold text-[#C5A059] md:text-4xl">
             {item.value}
           </p>
-          <p className="mt-3 text-[11px] uppercase tracking-[0.16em] text-white/60">{item.label}</p>
+          <p className="mt-2 font-sans text-base font-semibold leading-snug text-white/85">{item.label}</p>
         </div>
       ))}
     </div>

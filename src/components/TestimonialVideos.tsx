@@ -1,78 +1,58 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import FlowParallax from "@/components/FlowParallax";
 
-const testimonials = [
-  {
-    id: 1,
-    videoSrc: "/testimonials/Mona%20Testimoal%20Video.mp4",
-    name: "Mona",
-    title: "Happy Client",
-  },
-  {
-    id: 2,
-    videoSrc: "/testimonials/VID-20260208-WA0048.mp4",
-    name: "Happy Client",
-    title: "Satisfied Customer",
-  },
-  {
-    id: 3,
-    videoSrc: "/testimonials/VID-20260208-WA0049%20(1).mp4",
-    name: "Happy Client",
-    title: "Valued Customer",
-  },
-];
+const testimonials = Array.from({ length: 9 }, (_, index) => ({
+  id: index + 1,
+  imageSrc: `/testimonial/${index + 1}.jpeg`,
+}));
 
 export default function TestimonialVideos() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [orientationByImage, setOrientationByImage] = useState<Record<string, "portrait" | "landscape">>({});
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-      setIsPlaying(false);
-    }
-  }, [activeIndex]);
+    let cancelled = false;
+    const nextOrientation: Record<string, "portrait" | "landscape"> = {};
 
-  const goToSlide = (index: number) => {
-    if (index === activeIndex || isTransitioning) return;
-    setIsTransitioning(true);
-    setIsPlaying(false);
-    setTimeout(() => {
-      setActiveIndex(index);
-      setIsTransitioning(false);
-    }, 300);
-  };
+    Promise.all(
+      testimonials.map(
+        (item) =>
+          new Promise<void>((resolve) => {
+            const img = new window.Image();
+            img.onload = () => {
+              nextOrientation[item.imageSrc] = img.naturalHeight > img.naturalWidth ? "portrait" : "landscape";
+              resolve();
+            };
+            img.onerror = () => {
+              nextOrientation[item.imageSrc] = "portrait";
+              resolve();
+            };
+            img.src = item.imageSrc;
+          })
+      )
+    ).then(() => {
+      if (!cancelled) setOrientationByImage(nextOrientation);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const nextSlide = () => {
-    const nextIndex = (activeIndex + 1) % testimonials.length;
-    goToSlide(nextIndex);
+    setActiveIndex((prev) => (prev + 1) % testimonials.length);
   };
 
   const prevSlide = () => {
-    const prevIndex = (activeIndex - 1 + testimonials.length) % testimonials.length;
-    goToSlide(prevIndex);
+    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const handleVideoEnded = () => {
-    setIsPlaying(false);
-  };
+  const activeImage = testimonials[activeIndex].imageSrc;
+  const activeOrientation = orientationByImage[activeImage] ?? "portrait";
 
   return (
     <section className="relative overflow-hidden border-b border-[#C5A059]/40 bg-[#050505] py-24 md:py-48">
@@ -94,97 +74,60 @@ export default function TestimonialVideos() {
             Words of <span className="text-[#C5A059]">Trust</span>
           </h2>
           <p className="mx-auto mt-4 max-w-[500px] font-light text-white/50 text-sm">
-            Hear directly from our satisfied clients about their experience with ARK Vision
+            Captured moments from our testimonial sessions and client success stories.
           </p>
         </div>
 
-        <div className="relative">
-          <div className="relative mx-auto max-w-[900px]">
-            <div
-              className={`relative aspect-[16/9] overflow-hidden rounded-2xl border border-white/10 bg-black transition-opacity duration-300 ${
-                isTransitioning ? "opacity-0" : "opacity-100"
-              }`}
-            >
-              <video
-                ref={videoRef}
-                src={testimonials[activeIndex].videoSrc}
-                className="h-full w-full object-contain"
-                onEnded={handleVideoEnded}
-                playsInline
-                preload="metadata"
-                style={{ backgroundColor: '#000' }}
-              />
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              
-              <button
-                onClick={togglePlay}
-                className="absolute inset-0 flex items-center justify-center group cursor-pointer"
-                aria-label={isPlaying ? "Pause video" : "Play video"}
-              >
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#c9a84c]/90 backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-[#c9a84c]">
-                  {isPlaying ? (
-                    <Pause className="h-8 w-8 text-black" fill="black" />
-                  ) : (
-                    <Play className="ml-1 h-8 w-8 text-black" fill="black" />
-                  )}
-                </div>
-              </button>
-
-              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-                <div className="rounded-lg bg-black/70 backdrop-blur-sm px-4 py-3">
-                  <p className="font-serif text-lg font-medium italic text-white/90">
-                    {testimonials[activeIndex].name}
-                  </p>
-                  <p className="text-xs uppercase tracking-[2px] text-[#c9a84c]/80">
-                    {testimonials[activeIndex].title}
-                  </p>
-                </div>
-                
-                <div className="flex items-center gap-2 rounded-full bg-black/70 px-4 py-2 backdrop-blur-sm">
-                  <span className="font-serif text-sm text-white/70">
-                    {String(activeIndex + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-white/30">/</span>
-                  <span className="font-serif text-sm text-white/50">
-                    {String(testimonials.length).padStart(2, "0")}
-                  </span>
-                </div>
-              </div>
-            </div>
+        <div className="relative mx-auto flex w-full max-w-[980px] justify-center">
+          <div
+            className={`relative overflow-hidden rounded-xl border border-white/10 bg-black ${
+              activeOrientation === "landscape"
+                ? "w-full max-w-[900px] aspect-[16/10]"
+                : "w-full max-w-[520px] aspect-[3/4]"
+            }`}
+          >
+            <Image
+              src={activeImage}
+              alt={`Testimonial ${testimonials[activeIndex].id}`}
+              fill
+              className="object-contain bg-black"
+              sizes="(max-width: 768px) 100vw, 900px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
           </div>
 
           <button
+            type="button"
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 backdrop-blur-sm text-white/70 transition-all duration-300 hover:border-[#c9a84c] hover:bg-[#c9a84c]/20 hover:text-[#c9a84c] md:-left-16 md:h-14 md:w-14"
-            aria-label="Previous testimonial"
+            className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white/80 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
+            aria-label="Previous testimonial image"
           >
-            <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+            <ChevronLeft size={20} />
           </button>
-          
           <button
+            type="button"
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 backdrop-blur-sm text-white/70 transition-all duration-300 hover:border-[#c9a84c] hover:bg-[#c9a84c]/20 hover:text-[#c9a84c] md:-right-16 md:h-14 md:w-14"
-            aria-label="Next testimonial"
+            className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white/80 transition hover:border-[#c9a84c] hover:text-[#c9a84c]"
+            aria-label="Next testimonial image"
           >
-            <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+            <ChevronRight size={20} />
           </button>
         </div>
 
-        <div className="mt-10 flex items-center justify-center gap-3">
-          {testimonials.map((_, index) => (
+        <div className="mt-6 flex items-center justify-center gap-2">
+          {testimonials.map((item, idx) => (
             <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                index === activeIndex
-                  ? "w-8 bg-[#c9a84c]"
-                  : "w-2 bg-white/30 hover:bg-white/50"
+              key={item.id}
+              type="button"
+              onClick={() => setActiveIndex(idx)}
+              className={`h-2.5 rounded-full transition ${
+                idx === activeIndex ? "w-8 bg-[#c9a84c]" : "w-2.5 bg-white/35"
               }`}
-              aria-label={`Go to testimonial ${index + 1}`}
+              aria-label={`Go to testimonial ${item.id}`}
             />
           ))}
         </div>
+
       </FlowParallax>
     </section>
   );

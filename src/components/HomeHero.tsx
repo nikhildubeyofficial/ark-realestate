@@ -77,7 +77,7 @@ export default function HomeHero({ servicePillars }: { servicePillars: HeroServi
               >
                 Where Luxury Meets Vision
               </h1>
-              <p className="animate-hero-sub mt-8 max-w-[640px] font-sans text-sm font-light uppercase leading-relaxed tracking-[0.2em] text-white/70 sm:mt-10">
+              <p className="animate-hero-sub mt-8 max-w-[640px] font-sans text-sm font-medium uppercase leading-relaxed tracking-[0.2em] text-white/75 sm:mt-10">
                 Dubai&apos;s most trusted authority in luxury real estate. Curating extraordinary
                 residences for the world&apos;s most discerning individuals since 1998.
               </p>

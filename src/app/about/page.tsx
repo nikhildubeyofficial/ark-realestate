@@ -1,17 +1,11 @@
-import AboutLeadershipSection from "@/components/AboutLeadershipSection";
-import AboutTeamGrid from "@/components/AboutTeamGrid";
 import { PremiumSection, TrustMetricRail } from "@/components/PremiumSection";
 import { Reveal } from "@/components/Reveal";
-import Link from "next/link";
-import imagescManifest from "@/data/imagesc-manifest.json";
-import { leadershipProfiles } from "@/data/leadershipProfiles";
-import { Heart } from "lucide-react";
 
 const stats = [
-  { value: "500+", label: "Properties Sold" },
-  { value: "25+", label: "Years of Excellence" },
-  { value: "1,200+", label: "Discerning Clients" },
-  { value: "AED 5B+", label: "Total Sales Value" },
+  { value: "Top 10", label: "Ranked among Dubai's most trusted brokerage teams" },
+  { value: "25+", label: "Years of advisory continuity across market cycles" },
+  { value: "AED 5B+", label: "Collective portfolio value guided with precision" },
+  { value: "100K+", label: "Homeowners and investors advised with discretion" },
 ];
 
 const services = [
@@ -26,65 +20,11 @@ const services = [
 ];
 
 export default function AboutPage() {
-  const teamImages = (imagescManifest.files ?? []).map(
-    (file) => `/ImagesC/${encodeURIComponent(file)}`
-  );
-  // About page (except leadership tiles) uses Unsplash only.
+  // About page (except founders) uses curated visual references.
   const heroImage = "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1440&q=80&auto=format&fit=crop";
-  const storyImage =
-    "https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?w=1440&q=80&auto=format&fit=crop";
   // Founders images
   const karanImage = "/final%20images/Leaders/karan%20boss%20(1).png";
   const vinayImage = "/final%20images/Leaders/vinay%20boss.png";
-
-  const portfolioMosaic = [
-    "https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1501183638710-841dd1904471?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1505691938895-1758d7feb5f7?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1511651262363-3e6d7d8c5f0b?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1522156373667-4c7234bbd804?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5a6?w=1200&q=80&auto=format&fit=crop",
-  ] as const;
-
-  const aboutUsGallery = [
-    "https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1501183638710-841dd1904471?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1511651262363-3e6d7d8c5f0b?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1522156373667-4c7234bbd804?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1505691938895-1758d7feb5f7?w=1200&q=80&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5a6?w=1200&q=80&auto=format&fit=crop",
-  ] as const;
-
-  const propertyHighlights = [
-    {
-      title: "Luxury Residences",
-      image:
-        "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1200&q=80&auto=format&fit=crop",
-      location: "Downtown Dubai",
-    },
-    {
-      title: "Signature Villas",
-      image:
-        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80&auto=format&fit=crop",
-      location: "Emirates Hills",
-    },
-    {
-      title: "Modern Living",
-      image:
-        "https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=1200&q=80&auto=format&fit=crop",
-      location: "Dubai Marina",
-    },
-    {
-      title: "Premium Investment",
-      image:
-        "https://images.unsplash.com/photo-1501183638710-841dd1904471?w=1200&q=80&auto=format&fit=crop",
-      location: "Business Bay",
-    },
-  ] as const;
 
   return (
     <div className="min-h-screen">
@@ -108,39 +48,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="border-b border-white/5 bg-[#060606] py-24">
-        <div className="mx-auto grid max-w-[1280px] gap-16 px-8 md:grid-cols-2 md:px-20">
-          <div className="space-y-8">
-            <h2 className="font-serif text-4xl font-light italic leading-tight text-white/80 md:text-5xl">
-              A Quarter Century of{" "}
-              <span className="bg-gradient-to-r from-[#c9a84c] to-[#fcf6ba] bg-clip-text text-transparent">Unrivalled Excellence</span>
-            </h2>
-            <div className="space-y-5 font-light text-white/40 text-sm leading-[1.6]">
-              <p>At ARK Vision, we redefine living spaces with innovative design, insight-backed advisory, and premium execution at every stage.</p>
-              <p>We do not just broker properties. We curate opportunities for investors, families, and global buyers with clarity, confidence, and measurable value.</p>
-              <p>From first consultation to handover and beyond, every interaction is intentionally crafted to deliver peace of mind and long-term growth.</p>
-            </div>
-          </div>
-          <div className="space-y-6">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10">
-              <div className="h-full w-full bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.06]" style={{ backgroundImage: `url(${storyImage})` }} />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-            </div>
-            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/5 bg-white/5">
-              {stats.map(({ value, label }) => (
-                <div key={label} className="flex flex-col gap-2 bg-[#080808] p-8">
-                  <span className="font-serif text-3xl font-light italic text-[#c9a84c]">{value}</span>
-                  <span className="text-xs uppercase tracking-[1.2px] text-white/30">{label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       <Reveal direction="up">
         <PremiumSection
-          eyebrow="Credibility"
           title={
             <>
               Trusted by Investors,
@@ -151,56 +60,6 @@ export default function AboutPage() {
         >
           <TrustMetricRail items={stats} />
         </PremiumSection>
-      </Reveal>
-
-      <Reveal direction="right">
-        <section className="border-b border-white/5 bg-[#060606] py-24">
-          <div className="mx-auto max-w-[1280px] px-8 md:px-20">
-            <div className="flex items-center gap-4">
-              <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
-              <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">
-                Featured Properties
-              </span>
-            </div>
-            <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">
-              A Curated Selection
-            </h2>
-            <p className="mt-5 max-w-[760px] font-light text-sm leading-relaxed text-white/45">
-              Explore a premium set of residences and investment opportunities curated for clarity,
-              confidence, and long-term value.
-            </p>
-
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {propertyHighlights.map((p) => (
-                <Link
-                  key={p.title}
-                  href="/featured"
-                  className="card-premium group relative overflow-hidden rounded-sm border border-white/10 bg-[#080808]"
-                >
-                  <div className="relative h-[220px]">
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.06]"
-                      style={{ backgroundImage: `url(${p.image})` }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                    <div className="absolute right-4 top-4 flex h-[34px] w-[34px] items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/70">
-                      <Heart size={16} />
-                    </div>
-                  </div>
-                  <div className="relative border-t border-white/10 p-5">
-                    <p className="font-serif text-lg font-medium italic text-white/90">{p.title}</p>
-                    <p className="mt-2 text-xs uppercase tracking-[2.4px] text-[#c9a84c]/80">
-                      {p.location}
-                    </p>
-                    <div className="mt-4 flex items-center gap-2 text-sm text-white/70 transition-colors group-hover:text-[#c9a84c]">
-                      View properties <span aria-hidden="true">→</span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
       </Reveal>
 
       <Reveal direction="left">
@@ -372,38 +231,6 @@ export default function AboutPage() {
           </div>
         </section>
       </Reveal> */}
-
-      <Reveal direction="scale">
-        <section className="border-b border-white/5 bg-[#060606] py-24">
-        <div className="mx-auto max-w-[1280px] px-8 md:px-20">
-          <div className="flex items-center gap-4">
-            <span className="h-px w-8 bg-gradient-to-r from-[#c9a84c] to-transparent" />
-            <span className="text-[10px] font-light uppercase tracking-[5px] text-[#c9a84c]">About Us Gallery</span>
-          </div>
-          <h2 className="mt-4 font-serif text-5xl font-light italic text-white/80 md:text-6xl">Moments & Milestones</h2>
-          <p className="mt-5 max-w-[760px] font-light text-sm leading-relaxed text-white/45">
-            A visual journey of our team, client experiences, and signature project milestones.
-          </p>
-          <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {aboutUsGallery
-              .map((src, index) => ({ src, frameNo: index + 1 }))
-              .filter((item) => ![5, 7, 8].includes(item.frameNo))
-              .map(({ src, frameNo }) => (
-              <div key={src} className="group relative aspect-[4/5] overflow-hidden rounded-sm border border-white/10 bg-black">
-                <div
-                  className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.05]"
-                  style={{ backgroundImage: `url(${src})` }}
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70" />
-                <span className="pointer-events-none absolute bottom-3 left-3 text-[10px] uppercase tracking-[2.8px] text-white/60">
-                  Frame {String(frameNo).padStart(2, "0")}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-        </section>
-      </Reveal>
 
       <Reveal direction="blur">
         <section className="border-b border-white/5 py-24">

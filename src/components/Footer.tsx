@@ -26,18 +26,6 @@ export default function Footer() {
             ARK Vision — Dubai&apos;s most trusted luxury real estate house,
             curating extraordinary residences since 1998.
           </p>
-          <div className="flex justify-center gap-2 md:justify-start">
-            {[1, 2, 3, 4].map((i) => (
-              <a
-                key={i}
-                href="#"
-                className="group/social flex h-7 w-7 items-center justify-center rounded border border-white/30 text-white/70 transition-all duration-400 hover:border-[#c9a84c] hover:bg-[#c9a84c]/10 hover:text-[#c9a84c] hover:shadow-[0_0_12px_-3px_rgba(201,168,76,0.4)] hover:-translate-y-0.5"
-                aria-label={`Social link ${i}`}
-              >
-                <span className="text-xs transition-transform duration-300 group-hover/social:scale-110">→</span>
-              </a>
-            ))}
-          </div>
         </div>
         <div>
           <h4 className="mb-4 text-xs font-normal uppercase tracking-[3px] text-white/70">

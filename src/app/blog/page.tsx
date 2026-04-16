@@ -1,46 +1,7 @@
 import Link from "next/link";
+import { blogPosts } from "@/data/blogPosts";
 
-const featuredPost = {
-  title: "Prices in Dubai to Rise: What Luxury Buyers Need to Know",
-  excerpt:
-    "From property viewings by private helicopter to seamless key handover — every detail considered. Our latest market analysis for high-net-worth investors.",
-  date: "March 15, 2025",
-  category: "Market Insights",
-  image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
-};
-
-const posts = [
-  {
-    title: "Prices in Dubai to Rise",
-    excerpt:
-      "From property viewings by private helicopter to seamless key handover — every detail considered.",
-    date: "March 12, 2025",
-  },
-  {
-    title: "Top 10 Off-Plan Developments in 2025",
-    excerpt:
-      "Exclusive access to the most sought-after off-plan projects from leading developers.",
-    date: "March 10, 2025",
-  },
-  {
-    title: "Why Emirates Hills Remains a Safe Haven",
-    excerpt:
-      "Stability, privacy, and world-class amenities in one of Dubai's most prestigious communities.",
-    date: "March 8, 2025",
-  },
-  {
-    title: "Golden Visa and Real Estate: Your Guide",
-    excerpt:
-      "How property investment in Dubai can secure your family's future in the UAE.",
-    date: "March 5, 2025",
-  },
-  {
-    title: "Palm Jumeirah: Beyond the Icon",
-    excerpt:
-      "Living on the Palm — what it really means for discerning homeowners.",
-    date: "March 1, 2025",
-  },
-];
+const [featuredPost, ...posts] = blogPosts;
 
 export default function BlogPage() {
   return (
@@ -68,7 +29,7 @@ export default function BlogPage() {
       <section className="border-b border-white/5 py-16">
         <div className="mx-auto max-w-[1280px] px-8 md:px-20">
           <Link
-            href="#"
+            href={`/blog/${featuredPost.slug}`}
             className="card-premium group relative flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/5 md:flex-row"
           >
             <div className="relative h-[320px] w-full md:h-auto md:min-h-[400px] md:w-1/2">
@@ -103,12 +64,18 @@ export default function BlogPage() {
             {posts.map((post, i) => (
               <Link
                 key={post.title}
-                href="#"
+                href={`/blog/${post.slug}`}
                 className="group flex flex-col gap-4 border-b border-white/10 py-8 transition-all duration-400 hover:bg-white/[0.03] hover:pl-2 md:flex-row md:items-center md:gap-8"
               >
                 <span className="w-8 shrink-0 font-serif text-2xl font-light italic text-white/30">
                   {String(i + 1).padStart(2, "0")}
                 </span>
+                {post.image ? (
+                  <div
+                    className="h-[90px] w-full shrink-0 overflow-hidden rounded border border-white/10 bg-cover bg-center md:w-[160px]"
+                    style={{ backgroundImage: `url(${post.image})` }}
+                  />
+                ) : null}
                 <div className="min-w-0 flex-1">
                   <h3 className="font-serif text-xl font-medium text-white/90 transition group-hover:text-[#c9a84c] md:text-2xl">
                     {post.title}

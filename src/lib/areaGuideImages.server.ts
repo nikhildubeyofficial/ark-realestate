@@ -93,8 +93,16 @@ export async function getAreaGuidesWithImages(): Promise<AreaGuide[]> {
   const parsed = JSON.parse(raw) as { data?: { items?: RawItem[] } };
   const items = parsed.data?.items ?? [];
 
-  return AREA_GUIDE_ENTRIES.map((entry) => ({
-    ...entry,
-    image: findImageForSlug(items, entry),
-  }));
+  return AREA_GUIDE_ENTRIES.map((entry) => {
+    if (entry.slug === "business-bay") {
+      return { ...entry, image: "/Business%20Bay.jpg" };
+    }
+    if (entry.slug === "palm-jumeirah") {
+      return { ...entry, image: "/Palm%20Jumeriah.jpg" };
+    }
+    return {
+      ...entry,
+      image: findImageForSlug(items, entry),
+    };
+  });
 }

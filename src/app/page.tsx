@@ -33,34 +33,12 @@ import { RECENT_LAUNCH_IDS } from "@/lib/recentLaunches";
  */
 
 const awardImages = [
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.45%20PM%20(1).jpeg",
   "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.45%20PM.jpeg",
   "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.44%20PM%20(1).jpeg",
   "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.44%20PM.jpeg",
   "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.43%20PM%20(1).jpeg",
   "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.43%20PM.jpeg",
   "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.42%20PM%20(1).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.42%20PM.jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.41%20PM%20(2).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.41%20PM%20(1).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.41%20PM.jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.40%20PM%20(1).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.40%20PM.jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.39%20PM%20(2).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.39%20PM%20(1).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.39%20PM.jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.38%20PM%20(2).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.38%20PM%20(1).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.38%20PM.jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.37%20PM%20(3).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.37%20PM%20(2).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.37%20PM%20(1).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.37%20PM.jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.36%20PM%20(2).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.36%20PM%20(1).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.36%20PM.jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.35%20PM%20(1).jpeg",
-  "/awards/WhatsApp%20Image%202026-04-09%20at%209.35.35%20PM.jpeg",
 ];
 
 const blogPosts = [
@@ -93,11 +71,13 @@ const servicePillars = [
 ];
 
 const marqueeBrands = [
-  { name: "Azizi", sub: "Venice · Riviera", style: "serif" as const },
-  { name: "Riviera", sub: "Residences by Mered", style: "serif" as const },
+  { name: "Azizi", logo: "/logos/Azizi_Developments_idAvLMDooX_1.svg" },
   { name: "DEYAAR", logo: "/logos/deyaar.svg" },
+  { name: "EMAAR", logo: "/logos/Emaar_idXvHX22tw_1.svg" },
   { name: "OMNIYAT", logo: "/logos/OMNIYAT_id3ynQ1ti7_1.svg" },
   { name: "ARADA", logo: "/logos/arada.svg" },
+  { name: "SOBHA", logo: "/logos/sobha.svg" },
+  { name: "OBJECT", logo: "/logos/Object_1.svg" },
   { name: "DAMAC", logo: "/logos/damac.svg" },
 ] as const;
 
@@ -138,7 +118,7 @@ export default async function HomePage() {
       <HomeHero servicePillars={servicePillars} />
 
       {/* Marquee: not wrapped in Reveal so CSS animation runs immediately */}
-      <section className="brand-marquee border-y border-white/10 bg-[#050505] py-24 md:py-48">
+      <section className="brand-marquee border-y border-white/10 bg-[#050505] py-12 md:py-20">
         <FlowParallax className="relative mx-auto max-w-[1440px] overflow-hidden px-5 md:px-20" speed={0.05}>
           <div className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-24 bg-gradient-to-r from-[#060606] to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-24 bg-gradient-to-l from-[#060606] to-transparent" />
@@ -147,16 +127,22 @@ export default async function HomePage() {
             {marqueeBrands.concat(marqueeBrands).map((b, idx) => (
                 <div
                   key={`${b.name}-${idx}`}
-                  className="flex min-w-[180px] shrink-0 items-center justify-center text-white/90 md:min-w-[220px]"
+                  className="flex min-w-[130px] shrink-0 items-center justify-center text-white/90 md:min-w-[160px]"
                 >
                   {"logo" in b ? (
-                    <div className="flex h-8 w-[140px] items-center justify-center md:h-9 md:w-[160px]">
+                    <div
+                      className={`flex h-6 items-center justify-center md:h-7 ${
+                        b.name === "DAMAC" ? "w-[130px] md:w-[150px]" : "w-[110px] md:w-[130px]"
+                      }`}
+                    >
                       <Image
                         src={b.logo}
                         alt={`${b.name} logo`}
                         width={160}
                         height={36}
-                        className="max-h-full max-w-full object-contain opacity-80 grayscale contrast-125"
+                        className={`h-full w-full object-contain opacity-90 ${
+                          b.name === "SOBHA" ? "brightness-0 invert" : ""
+                        }`}
                       />
                     </div>
                   ) : (
@@ -177,11 +163,11 @@ export default async function HomePage() {
 
       <Reveal direction="up">
         <PremiumSection
-          eyebrow="Performance Snapshot"
+          eyebrow="Key Stats"
           title={
             <>
-              A Proven Name in
-              <span className="text-[#c9a84c]"> Dubai Real Estate</span>
+              Performance at a
+              <span className="text-[#c9a84c]"> Glance</span>
             </>
           }
           description="Every number reflects consistency, execution quality, and long-term trust built with investors, homeowners, and global buyers."
@@ -301,7 +287,7 @@ export default async function HomePage() {
       </Reveal>
 
       <Reveal direction="up">
-        <section className="border-b border-white/10 bg-[#050505] py-24 md:py-48">
+        <section className="border-b border-white/10 bg-[#050505] py-14 md:py-20">
           <div className="mx-auto max-w-[1280px] px-5 md:px-20">
             <div className="grid gap-8 border border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent p-6 md:grid-cols-[1.1fr_1fr] md:p-8">
               <div>
@@ -582,7 +568,7 @@ export default async function HomePage() {
       </Reveal>
 
       <Reveal direction="up">
-        <section id="contact" className="border-b border-white/10 bg-[#050505] py-24 md:py-48">
+        <section id="contact" className="border-b border-white/10 bg-[#050505] py-14 md:py-20">
         <FlowParallax className="mx-auto grid max-w-[1280px] gap-10 border border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent px-5 py-8 md:grid-cols-2 md:px-20 md:py-12" speed={0.06}>
           <div>
             <div className="flex items-center gap-4">
@@ -592,10 +578,10 @@ export default async function HomePage() {
               </span>
             </div>
             <h2
-              className="mt-4 font-serif text-[48px] font-light italic leading-[53px] text-white/90 md:text-[56px]"
+              className="mt-3 font-serif text-[46px] font-light italic leading-[1.06] text-white/90 md:text-[54px]"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Begin Your <span className="block">Journey</span>
+              Begin Your <span className="block leading-none">Journey</span>
             </h2>
             <p className="mt-6 max-w-[336px] font-normal text-white/65 text-sm leading-relaxed">
               Our advisors are available to discuss your requirements with complete discretion. Every

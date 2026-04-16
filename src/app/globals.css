@@ -34,6 +34,16 @@ body {
   font-family: var(--font-serif), Georgia, serif;
 }
 
+/* Improve readability for small secondary headings/kickers */
+.text-\[10px\].tracking-\[5px\],
+.text-\[10px\].tracking-\[0\.26em\],
+.text-\[10px\].tracking-\[0\.28em\] {
+  font-family: "Tobias", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.06em !important;
+  font-size: 0.76rem !important;
+}
+
 .premium-section {
   position: relative;
   background:
@@ -144,7 +154,7 @@ html {
   width: max-content;
   flex-shrink: 0;
   align-items: center;
-  gap: 4rem;
+  gap: 2.2rem;
   animation: brand-marquee 46s linear infinite;
   animation-play-state: running;
   will-change: transform;
@@ -152,7 +162,7 @@ html {
 
 @media (min-width: 768px) {
   .brand-marquee .brand-marquee-track {
-    gap: 6rem;
+    gap: 3.2rem;
   }
 }
 

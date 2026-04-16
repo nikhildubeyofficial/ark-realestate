@@ -12,7 +12,6 @@ const navLinks = [
   { href: "/featured", label: "Property Listings" },
   { href: "/guide", label: "Guide" },
   { href: "/blog", label: "Blogs" },
-  { href: "/events", label: "Events" },
 ];
 
 export default function Header() {
@@ -109,24 +108,6 @@ export default function Header() {
 
   return (
     <>
-      <div className="hidden border-b border-white/5 bg-[#060606] px-4 py-2 sm:px-9 sm:py-2.5 md:flex items-center justify-between">
-        <p className="text-[10px] uppercase tracking-[2.6px] text-white/50 sm:text-[11px]">
-          Established 1999 · Dubai, United Arab Emirates
-        </p>
-        <div className="flex items-center gap-1.5">
-          <svg
-            className="h-2.5 w-2.5 shrink-0 text-white/50"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden
-          >
-            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-          </svg>
-          <span className="text-[10px] tracking-widest text-white/50 sm:text-[11px]">
-            +971 4 123 4567
-          </span>
-        </div>
-      </div>
       <header
         className={`sticky top-0 z-50 border-b transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           scrolled
