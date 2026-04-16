@@ -129,32 +129,21 @@ export default async function HomePage() {
                   key={`${b.name}-${idx}`}
                   className="flex min-w-[130px] shrink-0 items-center justify-center text-white/90 md:min-w-[160px]"
                 >
-                  {"logo" in b ? (
-                    <div
-                      className={`flex h-6 items-center justify-center md:h-7 ${
-                        b.name === "DAMAC" ? "w-[130px] md:w-[150px]" : "w-[110px] md:w-[130px]"
+                  <div
+                    className={`flex h-6 items-center justify-center md:h-7 ${
+                      b.name === "DAMAC" ? "w-[130px] md:w-[150px]" : "w-[110px] md:w-[130px]"
+                    }`}
+                  >
+                    <Image
+                      src={b.logo}
+                      alt={`${b.name} logo`}
+                      width={160}
+                      height={36}
+                      className={`h-full w-full object-contain opacity-90 ${
+                        b.name === "SOBHA" ? "brightness-0 invert" : ""
                       }`}
-                    >
-                      <Image
-                        src={b.logo}
-                        alt={`${b.name} logo`}
-                        width={160}
-                        height={36}
-                        className={`h-full w-full object-contain opacity-90 ${
-                          b.name === "SOBHA" ? "brightness-0 invert" : ""
-                        }`}
-                      />
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <div className="font-serif text-xl italic tracking-wide md:text-2xl">
-                        {b.name}
-                      </div>
-                      <div className="mt-1 text-[10px] uppercase tracking-[2px] text-white/50">
-                        {b.sub}
-                      </div>
-                    </div>
-                  )}
+                    />
+                  </div>
                 </div>
               ))}
           </div>
