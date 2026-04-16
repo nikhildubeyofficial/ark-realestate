@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Suspense } from "react";
 import HomeHero from "@/components/HomeHero";
 import { Reveal, StaggerReveal } from "@/components/Reveal";
 import FlowParallax from "@/components/FlowParallax";
@@ -111,7 +112,9 @@ export default async function HomePage() {
   const recentLaunches = await getPropertyListingsByProjectIds(RECENT_LAUNCH_IDS);
   return (
     <div className="min-h-screen overflow-x-clip bg-[#050505]">
-      <ScrollHandler />
+      <Suspense>
+        <ScrollHandler />
+      </Suspense>
       <HomeHero servicePillars={servicePillars} />
 
       {/* Marquee: not wrapped in Reveal so CSS animation runs immediately */}
