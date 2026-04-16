@@ -109,7 +109,7 @@ export default function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 border-b transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           scrolled
             ? "border-white/10 bg-[#080808] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.85),0_0_30px_-10px_rgba(201,168,76,0.08)]"
             : "border-white/5 bg-[#080808] shadow-none"
@@ -141,7 +141,7 @@ export default function Header() {
               alt="ARK Vision Logo"
               width={180}
               height={58}
-              className="h-[96px] w-[126px] object-contain"
+              className="h-12 w-[94px] object-contain sm:h-[68px] sm:w-[112px]"
               priority
             />
           </Link>
@@ -199,45 +199,35 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile menu - solid background */}
+        {/* Mobile menu */}
         <div
-          className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col bg-[#080808] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:top-[72px] md:hidden ${
-            open ? "visible opacity-100 translate-y-0" : "invisible pointer-events-none opacity-0 -translate-y-3"
+          className={`fixed inset-x-0 bottom-0 top-16 z-40 md:hidden transition-all duration-300 sm:top-[72px] ${
+            open ? "visible opacity-100" : "invisible pointer-events-none opacity-0"
           }`}
         >
-          <nav className="flex flex-col gap-1 px-6 py-8">
-            {navLinks.map(({ href, label }, i) => (
+          <div className="h-full overflow-y-auto bg-[#080808]/98 backdrop-blur-sm">
+            <nav className="mx-auto flex max-w-[1440px] flex-col gap-2 px-5 py-6 sm:px-8">
+              {navLinks.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`rounded-md border border-transparent px-3 py-3 text-base transition-colors ${
+                    pathname === href
+                      ? "border-[#c9a84c]/40 bg-[#c9a84c]/10 text-[#c9a84c]"
+                      : "text-white/90 hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
               <Link
-                key={href}
-                href={href}
-                className={`group/mobile relative border-b border-white/10 py-4 text-lg transition-all duration-500 hover:pl-3 ${
-                  pathname === href ? "text-[#c9a84c]" : "text-white/90 hover:text-[#c9a84c]"
-                }`}
-                style={{
-                  transitionDelay: open ? `${i * 60}ms` : "0ms",
-                  opacity: open ? 1 : 0,
-                  transform: open ? "translateX(0)" : "translateX(-12px)",
-                }}
+                href="/#contact"
+                className="mt-3 rounded-md border border-[#c9a84c] px-3 py-3 text-center text-sm font-medium text-[#c9a84c] transition-all duration-300 hover:bg-[#c9a84c] hover:text-[#060606]"
               >
-                {/* Active indicator dot for mobile */}
-                {pathname === href && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-[#c9a84c]" />
-                )}
-                <span className={pathname === href ? "ml-4" : ""}>{label}</span>
+                Contact Us
               </Link>
-            ))}
-            <Link
-              href="/#contact"
-              className="btn-magnetic mt-6 border border-[#c9a84c] py-4 text-center text-[#c9a84c] transition-all duration-300 hover:bg-[#c9a84c] hover:text-[#060606]"
-              style={{
-                transitionDelay: open ? `${navLinks.length * 60}ms` : "0ms",
-                opacity: open ? 1 : 0,
-                transform: open ? "translateY(0)" : "translateY(8px)",
-              }}
-            >
-              Contact Us
-            </Link>
-          </nav>
+            </nav>
+          </div>
         </div>
       </header>
     </>

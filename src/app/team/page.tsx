@@ -60,6 +60,23 @@ export default function TeamPage() {
         </div>
       </section>
 
+      <Reveal direction="up">
+        <section className="border-b border-white/10 bg-[#050505] py-10 md:py-14">
+          <div className="mx-auto max-w-[1280px] px-5 md:px-20">
+            <div className="relative overflow-hidden rounded-xl border border-white/10">
+              <Image
+                src="/team.JPG"
+                alt="ARK Vision team"
+                width={1400}
+                height={900}
+                className="h-auto w-full object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </section>
+      </Reveal>
+
       {/* Our Leadership Section */}
       <Reveal direction="up">
         <PremiumSection

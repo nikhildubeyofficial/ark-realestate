@@ -75,7 +75,7 @@ export default function RootLayout({
       <body className="min-h-screen overflow-x-clip bg-[#080808] text-white/80 antialiased">
         <RouteLoadingBar />
         <Header />
-        <main>
+        <main className="pt-16 sm:pt-[72px]">
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />

@@ -21,7 +21,7 @@ export default function HomeHero({ servicePillars }: { servicePillars: HeroServi
     if (!section || !layer) return;
 
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mq.matches) return;
+    if (mq.matches || window.innerWidth < 1024) return;
 
     let raf = 0;
     const tick = () => {
@@ -63,16 +63,16 @@ export default function HomeHero({ servicePillars }: { servicePillars: HeroServi
   return (
     <section
       ref={sectionRef}
-      className="relative -mt-px min-h-[78dvh] w-full sm:min-h-[85dvh] lg:min-h-[min(92dvh,980px)]"
+      className="relative -mt-px min-h-[88dvh] w-full sm:min-h-[85dvh] lg:min-h-[min(92dvh,980px)]"
     >
       <HeroBackgroundVideo src={HERO_VIDEO_SRC} />
       <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#080808] via-black/55 to-black/20" />
-      <div className="absolute inset-0 z-[2] flex min-h-[inherit] flex-col px-5 pb-14 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-20 lg:pb-28 lg:pt-28">
+      <div className="relative z-[2] flex min-h-[inherit] flex-col px-5 pb-14 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-20 lg:pb-28 lg:pt-28">
         <div ref={parallaxRef} className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col will-change-transform">
           <div className="flex flex-1 flex-col justify-center py-10 md:py-14 lg:py-20">
             <div className="max-w-[920px] text-left">
               <h1
-                className="animate-hero-title text-balance text-6xl font-light leading-[1.02] tracking-tight text-white/[0.98] drop-shadow-sm sm:text-6xl md:text-7xl md:leading-[0.98]"
+                className="animate-hero-title text-balance text-4xl font-light leading-[1.02] tracking-tight text-white/[0.98] drop-shadow-sm sm:text-6xl md:text-7xl md:leading-[0.98]"
                 style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}
               >
                 Where Luxury Meets Vision
@@ -98,12 +98,12 @@ export default function HomeHero({ servicePillars }: { servicePillars: HeroServi
             </div>
           </div>
 
-          <div className="mt-auto w-full max-w-[920px]">
-            <div className="hero-expertise-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 w-full max-w-[920px] sm:mt-auto">
+            <div className="hero-expertise-grid grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {servicePillars.map((pillar) => (
                 <div
                   key={pillar.title}
-                  className="border border-white/10 bg-[rgba(0,0,0,0.3)] p-5 backdrop-blur-md transition-[border-color,box-shadow] duration-300 hover:border-gold/50"
+                  className="border border-white/10 bg-[rgba(0,0,0,0.3)] p-4 backdrop-blur-md transition-[border-color,box-shadow] duration-300 hover:border-gold/50 sm:p-5"
                 >
                   <div className="flex items-center gap-2 text-[#c9a84c]">
                     {pillar.icon}
