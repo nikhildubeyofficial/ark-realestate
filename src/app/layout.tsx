@@ -12,12 +12,16 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
+  display: "swap",
+  preload: true,
 });
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
+  display: "swap",
+  preload: true,
 });
 
 const tobias = localFont({
@@ -60,6 +64,16 @@ export const metadata: Metadata = {
   title: "ARK Vision — Dubai Luxury Real Estate",
   description:
     "Dubai's most trusted luxury real estate house, curating extraordinary residences since 1998.",
+  icons: {
+    icon: [
+      { url: "/ARK LOGO BLACK.png", sizes: "32x32", type: "image/png" },
+      { url: "/ARK LOGO BLACK.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/ARK LOGO BLACK.png",
+    apple: [
+      { url: "/ARK LOGO BLACK.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -71,6 +85,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${cormorant.variable} ${tobias.variable}`}
+      suppressHydrationWarning
     >
       <body className="min-h-screen overflow-x-clip bg-[#080808] text-white/80 antialiased">
         <RouteLoadingBar />
