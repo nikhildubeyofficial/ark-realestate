@@ -3,6 +3,23 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef, type ReactNode } from "react";
 
+/** Matches fixed header offset used in ScrollHandler / Header contact scroll */
+const HEADER_SCROLL_OFFSET = 80;
+
+function scrollToHashTargetOrTop() {
+  const id = window.location.hash.replace(/^#/, "");
+  if (id) {
+    const el = document.getElementById(id);
+    if (el) {
+      const top =
+        el.getBoundingClientRect().top + window.scrollY - HEADER_SCROLL_OFFSET;
+      window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+      return;
+    }
+  }
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
 /**
  * PageTransition — wraps page content to animate enter/exit on route change.
  * Uses CSS classes defined in globals.css for the actual animation
@@ -28,8 +45,11 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     const timer = setTimeout(() => {
       setDisplayedChildren(children);
       setPhase("enter");
-      // Scroll to top on page change
-      window.scrollTo({ top: 0, behavior: "instant" });
+      // After the new page paints, scroll: respect #section (e.g. #contact) instead of
+      // forcing the hero — otherwise /other → /#contact jumps to top after ~300ms.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(scrollToHashTargetOrTop);
+      });
     }, 300); // matches exit animation duration
 
     return () => clearTimeout(timer);
