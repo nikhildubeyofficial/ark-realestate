@@ -16,14 +16,14 @@ type EventListing = {
 
 const events: EventListing[] = [
   {
-    title: "Dubai's Biggest Property Expo — Danube × D&S",
+    title: "Dubai's Biggest Property Expo — Multi-developer × ARK Vision Real Estate",
     dates: ["2026-04-25", "2026-04-26"],
     scheduleSummary:
       "Weekend exhibition — daily session times shared when you register",
     location:
       "Fairmont Dubai, Sheikh Zayed Road, Trade Centre — Dubai, United Arab Emirates",
     excerpt:
-      "Dubai's largest property showcase in partnership with Danube × D&S: leading developers, new launches, and private advisory sessions across the weekend at Fairmont Dubai.",
+      "Dubai's largest property showcase — multiple developers × ARK Vision Real Estate. Leading names, new launches, and private advisory sessions across the weekend at Fairmont Dubai.",
     imageSrc:
       "https://images.unsplash.com/photo-1748373448914-1d7f882700e2?w=960&q=80",
   },
